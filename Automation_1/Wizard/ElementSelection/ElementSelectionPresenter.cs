@@ -16,7 +16,11 @@
 		{
 			_view = view ?? throw new ArgumentNullException(nameof(view));
 			_model = model ?? throw new ArgumentNullException(nameof(model));
+
+			_view.ContinueButton.Pressed += OnContinueButtonPressed;
 		}
+
+		public event EventHandler<EventArgs> Continue;
 
 		public void LoadFromModel()
 		{
@@ -30,6 +34,12 @@
 		{
 			string selected = _view.ElementsDropDown.Selected;
 			_model.SelectedElement = _elementsByName[selected];
+		}
+
+		private void OnContinueButtonPressed(object sender, EventArgs e)
+		{
+			StoreToModel();
+			Continue?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }

@@ -83,6 +83,12 @@ namespace Automation_1
 
 			elementSelectionPresenter.LoadFromModel();
 
+			elementSelectionPresenter.Continue += (sender, args) =>
+			{
+				engine.ExitSuccess("'Continue' button was pressed");
+				engine.ExitFail("'Continue' button was pressed");
+			};
+
 			controller.ShowDialog(elementSelectionView);
 		}
 	}

@@ -8,17 +8,17 @@
 		public ElementSelectionView(IEngine engine) : base(engine)
 		{
 			Title = "Select Target Element for Parameter Setup";
-			Height = 500;
-			MinHeight = 500;
-			Width = 500;
-			MinWidth = 500;
 
 			ElementsDropDown = new DropDown();
+			ContinueButton = new Button("Continue");
 
 			AddWidget(new Label("Select an element:"), 0, 0);
 			AddWidget(ElementsDropDown, 0, 1);
+			AddWidget(ContinueButton, 1, 1);
 		}
 
 		public DropDown ElementsDropDown { get; }
+
+		public Button ContinueButton { get; }
 	}
 }

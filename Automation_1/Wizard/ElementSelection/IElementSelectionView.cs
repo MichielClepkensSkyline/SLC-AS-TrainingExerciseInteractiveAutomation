@@ -5,5 +5,7 @@
 	public interface IElementSelectionView
 	{
 		DropDown ElementsDropDown { get; }
+
+		Button ContinueButton { get; }
 	}
 }
