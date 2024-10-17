@@ -55,8 +55,14 @@ namespace Automation_1
 	using System.Collections.Generic;
 	using System.Globalization;
 	using System.Text;
+
+	using Automation_1.Wizard.ElementSelection;
+
 	using Skyline.DataMiner.Automation;
-	
+	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
+	using Skyline.DataMiner.Net.Messages;
+	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
+
 	/// <summary>
 	/// Represents a DataMiner Automation script.
 	/// </summary>
@@ -65,10 +71,19 @@ namespace Automation_1
 		/// <summary>
 		/// The script entry point.
 		/// </summary>
+		/// engine.ShowUI();
 		/// <param name="engine">Link with SLAutomation process.</param>
 		public void Run(IEngine engine)
 		{
-	
+			var controller = new InteractiveController(engine);
+
+			var parameterSetter = new ParameterSetter(engine.GetDms());
+			var elementSelectionView = new ElementSelectionView(engine);
+			var elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionView, parameterSetter);
+
+			elementSelectionPresenter.LoadFromModel();
+
+			controller.ShowDialog(elementSelectionView);
 		}
 	}
 }
