@@ -55,8 +55,10 @@ namespace Automation_1
 	using System.Collections.Generic;
 	using System.Globalization;
 	using System.Text;
+	using System.Threading;
 
 	using Automation_1.Wizard.ElementSelection;
+	using Automation_1.Wizard.ParameterSelection;
 
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
@@ -77,17 +79,23 @@ namespace Automation_1
 		{
 			var controller = new InteractiveController(engine);
 
-			var parameterSetter = new ParameterSetter(engine.GetDms());
+			var parameterSetter = new ParameterSetter(engine);
+
 			var elementSelectionView = new ElementSelectionView(engine);
 			var elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionView, parameterSetter);
+
+			var parameterSelectionView = new ParameterSelectionView(engine);
+			var parameterSelectionPresenter = new ParameterSelectionPresenter(parameterSelectionView, parameterSetter);
 
 			elementSelectionPresenter.LoadFromModel();
 
 			elementSelectionPresenter.Continue += (sender, args) =>
 			{
-				engine.ExitSuccess("'Continue' button was pressed");
-				engine.ExitFail("'Continue' button was pressed");
+				parameterSelectionPresenter.LoadFromModel();
+				controller.ShowDialog(parameterSelectionView);
 			};
+
+			parameterSelectionPresenter.Back += (sender, args) => controller.ShowDialog(elementSelectionView);
 
 			controller.ShowDialog(elementSelectionView);
 		}
