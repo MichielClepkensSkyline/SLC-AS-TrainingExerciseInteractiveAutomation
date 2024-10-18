@@ -15,7 +15,6 @@
 		private readonly IEngine _engine;
 		private readonly IDms _dms;
 		private readonly IEnumerable<IDmsElement> _allElements;
-		private readonly ICollection<IDmsStandaloneParameter> _selectedElementParameters; // TODO
 
 		private IDmsElement _selectedElement;
 		private ParameterInfo _selectedParameter;
@@ -62,12 +61,10 @@
 				{
 					var type = GetParameterType(parameter.InterpreteType.ToString());
 
-					//_engine.Log("TYPE: " + parameter.InterpreteType.ToString());
-
 					if (!parameter.WriteType &&
 						parameter.ID < 64000 &&
 						!parameter.IsTableColumn &&
-						GetParameterType(parameter.InterpreteType.ToString()) != ParameterType.Undef) // TODO: Handle Undef
+						GetParameterType(parameter.InterpreteType.ToString()) != ParameterType.Undef)
 					{
 						parameters.Add(new ParameterInfo
 						{
@@ -77,11 +74,6 @@
 						});
 					}
 				}
-
-				//foreach (var parameter in protocolInfo.Parameters)
-				//{
-				//	_engine.Log($"Name: {parameter.Name}  WriteType: {parameter.WriteType}");
-				//}
 
 				return parameters;
 			}
@@ -99,7 +91,7 @@
 			set => _newParameterValue = value;
 		}
 
-		private ParameterType GetParameterType(string interpreteType)
+		private static ParameterType GetParameterType(string interpreteType)
 		{
 			switch (interpreteType.ToLower())
 			{
@@ -111,6 +103,5 @@
 					return ParameterType.Undef;
 			}
 		}
-
 	}
 }

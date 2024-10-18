@@ -48,23 +48,11 @@ DATE		VERSION		AUTHOR			COMMENTS
 22/01/2024	1.0.0.1		XXX, Skyline	Initial version
 ****************************************************************************
 */
-
 namespace Automation_1
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Globalization;
-	using System.Text;
-	using System.Threading;
-
-	using Automation_1.Enums;
-	using Automation_1.Wizard.ElementSelection;
-	using Automation_1.Wizard.ParameterSelection;
-	using Automation_1.Wizard.ValueSelection;
 
 	using Skyline.DataMiner.Automation;
-	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
-	using Skyline.DataMiner.Net.Messages;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
 	/// <summary>
@@ -72,63 +60,53 @@ namespace Automation_1
 	/// </summary>
 	public class Script
 	{
+		private InteractiveController app;
+
 		/// <summary>
-		/// The script entry point.
+		/// The Script entry point.
+		/// engine.ShowUI();.
 		/// </summary>
-		/// engine.ShowUI();
 		/// <param name="engine">Link with SLAutomation process.</param>
 		public void Run(IEngine engine)
 		{
-			var controller = new InteractiveController(engine);
+			try
+			{
+				app = new InteractiveController(engine);
+				engine.SetFlag(RunTimeFlags.NoKeyCaching);
 
+				RunSafe(engine);
+			}
+			catch (ScriptAbortException) { throw; }
+			catch (ScriptForceAbortException) { throw; }
+			catch (ScriptTimeoutException) { throw; }
+			catch (InteractiveUserDetachedException) { throw; }
+			catch (Exception ex)
+			{
+				engine.Log($"Run|Something went wrong: {ex}");
+				ShowExceptionDialog(engine, ex);
+			}
+		}
+
+		private void RunSafe(IEngine engine)
+		{
 			var parameterSetter = new ParameterSetter(engine);
+			var navigator = new AppNavigator(app);
 
-			var elementSelectionView = new ElementSelectionView(engine);
-			var elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionView, parameterSetter);
+			var views = navigator.CreateViews(engine);
+			var presenters = navigator.CreatePresenters(views, parameterSetter);
 
-			var parameterSelectionView = new ParameterSelectionView(engine);
-			var parameterSelectionPresenter = new ParameterSelectionPresenter(parameterSelectionView, parameterSetter);
+			navigator.HandleEvents(presenters, views, engine, parameterSetter);
 
-			var valueSelectionView = new ValueSelectionView(engine);
-			var valueSelectionPresenter = new ValueSelectionPresenter(valueSelectionView, parameterSetter);
+			presenters.ElementSelection.LoadFromModel();
+			app.ShowDialog(views.ElementSelectionView);
+		}
 
-			elementSelectionPresenter.LoadFromModel();
+		private void ShowExceptionDialog(IEngine engine, Exception exception)
+		{
+			var exceptionDialog = new ExceptionDialog(engine, exception);
+			exceptionDialog.OkButton.Pressed += (sender, args) => engine.ExitFail("Something went wrong.");
 
-			elementSelectionPresenter.Continue += (sender, args) =>
-			{
-				parameterSelectionPresenter.LoadFromModel();
-				controller.ShowDialog(parameterSelectionView);
-			};
-
-			parameterSelectionPresenter.Back += (sender, args) => controller.ShowDialog(elementSelectionView);
-
-			parameterSelectionPresenter.Continue += (sender, args) => controller.ShowDialog(valueSelectionView);
-
-			valueSelectionPresenter.Back += (sender, args) => controller.ShowDialog(parameterSelectionView);
-
-			valueSelectionPresenter.Exit += (sender, args) => controller.Stop();
-
-			valueSelectionPresenter.Finish += (sender, args) =>
-			{
-				var element = parameterSetter.SelectedElement;
-				var parameter = parameterSetter.SelectedParameter;
-				var value = parameterSetter.NewParameterValue;
-
-				engine.GenerateInformation($"INFORMACIJEEEE: {element.Name} / {parameter.Name} / {parameter.Type} / {value}");
-
-				if (parameter.Type == ParameterType.Double && double.TryParse(value, out double parsedDouble))
-				{
-					engine.GetDms().GetAgent(element.AgentId).GetElement(element.Name).GetStandaloneParameter<double?>(parameter.Id).SetValue(parsedDouble);
-				}
-				else
-				{
-					engine.GetDms().GetAgent(element.AgentId).GetElement(element.Name).GetStandaloneParameter<string>(parameter.Id).SetValue(value);
-				}
-
-				engine.ExitSuccess("Finish button was pressed.");
-			};
-
-			controller.ShowDialog(elementSelectionView);
+			app.ShowDialog(exceptionDialog);
 		}
 	}
 }
