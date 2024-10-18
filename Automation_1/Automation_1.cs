@@ -57,8 +57,10 @@ namespace Automation_1
 	using System.Text;
 	using System.Threading;
 
+	using Automation_1.Enums;
 	using Automation_1.Wizard.ElementSelection;
 	using Automation_1.Wizard.ParameterSelection;
+	using Automation_1.Wizard.ValueSelection;
 
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
@@ -87,6 +89,9 @@ namespace Automation_1
 			var parameterSelectionView = new ParameterSelectionView(engine);
 			var parameterSelectionPresenter = new ParameterSelectionPresenter(parameterSelectionView, parameterSetter);
 
+			var valueSelectionView = new ValueSelectionView(engine);
+			var valueSelectionPresenter = new ValueSelectionPresenter(valueSelectionView, parameterSetter);
+
 			elementSelectionPresenter.LoadFromModel();
 
 			elementSelectionPresenter.Continue += (sender, args) =>
@@ -96,6 +101,32 @@ namespace Automation_1
 			};
 
 			parameterSelectionPresenter.Back += (sender, args) => controller.ShowDialog(elementSelectionView);
+
+			parameterSelectionPresenter.Continue += (sender, args) => controller.ShowDialog(valueSelectionView);
+
+			valueSelectionPresenter.Back += (sender, args) => controller.ShowDialog(parameterSelectionView);
+
+			valueSelectionPresenter.Exit += (sender, args) => controller.Stop();
+
+			valueSelectionPresenter.Finish += (sender, args) =>
+			{
+				var element = parameterSetter.SelectedElement;
+				var parameter = parameterSetter.SelectedParameter;
+				var value = parameterSetter.NewParameterValue;
+
+				engine.GenerateInformation($"INFORMACIJEEEE: {element.Name} / {parameter.Name} / {parameter.Type} / {value}");
+
+				if (parameter.Type == ParameterType.Double && double.TryParse(value, out double parsedDouble))
+				{
+					engine.GetDms().GetAgent(element.AgentId).GetElement(element.Name).GetStandaloneParameter<double?>(parameter.Id).SetValue(parsedDouble);
+				}
+				else
+				{
+					engine.GetDms().GetAgent(element.AgentId).GetElement(element.Name).GetStandaloneParameter<string>(parameter.Id).SetValue(value);
+				}
+
+				engine.ExitSuccess("Finish button was pressed.");
+			};
 
 			controller.ShowDialog(elementSelectionView);
 		}

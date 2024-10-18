@@ -8,12 +8,16 @@
 
 	public interface IParameterSetter
 	{
-		ICollection<IDmsElement> Elements { get; }
+		IEnumerable<IDmsElement> Elements { get; }
 
 		IDmsElement SelectedElement { get; set; }
 
 		ParameterInfo SelectedParameter { get; set; }
 
 		ICollection<ParameterInfo> Parameters { get; }
+
+		double NewParameterValueNumeric { get; set; }
+
+		string NewParameterValue { get; set; }
 	}
 }

@@ -6,8 +6,6 @@
 
 	using Automation_1.Dtos;
 
-	using Skyline.DataMiner.Core.DataMinerSystem.Common;
-
 	public class ParameterSelectionPresenter
 	{
 		private readonly IParameterSelectionView _view;
@@ -21,7 +19,7 @@
 			_model = model ?? throw new ArgumentNullException(nameof(model));
 
 			_view.BackButton.Pressed += OnBackButtonPressed;
-			//_view.ContinueButton.Pressed += OnContinueButtonPressed;
+			_view.ContinueButton.Pressed += OnContinueButtonPressed;
 		}
 
 		public event EventHandler<EventArgs> Back;
@@ -30,22 +28,41 @@
 
 		public void LoadFromModel()
 		{
-			_parametersByName = _model.Parameters.ToDictionary(parameter => $"{parameter.Name} / {parameter.Id}");
-
+			_parametersByName = _model.Parameters.ToDictionary(
+				parameter => parameter.Name,
+				parameter => parameter);
 			_view.ParametersDropDown.SetOptions(_parametersByName.Keys);
-			_view.ParametersDropDown.Selected = _model.SelectedParameter?.Name ?? string.Empty;
+
+			if (_model.SelectedParameter != null)
+			{
+				_view.ParametersDropDown.Selected = _model.SelectedParameter.Name;
+			}
+			else
+			{
+				_view.ParametersDropDown.Selected = string.Empty;
+			}
 		}
 
 		private void StoreToModel()
 		{
-			string selected = _view.ParametersDropDown.Selected;
-			_model.SelectedParameter = _parametersByName[selected];
+			string selectedName = _view.ParametersDropDown.Selected;
+
+			if (_parametersByName.TryGetValue(selectedName, out var parameterInfo))
+			{
+				_model.SelectedParameter = parameterInfo;
+			}
 		}
 
 		private void OnBackButtonPressed(object sender, EventArgs e)
 		{
 			StoreToModel();
 			Back?.Invoke(this, EventArgs.Empty);
+		}
+
+		private void OnContinueButtonPressed(object sender, EventArgs e)
+		{
+			StoreToModel();
+			Continue?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }

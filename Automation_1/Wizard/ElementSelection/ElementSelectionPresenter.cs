@@ -7,12 +7,12 @@
 
 	public class ElementSelectionPresenter
 	{
-		private readonly ElementSelectionView _view;
+		private readonly IElementSelectionView _view;
 		private readonly IParameterSetter _model;
 
 		private Dictionary<string, IDmsElement> _elementsByName;
 
-		public ElementSelectionPresenter(ElementSelectionView view, IParameterSetter model)
+		public ElementSelectionPresenter(IElementSelectionView view, IParameterSetter model)
 		{
 			_view = view ?? throw new ArgumentNullException(nameof(view));
 			_model = model ?? throw new ArgumentNullException(nameof(model));
@@ -42,6 +42,4 @@
 			Continue?.Invoke(this, EventArgs.Empty);
 		}
 	}
-
-
 }

@@ -1,8 +1,10 @@
 ﻿namespace Automation_1
 {
 	using System.Collections.Generic;
+	using System.Linq;
 
 	using Automation_1.Dtos;
+	using Automation_1.Enums;
 
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
@@ -12,25 +14,27 @@
 	{
 		private readonly IEngine _engine;
 		private readonly IDms _dms;
-		private readonly ICollection<IDmsElement> _allElements;
-		private readonly ICollection<IDmsStandaloneParameter> _selectedElementParameters;
+		private readonly IEnumerable<IDmsElement> _allElements;
+		private readonly ICollection<IDmsStandaloneParameter> _selectedElementParameters; // TODO
 
 		private IDmsElement _selectedElement;
 		private ParameterInfo _selectedParameter;
+		private double _newParameterValueNumeric;
+		private string _newParameterValue;
 
 		public ParameterSetter(IEngine engine)
 		{
 			_engine = engine;
 			_dms = _engine.GetDms();
 			_selectedElement = null;
-			_allElements = _dms.GetElements();
+			_allElements = _dms.GetElements().Where(element => element.State != ElementState.Stopped);
 		}
 
-		public ICollection<IDmsElement> Elements
+		public IEnumerable<IDmsElement> Elements
 		{
 			get
 			{
-				return _allElements ?? _dms.GetElements();
+				return _allElements ?? _dms.GetElements().Where(element => element.State != ElementState.Stopped);
 			}
 		}
 
@@ -50,19 +54,63 @@
 		{
 			get
 			{
-				var protocolInfo = _engine.GetUserConnection().GetProtocol(SelectedElement.Protocol.Name, SelectedElement.Protocol.Version);
+				var protocolInfo = _engine.GetUserConnection()
+					.GetProtocol(SelectedElement.Protocol.Name, SelectedElement.Protocol.Version);
+
 				var parameters = new List<ParameterInfo>();
 				foreach (var parameter in protocolInfo.Parameters)
 				{
-					parameters.Add(new ParameterInfo
+					var type = GetParameterType(parameter.InterpreteType.ToString());
+
+					//_engine.Log("TYPE: " + parameter.InterpreteType.ToString());
+
+					if (!parameter.WriteType &&
+						parameter.ID < 64000 &&
+						!parameter.IsTableColumn &&
+						GetParameterType(parameter.InterpreteType.ToString()) != ParameterType.Undef) // TODO: Handle Undef
 					{
-						Id = parameter.ID,
-						Name = parameter.Name,
-					});
+						parameters.Add(new ParameterInfo
+						{
+							Id = parameter.ID,
+							Name = parameter.Name,
+							Type = type,
+						});
+					}
 				}
+
+				//foreach (var parameter in protocolInfo.Parameters)
+				//{
+				//	_engine.Log($"Name: {parameter.Name}  WriteType: {parameter.WriteType}");
+				//}
 
 				return parameters;
 			}
 		}
+
+		public double NewParameterValueNumeric
+		{
+			get => _newParameterValueNumeric;
+			set => _newParameterValueNumeric = value;
+		}
+
+		public string NewParameterValue
+		{
+			get => _newParameterValue;
+			set => _newParameterValue = value;
+		}
+
+		private ParameterType GetParameterType(string interpreteType)
+		{
+			switch (interpreteType.ToLower())
+			{
+				case "double":
+					return ParameterType.Double;
+				case "string":
+					return ParameterType.String;
+				default:
+					return ParameterType.Undef;
+			}
+		}
+
 	}
 }
