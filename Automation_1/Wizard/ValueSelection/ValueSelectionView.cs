@@ -3,7 +3,7 @@
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
-	public class ValueSelectionView : Dialog
+	public class ValueSelectionView : Dialog, IValueSelectionView
 	{
 		public ValueSelectionView(IEngine engine) : base(engine)
 		{

@@ -89,7 +89,7 @@
 			if (dto.SelectedParameter.Type == ParameterType.Double &&
 				double.TryParse(dto.NewParameterValue, out double parsedDouble))
 			{
-				SetParameterValue(engine, dto.SelectedElement, dto.SelectedParameter.Id, parsedDouble);
+				SetParameterValue(engine, dto.SelectedElement, dto.SelectedParameter.Id, (double?)parsedDouble);
 			}
 			else
 			{

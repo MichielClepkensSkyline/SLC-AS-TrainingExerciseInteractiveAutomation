@@ -2,14 +2,12 @@
 {
 	using System;
 
-	using Automation_1.Enums;
-
 	public class ValueSelectionPresenter
 	{
-		private readonly ValueSelectionView _view;
+		private readonly IValueSelectionView _view;
 		private readonly IParameterSetter _model;
 
-		public ValueSelectionPresenter(ValueSelectionView view, IParameterSetter model)
+		public ValueSelectionPresenter(IValueSelectionView view, IParameterSetter model)
 		{
 			_view = view ?? throw new ArgumentNullException(nameof(view));
 			_model = model ?? throw new ArgumentNullException(nameof(model));
