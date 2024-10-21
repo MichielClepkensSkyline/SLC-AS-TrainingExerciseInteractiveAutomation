@@ -1,10 +1,14 @@
 ﻿namespace Automation_1.Services
 {
 	using System;
+	using System.Collections.Generic;
 	using System.Globalization;
+	using System.Linq;
 	using System.Text.RegularExpressions;
+
 	using Automation_1.Enums;
 	using Automation_1.Model;
+
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
@@ -16,12 +20,6 @@
 		public ParameterService(IEngine engine)
 		{
 			_engine = engine ?? throw new ArgumentNullException(nameof(engine));
-		}
-
-		public static bool IsMatchingDateTimeFormat(string input)
-		{
-			const string DateTimePattern = @"^\d{1,2}/\d{1,2}/\d{4}\s\d{1,2}:\d{2}:\d{2}\s(?:AM|PM)$";
-			return Regex.IsMatch(input, DateTimePattern);
 		}
 
 		public static ParameterType GetParameterType(IEngine engine, ParameterSetter parameterSetter)
@@ -63,14 +61,23 @@
 			{
 				if (IsMatchingDateTimeFormat(newValue))
 				{
-					var parsedDateTime = DateTime.ParseExact(newValue, "MM/dd/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
-					var newDateTimeValue = parsedDateTime.ToOADate();
-					SetParameterValue(parameterSetter.SelectedElement, parameterSetter.SelectedParameter.Id, (double?)newDateTimeValue);
-					return true;
+					string[] formats = { "MM/dd/yyyy hh:mm:ss tt", "MM/dd/yyyy HH:mm:ss", "dd/MM/yyyy hh:mm:ss tt", "dd/MM/yyyy HH:mm:ss" };
+
+					if (DateTime.TryParseExact(newValue, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDateTime))
+					{
+						var newDateTimeValue = parsedDateTime.ToOADate();
+						SetParameterValue(parameterSetter.SelectedElement, parameterSetter.SelectedParameter.Id, (double?)newDateTimeValue);
+						return true;
+					}
+					else
+					{
+						feedbackMessage = "Invalid DateTime format. Please enter in a supported format (e.g., 'MM/dd/yyyy hh:mm:ss AM/PM').";
+						return false;
+					}
 				}
 				else
 				{
-					feedbackMessage = "Please enter the DateTime in the format 'MM/DD/YYYY hh:mm:ss AM/PM'.";
+					feedbackMessage = "Invalid DateTime format. Please enter in a supported format.";
 					return false;
 				}
 			}
@@ -84,6 +91,19 @@
 				feedbackMessage = "Invalid double value.";
 				return false;
 			}
+		}
+
+		private static bool IsMatchingDateTimeFormat(string input)
+		{
+			var datePatterns = new List<string>
+			{
+				@"^\d{1,2}/\d{1,2}/\d{4}\s\d{1,2}:\d{2}:\d{2}\s(?:AM|PM)$", // MM/dd/yyyy hh:mm:ss AM/PM
+				@"^\d{1,2}/\d{1,2}/\d{4}\s\d{2}:\d{2}:\d{2}$",              // MM/dd/yyyy HH:mm:ss (24-hour)
+				@"^\d{1,2}/\d{1,2}/\d{4}\s\d{1,2}:\d{2}:\d{2}\s(?:AM|PM)$", // dd/MM/yyyy hh:mm:ss AM/PM (European)
+				@"^\d{1,2}/\d{1,2}/\d{4}\s\d{2}:\d{2}:\d{2}$",              // dd/MM/yyyy HH:mm:ss (European, 24-hour)
+			};
+
+			return datePatterns.Exists(pattern => Regex.IsMatch(input, pattern));
 		}
 	}
 }
