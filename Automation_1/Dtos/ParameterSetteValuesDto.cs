@@ -10,5 +10,4 @@
 
 		public string NewParameterValue { get; set; }
 	}
-
 }

@@ -12,5 +12,4 @@
 
 		public ValueSelectionPresenter ValueSelection { get; set; }
 	}
-
 }

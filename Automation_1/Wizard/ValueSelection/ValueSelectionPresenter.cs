@@ -1,6 +1,7 @@
 ﻿namespace Automation_1.Wizard.ValueSelection
 {
 	using System;
+	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
 	public class ValueSelectionPresenter
 	{
@@ -23,15 +24,70 @@
 
 		public event EventHandler<EventArgs> Finish;
 
+		public void LoadFromModel()
+		{
+			string value = _model.NewParameterValue;
+
+			if (_view.CurrentInput is TextBox textBox)
+			{
+				textBox.Text = value;
+			}
+			else if (_view.CurrentInput is DateTimePicker dateTimePicker)
+			{
+				if (DateTime.TryParseExact(value, "MM/dd/yyyy hh:mm:ss tt", null, System.Globalization.DateTimeStyles.None, out DateTime dateTime))
+				{
+					dateTimePicker.DateTime = dateTime;
+				}
+				else
+				{
+					dateTimePicker.DateTime = DateTime.Now;
+				}
+			}
+			else if (_view.CurrentInput is Numeric numeric)
+			{
+				if (double.TryParse(value, out double numericValue))
+				{
+					numeric.Value = numericValue;
+				}
+				else
+				{
+					numeric.Value = 0;
+				}
+			}
+			else
+			{
+				throw new InvalidOperationException($"Unsupported widget type: {_view.CurrentInput.GetType().Name}");
+			}
+		}
+
 		private void StoreToModel()
 		{
-			string value = _view.Input.Text;
+			string value = string.Empty;
+
+			if (_view.CurrentInput is TextBox textBox)
+			{
+				value = textBox.Text;
+			}
+			else if (_view.CurrentInput is DateTimePicker dateTimePicker)
+			{
+				value = dateTimePicker.DateTime.ToString("MM/dd/yyyy hh:mm:ss tt");
+			}
+			else if (_view.CurrentInput is Numeric numeric)
+			{
+				value = numeric.Value.ToString();
+			}
+			else
+			{
+				throw new InvalidOperationException($"Unsupported widget type: {_view.CurrentInput.GetType().Name}");
+			}
+
 			_model.NewParameterValue = value;
 		}
 
 		private void OnBackButtonPressed(object sender, EventArgs e)
 		{
 			StoreToModel();
+			_view.SetFeedbackMessage(string.Empty);
 			Back?.Invoke(this, EventArgs.Empty);
 		}
 

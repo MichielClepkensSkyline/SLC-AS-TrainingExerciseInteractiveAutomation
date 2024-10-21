@@ -70,6 +70,7 @@
 							Id = parameter.ID,
 							Name = parameter.Name,
 							Type = type,
+							Description = parameter.Description,
 						});
 					}
 				}

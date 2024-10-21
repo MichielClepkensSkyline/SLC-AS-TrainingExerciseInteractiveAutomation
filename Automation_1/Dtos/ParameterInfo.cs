@@ -9,5 +9,7 @@
         public string Name { get; set; }
 
         public ParameterType Type { get; set; }
+
+        public string Description { get; set; }
     }
 }

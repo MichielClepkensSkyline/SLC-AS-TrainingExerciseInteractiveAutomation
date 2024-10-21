@@ -5,5 +5,6 @@
 		Undef,
 		Double,
 		String,
+		DateTime,
 	}
 }
