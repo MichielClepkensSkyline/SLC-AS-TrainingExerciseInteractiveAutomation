@@ -1,11 +1,12 @@
 ﻿namespace Automation_1.Wizard.ElementSelection
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using Skyline.DataMiner.Core.DataMinerSystem.Common;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Automation_1.Model;
+    using Skyline.DataMiner.Core.DataMinerSystem.Common;
 
-	public class ElementSelectionPresenter
+    public class ElementSelectionPresenter
 	{
 		private readonly IElementSelectionView _view;
 		private readonly IParameterSetter _model;

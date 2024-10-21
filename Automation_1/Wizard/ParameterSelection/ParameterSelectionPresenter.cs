@@ -1,12 +1,13 @@
 ﻿namespace Automation_1.Wizard.ParameterSelection
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
-	using Automation_1.Dtos;
+    using Automation_1.Dtos;
+    using Automation_1.Model;
 
-	public class ParameterSelectionPresenter
+    public class ParameterSelectionPresenter
 	{
 		private readonly IParameterSelectionView _view;
 		private readonly IParameterSetter _model;

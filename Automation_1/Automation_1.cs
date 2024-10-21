@@ -51,6 +51,8 @@ DATE		VERSION		AUTHOR			COMMENTS
 namespace Automation_1
 {
 	using System;
+	using Automation_1.Model;
+	using Automation_1.Services;
 
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
@@ -102,12 +104,13 @@ namespace Automation_1
 		private void RunSafe(IEngine engine)
 		{
 			var parameterSetter = new ParameterSetter(engine);
-			var navigator = new AppNavigator(app);
+			var parameterService = new ParameterService(engine);
+			var navigationService = new NavigationService(app, parameterService);
 
-			var views = navigator.CreateViews(engine);
-			var presenters = navigator.CreatePresenters(views, parameterSetter);
+			var views = navigationService.CreateViews(engine);
+			var presenters = navigationService.CreatePresenters(views, parameterSetter);
 
-			navigator.HandleEvents(presenters, views, engine, parameterSetter);
+			navigationService.HandleEvents(presenters, views, engine, parameterSetter);
 
 			presenters.ElementSelection.LoadFromModel();
 			app.ShowDialog(views.ElementSelectionView);

@@ -1,9 +1,10 @@
 ﻿namespace Automation_1.Wizard.ValueSelection
 {
-	using System;
-	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
+    using System;
+    using Automation_1.Model;
+    using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
-	public class ValueSelectionPresenter
+    public class ValueSelectionPresenter
 	{
 		private readonly IValueSelectionView _view;
 		private readonly IParameterSetter _model;
@@ -34,7 +35,12 @@
 			}
 			else if (_view.CurrentInput is DateTimePicker dateTimePicker)
 			{
-				if (DateTime.TryParseExact(value, "MM/dd/yyyy hh:mm:ss tt", null, System.Globalization.DateTimeStyles.None, out DateTime dateTime))
+				if (DateTime.TryParseExact(
+					value,
+					"MM/dd/yyyy hh:mm:ss tt",
+					System.Globalization.CultureInfo.InvariantCulture,
+					System.Globalization.DateTimeStyles.None,
+					out DateTime dateTime))
 				{
 					dateTimePicker.DateTime = dateTime;
 				}
