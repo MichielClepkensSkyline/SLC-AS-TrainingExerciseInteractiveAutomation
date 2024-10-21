@@ -76,10 +76,22 @@ namespace Automation_1
 
 				RunSafe(engine);
 			}
-			catch (ScriptAbortException) { throw; }
-			catch (ScriptForceAbortException) { throw; }
-			catch (ScriptTimeoutException) { throw; }
-			catch (InteractiveUserDetachedException) { throw; }
+			catch (ScriptAbortException)
+			{
+				throw;
+			}
+			catch (ScriptForceAbortException)
+			{
+				throw;
+			}
+			catch (ScriptTimeoutException)
+			{
+				throw;
+			}
+			catch (InteractiveUserDetachedException)
+			{
+				throw;
+			}
 			catch (Exception ex)
 			{
 				engine.Log($"Run|Something went wrong: {ex}");

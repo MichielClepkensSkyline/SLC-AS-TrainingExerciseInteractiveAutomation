@@ -9,7 +9,11 @@
 		{
 			Title = "Select Target Element for Parameter Setup";
 
-			ElementsDropDown = new DropDown();
+			ElementsDropDown = new DropDown
+			{
+				IsSorted = true,
+				IsDisplayFilterShown = true,
+			};
 			ContinueButton = new Button("Continue");
 
 			AddWidget(new Label("Select an element:"), 0, 0);

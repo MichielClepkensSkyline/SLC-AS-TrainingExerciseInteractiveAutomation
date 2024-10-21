@@ -11,7 +11,11 @@
 		{
 			Title = "Select Target Parameter";
 
-			ParametersDropDown = new DropDown();
+			ParametersDropDown = new DropDown
+			{
+				IsSorted = true,
+				IsDisplayFilterShown = true,
+			};
 			BackButton = new Button("Back");
 			ContinueButton = new Button("Continue");
 

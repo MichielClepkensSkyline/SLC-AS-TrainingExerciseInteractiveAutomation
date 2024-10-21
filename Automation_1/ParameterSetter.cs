@@ -53,8 +53,7 @@
 		{
 			get
 			{
-				var protocolInfo = _engine.GetUserConnection()
-					.GetProtocol(SelectedElement.Protocol.Name, SelectedElement.Protocol.Version);
+				var protocolInfo = _engine.GetUserConnection().GetProtocol(SelectedElement.Protocol.Name, SelectedElement.Protocol.Version);
 
 				var parameters = new List<ParameterInfo>();
 				foreach (var parameter in protocolInfo.Parameters)
@@ -64,7 +63,7 @@
 					if (!parameter.WriteType &&
 						parameter.ID < 64000 &&
 						!parameter.IsTableColumn &&
-						GetParameterType(parameter.InterpreteType.ToString()) != ParameterType.Undef)
+						type != ParameterType.Undef)
 					{
 						parameters.Add(new ParameterInfo
 						{

@@ -11,5 +11,7 @@
 		Button ExitButton { get; }
 
 		Button FinishButton { get; }
+
+		void SetFeedbackMessage (string message);
 	}
 }

@@ -9,6 +9,7 @@
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
+	using Skyline.DataMiner.Net.ReportsAndDashboards;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
 	public class AppNavigator
@@ -61,7 +62,7 @@
 				_app.Stop();
 
 			presenters.ValueSelection.Finish += (sender, args) =>
-				OnFinish(engine, parameterSetter);
+				OnFinish(engine, parameterSetter, views);
 		}
 
 		private static void SetParameterValue<T>(IEngine engine, IDmsElement element, int parameterId, T value)
@@ -73,30 +74,47 @@
 				.SetValue(value);
 		}
 
-		private void OnFinish(IEngine engine, ParameterSetter parameterSetter)
+		private static void OnFinish(IEngine engine, ParameterSetter parameterSetter, ViewDto views)
 		{
-			var dto = new ParameterSetterDto
-			{
-				SelectedElement = parameterSetter.SelectedElement,
-				SelectedParameter = parameterSetter.SelectedParameter,
-				NewParameterValue = parameterSetter.NewParameterValue,
-			};
-
 			engine.GenerateInformation(
-				$"INFORMATION: {dto.SelectedElement.Name} / {dto.SelectedParameter.Name} / " +
-				$"{dto.SelectedParameter.Type} / {dto.NewParameterValue}");
+				$"INFORMATION: {parameterSetter.SelectedElement.Name} / {parameterSetter.SelectedParameter.Name} / " +
+				$"{parameterSetter.SelectedParameter.Type} / {parameterSetter.NewParameterValue}");
 
-			if (dto.SelectedParameter.Type == ParameterType.Double &&
-				double.TryParse(dto.NewParameterValue, out double parsedDouble))
+			switch (parameterSetter.SelectedParameter.Type)
 			{
-				SetParameterValue(engine, dto.SelectedElement, dto.SelectedParameter.Id, (double?)parsedDouble);
-			}
-			else
-			{
-				SetParameterValue(engine, dto.SelectedElement, dto.SelectedParameter.Id, dto.NewParameterValue);
+				case ParameterType.String:
+					SetParameterValue(engine, parameterSetter.SelectedElement, parameterSetter.SelectedParameter.Id, parameterSetter.NewParameterValue);
+					engine.ExitSuccess("Finish button was pressed.");
+					break;
+
+				case ParameterType.Double:
+					if (double.TryParse(parameterSetter.NewParameterValue, out double parsedDouble))
+					{
+						SetParameterValue(engine, parameterSetter.SelectedElement, parameterSetter.SelectedParameter.Id, (double?)parsedDouble);
+						engine.ExitSuccess("Finish button was pressed.");
+					}
+					else
+					{
+						views.ValueSelectionView.SetFeedbackMessage($"Element you are trying to set is of type '{parameterSetter.SelectedParameter.Type}', but the value you set was of type 'String'");
+					}
+
+					break;
+				default:
+					views.ValueSelectionView.SetFeedbackMessage($"Unexpected parameter type");
+					break;
 			}
 
-			engine.ExitSuccess("Finish button was pressed.");
+			//if (parameterSetter.SelectedParameter.Type == ParameterType.Double &&
+			//	double.TryParse(parameterSetter.NewParameterValue, out double parsedDouble))
+			//{
+			//	SetParameterValue(engine, parameterSetter.SelectedElement, parameterSetter.SelectedParameter.Id, (double?)parsedDouble);
+			//}
+			//else
+			//{
+			//	SetParameterValue(engine, parameterSetter.SelectedElement, parameterSetter.SelectedParameter.Id, parameterSetter.NewParameterValue);
+			//}
+
+			//engine.ExitSuccess("Finish button was pressed.");
 		}
 	}
 }
