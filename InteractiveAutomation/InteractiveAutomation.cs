@@ -70,6 +70,7 @@ namespace InteractiveAutomation
 		{
 			engine.GenerateInformation("Hello from Run to Sofian");
 			engine.Log("Het lukte, het lukte okay SOFIAN");
+			string teststring = "This string is to have a change to commit and push";
 		}
 	}
 }
