@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <DMSScript options="272" xmlns="http://www.skyline.be/automation">
-	<Name>Automation</Name>
-	<Description></Description>
+	<Name>Interactive Automation Sofian</Name>
+	<Description>This automation script is made during the Exercise Interactive Automation</Description>
 	<Type>Automation</Type>
-	<Author>SKYLINE2\XXX</Author>
+	<Author>SKYLINE2\SKF</Author>
 	<CheckSets>FALSE</CheckSets>
-	<Folder></Folder>
+	<Folder>Sofian</Folder>
 
 	<Protocols>
 	</Protocols>
@@ -18,7 +18,7 @@
 
 	<Script>
 		<Exe id="1" type="csharp">
-			<Value><![CDATA[[Project:Automation_1]]]></Value>
+			<Value><![CDATA[[Project:InteractiveAutomation]]]></Value>
 			<!--<Param type="debug">true</Param>-->
 			<Message></Message>
 		</Exe>

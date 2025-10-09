@@ -1,6 +1,6 @@
 /*
 ****************************************************************************
-*  Copyright (c) 2024,  Skyline Communications NV  All Rights Reserved.    *
+*  Copyright (c) 2025,  Skyline Communications NV  All Rights Reserved.    *
 ****************************************************************************
 
 By using this script, you expressly agree with the usage terms and
@@ -45,18 +45,18 @@ Revision History:
 
 DATE		VERSION		AUTHOR			COMMENTS
 
-22/01/2024	1.0.0.1		XXX, Skyline	Initial version
+09/10/2025	1.0.0.1		SKF, Skyline	Initial version
 ****************************************************************************
 */
 
-namespace Automation_1
+namespace InteractiveAutomation
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Globalization;
 	using System.Text;
 	using Skyline.DataMiner.Automation;
-	
+
 	/// <summary>
 	/// Represents a DataMiner Automation script.
 	/// </summary>
@@ -68,7 +68,8 @@ namespace Automation_1
 		/// <param name="engine">Link with SLAutomation process.</param>
 		public void Run(IEngine engine)
 		{
-	
+			engine.GenerateInformation("Hello from Run to Sofian");
+			engine.Log("Het lukte, het lukte okay SOFIAN");
 		}
 	}
 }
