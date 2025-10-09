@@ -68,6 +68,7 @@ namespace InteractiveAutomation
 		/// <param name="engine">Link with SLAutomation process.</param>
 		public void Run(IEngine engine)
 		{
+			// Startpoint of my automation script where all the other objects are build
 			engine.GenerateInformation("Hello from Run to Sofian");
 			engine.Log("Het lukte, het lukte okay SOFIAN");
 			string teststring = "This string is to have a change to commit and push";
