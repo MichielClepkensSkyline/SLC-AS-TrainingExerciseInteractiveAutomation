@@ -8,5 +8,13 @@ namespace InteractiveAutomation.Wizard.ParameterSelection
 {
 	internal class ParameterSelectionPresenter
 	{
+		private readonly IParameterSelectionView parameterSelectionView;
+
+		public ParameterSelectionPresenter(IParameterSelectionView view)
+		{
+			parameterSelectionView = view ?? throw new ArgumentNullException(nameof(view));
+
+		}
+
 	}
 }

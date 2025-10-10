@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace InteractiveAutomation.Wizard.ParameterSelection
 {
-	internal class ParameterSelectionView : Dialog
+	internal class ParameterSelectionView : Dialog, IParameterSelectionView
 	{
 		private readonly Label titleLabel;
 		private readonly Label elementLabel;
@@ -31,7 +31,7 @@ namespace InteractiveAutomation.Wizard.ParameterSelection
 			AddWidget(NextButton, 2, 1);
 		}
 
-		public Button NextButton { get; }
+		public Button NextButton { get; private set; }
 
 		public IDropDown ElementsDropDown { get; }
 	}
