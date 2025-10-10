@@ -56,6 +56,7 @@ namespace InteractiveAutomation
 	using System.Text;
 	using InteractiveAutomation.Wizard.ElementSelection;
 	using InteractiveAutomation.Wizard.ParameterSelection;
+	using InteractiveAutomation.Wizard.SetValue;
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
@@ -111,12 +112,19 @@ namespace InteractiveAutomation
 			ElementSelectionView elementSelectionDialog = new ElementSelectionView(engine);
 			ElementSelectionPresenter elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionDialog);
 			ParameterSelectionView parameterSelectionDialog = new ParameterSelectionView(engine);
+			ParameterSelectionPresenter parameterSelectionPresenter = new ParameterSelectionPresenter(parameterSelectionDialog);
+			SetValueView setValueDialog = new SetValueView(engine);
 
 
 			// Define how windows move between each other
 			elementSelectionPresenter.Next += (sender, args) =>
 			{
 				app.ShowDialog(parameterSelectionDialog);
+			};
+
+			parameterSelectionPresenter.Next += (sender, args) =>
+			{
+				app.ShowDialog(setValueDialog);
 			};
 
 			app.ShowDialog(elementSelectionDialog);

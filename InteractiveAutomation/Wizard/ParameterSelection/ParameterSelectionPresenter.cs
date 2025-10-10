@@ -14,7 +14,14 @@ namespace InteractiveAutomation.Wizard.ParameterSelection
 		{
 			parameterSelectionView = view ?? throw new ArgumentNullException(nameof(view));
 
+			parameterSelectionView.NextButton.Pressed += OnNextPressed;
 		}
 
+		public event EventHandler<EventArgs> Next;
+
+		private void OnNextPressed(object sender, EventArgs e)
+		{
+			Next?.Invoke(this, EventArgs.Empty);
+		}
 	}
 }
