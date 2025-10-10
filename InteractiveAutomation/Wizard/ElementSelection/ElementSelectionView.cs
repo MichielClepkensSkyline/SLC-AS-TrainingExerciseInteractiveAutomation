@@ -22,7 +22,7 @@ namespace InteractiveAutomation.Wizard.ElementSelection
 			elementLabel = new Label($"Element: ");
 
 			var dms = engine.GetDms(); // Hier nog safety voor voorzien
-			ElementDropDown = new DropDown(dms.GetElements().Select(element => element.Name)) { IsDisplayFilterShown = true, IsSorted = true };
+			ElementsDropDown = new DropDown(dms.GetElements().Select(element => element.Name)) { IsDisplayFilterShown = true, IsSorted = true };
 			NextButton = new Button($"Next");
 
 			Title = "This is the title";
@@ -30,12 +30,14 @@ namespace InteractiveAutomation.Wizard.ElementSelection
 			// Toevoegen van de UI components aan een bepaalde plek in de UI
 			AddWidget(titleLabel, 0, 0, 1, 2);
 			AddWidget(elementLabel, 1, 0);
-			AddWidget(ElementDropDown, 1, 1);
+			AddWidget((DropDown)ElementsDropDown, 1, 1);
 			AddWidget(NextButton, 2, 1);
 		}
 
-		public DropDown ElementDropDown { get; private set; }
+		public IDropDown ElementsDropDown { get; private set; }
 
 		public Button NextButton { get; private set; }
+
+		// public Label ValidationLabel { get; private set; }
 	}
 }

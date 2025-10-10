@@ -8,8 +8,13 @@ namespace InteractiveAutomation.Wizard.ElementSelection
 {
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
+
 	internal interface IElementSelectionView // : IDialog
 	{
+		Button NextButton { get; }
 
+		IDropDown ElementsDropDown { get; }
+
+		// Label ValidationLabel { get; }
 	}
 }
