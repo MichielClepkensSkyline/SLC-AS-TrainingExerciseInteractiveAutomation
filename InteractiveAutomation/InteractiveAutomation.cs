@@ -114,6 +114,7 @@ namespace InteractiveAutomation
 			ParameterSelectionView parameterSelectionDialog = new ParameterSelectionView(engine);
 			ParameterSelectionPresenter parameterSelectionPresenter = new ParameterSelectionPresenter(parameterSelectionDialog);
 			SetValueView setValueDialog = new SetValueView(engine);
+			SetValuePresenter setValuePresenter = new SetValuePresenter(setValueDialog);
 
 
 			// Define how windows move between each other
@@ -125,6 +126,12 @@ namespace InteractiveAutomation
 			parameterSelectionPresenter.Next += (sender, args) =>
 			{
 				app.ShowDialog(setValueDialog);
+			};
+
+			setValuePresenter.Finish += (sender, args) =>
+			{
+				engine.GenerateInformation("The value was set (not yet implemented)");
+				engine.ExitSuccess("Script finished");
 			};
 
 			app.ShowDialog(elementSelectionDialog);
