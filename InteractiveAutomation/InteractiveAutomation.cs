@@ -55,23 +55,68 @@ namespace InteractiveAutomation
 	using System.Collections.Generic;
 	using System.Globalization;
 	using System.Text;
+	using InteractiveAutomation.Wizard.ElementSelection;
 	using Skyline.DataMiner.Automation;
+	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
 	/// <summary>
 	/// Represents a DataMiner Automation script.
 	/// </summary>
 	public class Script
 	{
+		private InteractiveController app;
+
 		/// <summary>
-		/// The script entry point.
+		/// The Script entry point.
+		/// IEngine.ShowUI();.
 		/// </summary>
 		/// <param name="engine">Link with SLAutomation process.</param>
 		public void Run(IEngine engine)
 		{
-			// Startpoint of my automation script where all the other objects are build
-			engine.GenerateInformation("Hello from Run to Sofian");
-			engine.Log("Het lukte, het lukte okay SOFIAN");
-			string teststring = "This string is to have a change to commit and push";
+			try
+			{
+				app = new InteractiveController(engine);
+
+				engine.SetFlag(RunTimeFlags.NoKeyCaching);
+				engine.Timeout = TimeSpan.FromHours(10);
+
+				RunSafe(engine);
+			}
+			catch (ScriptAbortException)
+			{
+				throw;
+			}
+			catch (ScriptForceAbortException)
+			{
+				throw;
+			}
+			catch (ScriptTimeoutException)
+			{
+				throw;
+			}
+			catch (InteractiveUserDetachedException)
+			{
+				throw;
+			}
+			catch (Exception ex)
+			{
+				engine.Log($"Run|Something went wrong: {ex}");
+				ShowExceptionDialog(engine, ex);
+			}
+		}
+
+		private void RunSafe(IEngine engine)
+		{
+			// TODO: Define dialogs here
+			Dialog dialog = new ElementSelectionView(engine);
+			app.Run(dialog);
+		}
+
+		private void ShowExceptionDialog(IEngine engine, Exception exception)
+		{
+			ExceptionDialog exceptionDialog = new ExceptionDialog(engine, exception);
+			exceptionDialog.OkButton.Pressed += (sender, args) => engine.ExitFail("Something went wrong.");
+			if (app.IsRunning) app.ShowDialog(exceptionDialog); else app.Run(exceptionDialog);
 		}
 	}
 }
