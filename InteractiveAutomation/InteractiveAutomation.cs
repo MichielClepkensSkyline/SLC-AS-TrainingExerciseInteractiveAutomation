@@ -53,6 +53,7 @@ namespace InteractiveAutomation
 	using System;
 	using System.Collections.Generic;
 	using System.Globalization;
+	using System.Runtime.Remoting.Channels;
 	using System.Text;
 	using InteractiveAutomation.Wizard.ElementSelection;
 	using InteractiveAutomation.Wizard.ParameterSelection;
@@ -116,16 +117,25 @@ namespace InteractiveAutomation
 			SetValueView setValueDialog = new SetValueView(engine);
 			SetValuePresenter setValuePresenter = new SetValuePresenter(setValueDialog);
 
-
 			// Define how windows move between each other
 			elementSelectionPresenter.Next += (sender, args) =>
 			{
 				app.ShowDialog(parameterSelectionDialog);
 			};
 
+			parameterSelectionPresenter.Back += (sender, args) =>
+			{
+				app.ShowDialog(elementSelectionDialog);
+			};
+
 			parameterSelectionPresenter.Next += (sender, args) =>
 			{
 				app.ShowDialog(setValueDialog);
+			};
+
+			setValuePresenter.Back += (sender, args) =>
+			{
+				app.ShowDialog(parameterSelectionDialog);
 			};
 
 			setValuePresenter.Finish += (sender, args) =>

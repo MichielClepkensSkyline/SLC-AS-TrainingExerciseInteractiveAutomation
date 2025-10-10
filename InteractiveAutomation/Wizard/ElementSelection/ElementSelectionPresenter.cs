@@ -1,18 +1,18 @@
-﻿using Skyline.DataMiner.Automation;
-using Skyline.DataMiner.Core.DataMinerSystem.Common;
-using Skyline.DataMiner.Core.DataMinerSystem.Common.Selectors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace InteractiveAutomation.Wizard.ElementSelection
+﻿namespace InteractiveAutomation.Wizard.ElementSelection
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Text;
+	using System.Threading.Tasks;
+	using Skyline.DataMiner.Automation;
+	using Skyline.DataMiner.Core.DataMinerSystem.Common;
+	using Skyline.DataMiner.Core.DataMinerSystem.Common.Selectors;
+
 	internal class ElementSelectionPresenter
 	{
 		private readonly IElementSelectionView elementSelectionView;
-		private HashSet<IDmsElement> selectedElements = new HashSet<IDmsElement>();
+		private readonly HashSet<IDmsElement> selectedElements = new HashSet<IDmsElement>();
 
 		public ElementSelectionPresenter(IElementSelectionView view)
 		{
@@ -50,13 +50,14 @@ namespace InteractiveAutomation.Wizard.ElementSelection
 		private void ShowValidationProblem(string s)
 		{
 			Next?.Invoke(this, EventArgs.Empty);
+
 			// elementSelectionView.ValidationLabel.Text = s;
 			// elementSelectionView.ValidationLabel.IsVisible = true;
 		}
 
 		private void StoreToModel()
 		{
-			string selected = elementSelectionView.ElementsDropDown.Selected;
+			// string selected = elementSelectionView.ElementsDropDown.Selected;
 
 			// Write selected to model
 

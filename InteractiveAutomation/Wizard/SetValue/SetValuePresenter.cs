@@ -1,12 +1,12 @@
-﻿using InteractiveAutomation.Wizard.ParameterSelection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace InteractiveAutomation.Wizard.SetValue
+﻿namespace InteractiveAutomation.Wizard.SetValue
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Text;
+	using System.Threading.Tasks;
+	using InteractiveAutomation.Wizard.ParameterSelection;
+
 	internal class SetValuePresenter
 	{
 		private readonly ISetValueView setValueView;
@@ -16,13 +16,23 @@ namespace InteractiveAutomation.Wizard.SetValue
 			setValueView = view ?? throw new ArgumentNullException(nameof(view));
 
 			setValueView.FinishButton.Pressed += OnFinishPressed;
+			setValueView.BackButton.Pressed += OnBackPressed;
 		}
 
 		public event EventHandler<EventArgs> Finish;
 
+		public event EventHandler<EventArgs> Back;
+
 		private void OnFinishPressed(object sender, EventArgs e)
 		{
+			// StoreToModel
 			Finish?.Invoke(this, EventArgs.Empty);
+		}
+
+		private void OnBackPressed(object sender, EventArgs e)
+		{
+			// StoreToModel
+			Back?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }
