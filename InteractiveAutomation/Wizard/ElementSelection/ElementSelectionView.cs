@@ -10,6 +10,32 @@ using System.Threading.Tasks;
 
 namespace InteractiveAutomation.Wizard.ElementSelection
 {
+	internal class ElementSelectionView : Dialog, IElementSelectionView
 	{
+		private readonly Label titleLabel;
+		private readonly Label elementLabel;
+
+		public ElementSelectionView(IEngine engine) : base(engine)
+		{
+			// Alles wat op de UI komt aanmaken (komt allemaal uit de INteractiveAutomationScript package)
+			titleLabel = new Label($"This is supposed to be the title");
+			elementLabel = new Label($"Element: ");
+
+			var dms = engine.GetDms(); // Hier nog safety voor voorzien
+			ElementDropDown = new DropDown(dms.GetElements().Select(element => element.Name)) { IsDisplayFilterShown = true, IsSorted = true };
+			NextButton = new Button($"Next");
+
+			Title = "This is the title";
+
+			// Toevoegen van de UI components aan een bepaalde plek in de UI
+			AddWidget(titleLabel, 0, 0, 1, 2);
+			AddWidget(elementLabel, 1, 0);
+			AddWidget(ElementDropDown, 1, 1);
+			AddWidget(NextButton, 2, 1);
+		}
+
+		public DropDown ElementDropDown { get; private set; }
+
+		public Button NextButton { get; private set; }
 	}
 }
