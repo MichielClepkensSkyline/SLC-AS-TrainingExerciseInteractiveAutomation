@@ -8,5 +8,6 @@ namespace InteractiveAutomation.Wizard.ElementSelection
 {
 	internal class ElementSelectionPresenter
 	{
+
 	}
 }

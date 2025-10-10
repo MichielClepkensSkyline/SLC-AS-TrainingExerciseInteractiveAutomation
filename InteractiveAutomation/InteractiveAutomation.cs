@@ -48,7 +48,6 @@ DATE		VERSION		AUTHOR			COMMENTS
 09/10/2025	1.0.0.1		SKF, Skyline	Initial version
 ****************************************************************************
 */
-
 namespace InteractiveAutomation
 {
 	using System;
@@ -57,6 +56,7 @@ namespace InteractiveAutomation
 	using System.Text;
 	using InteractiveAutomation.Wizard.ElementSelection;
 	using Skyline.DataMiner.Automation;
+	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
 	/// <summary>
@@ -100,23 +100,15 @@ namespace InteractiveAutomation
 			}
 			catch (Exception ex)
 			{
-				engine.Log($"Run|Something went wrong: {ex}");
-				ShowExceptionDialog(engine, ex);
+				engine.ExitFail($"Run|Something went wrong: {ex}");
 			}
 		}
 
 		private void RunSafe(IEngine engine)
 		{
 			// TODO: Define dialogs here
-			Dialog dialog = new ElementSelectionView(engine);
-			app.Run(dialog);
-		}
-
-		private void ShowExceptionDialog(IEngine engine, Exception exception)
-		{
-			ExceptionDialog exceptionDialog = new ExceptionDialog(engine, exception);
-			exceptionDialog.OkButton.Pressed += (sender, args) => engine.ExitFail("Something went wrong.");
-			if (app.IsRunning) app.ShowDialog(exceptionDialog); else app.Run(exceptionDialog);
+			Dialog elementSelectionDialog = new ElementSelectionView(engine);
+			app.ShowDialog(elementSelectionDialog);
 		}
 	}
 }
