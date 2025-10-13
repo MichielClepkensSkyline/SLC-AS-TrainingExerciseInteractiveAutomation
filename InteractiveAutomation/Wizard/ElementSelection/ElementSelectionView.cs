@@ -25,10 +25,9 @@
 			Title = "This is the title";
 
 			// Toevoegen van de UI components aan een bepaalde plek in de UI
-			AddWidget(titleLabel, 0, 0, 1, 2);
-			AddWidget(elementLabel, 1, 0);
-			AddWidget((DropDown)ElementsDropDown, 1, 1);
-			AddWidget(NextButton, 2, 1);
+			AddWidget(elementLabel, 0, 0);
+			AddWidget((DropDown)ElementsDropDown, 0, 1);
+			AddWidget(NextButton, 1, 1);
 		}
 
 		public IDropDown ElementsDropDown { get; private set; }

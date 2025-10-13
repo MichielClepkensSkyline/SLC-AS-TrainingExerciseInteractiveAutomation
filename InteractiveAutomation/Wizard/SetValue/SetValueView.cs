@@ -23,10 +23,10 @@
 			Title = $"Select your value:";
 
 			// Toevoegen van de UI components aan een bepaalde plek in de UI
-			AddWidget(elementLabel, 1, 0);
-			AddWidget(ValueBox, 1, 1);
-			AddWidget(BackButton, 2, 0);
-			AddWidget(FinishButton, 2, 1);
+			AddWidget(elementLabel, 0, 0);
+			AddWidget(ValueBox, 0, 1);
+			AddWidget(BackButton, 1, 0);
+			AddWidget(FinishButton, 1, 1);
 		}
 
 		public Button FinishButton { get; private set; }
