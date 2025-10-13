@@ -7,6 +7,7 @@
 	using System.Threading.Tasks;
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
+	using Skyline.DataMiner.Net.Messages;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
 	internal class ParameterSelectionView : Dialog, IParameterSelectionView
@@ -20,12 +21,10 @@
 			parameterLabel = new Label($"Parameter ID: ");
 			ParameterValue = new Numeric();
 
-			var dms = engine.GetDms(); // Hier nog safety voor voorzien
-			ElementsDropDown = new DropDown(dms.GetElements().Select(element => element.Name)) { IsDisplayFilterShown = true, IsSorted = true };
-			NextButton = new Button($"Next");
-			BackButton = new Button($"Back");
+			NextButton = new Button($"Continue...");
+			BackButton = new Button($"Back...");
 
-			Title = $"Select your parameter:";
+			Title = $"Select parameter";
 
 			// Toevoegen van de UI components aan een bepaalde plek in de UI
 			AddWidget(parameterLabel, 0, 0);

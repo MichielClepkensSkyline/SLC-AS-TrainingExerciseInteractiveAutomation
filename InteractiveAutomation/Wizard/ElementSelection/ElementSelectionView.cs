@@ -20,9 +20,9 @@
 			elementLabel = new Label($"Element: ");
 
 			ElementsDropDown = new DropDown() { IsDisplayFilterShown = true, IsSorted = true };
-			NextButton = new Button($"Next");
+			NextButton = new Button($"Continue...");
 
-			Title = "This is the title";
+			Title = "Select element";
 
 			// Toevoegen van de UI components aan een bepaalde plek in de UI
 			AddWidget(elementLabel, 0, 0);
