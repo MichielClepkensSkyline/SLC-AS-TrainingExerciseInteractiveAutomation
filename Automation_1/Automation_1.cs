@@ -52,23 +52,72 @@ DATE		VERSION		AUTHOR			COMMENTS
 namespace Automation_1
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Globalization;
-	using System.Text;
+	using Automation_1.ElementSelection;
 	using Skyline.DataMiner.Automation;
+	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
+	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
 	/// <summary>
 	/// Represents a DataMiner Automation script.
 	/// </summary>
 	public class Script
 	{
+		private InteractiveController app;
 		/// <summary>
 		/// The script entry point.
 		/// </summary>
 		/// <param name="engine">Link with SLAutomation process.</param>
 		public void Run(IEngine engine)
 		{
+			try
+			{
+				app = new InteractiveController(engine);
 
+				engine.SetFlag(RunTimeFlags.NoKeyCaching);
+				engine.Timeout = TimeSpan.FromHours(10);
+
+				RunSafe(engine);
+			}
+			catch (ScriptAbortException)
+			{
+				throw;
+			}
+			catch (ScriptForceAbortException)
+			{
+				throw;
+			}
+			catch (ScriptTimeoutException)
+			{
+				throw;
+			}
+			catch (InteractiveUserDetachedException)
+			{
+				throw;
+			}
+			catch (Exception e)
+			{
+				engine.Log("Run|Something went wrong: " + e);
+				ShowExceptionDialog(engine, e);
+			}
+		}
+
+		private void RunSafe(IEngine engine)
+		{
+			// TODO: Define dialogs here
+			//engine.ShowUI();
+			var elementSelector = new ElementSelectorModel(engine.GetDms());
+			var protocolSelectionView = new ElementSelectionView(engine);
+			var protocolSelectionPresenter = new ElementSelectionPresenter(protocolSelectionView, elementSelector);
+			protocolSelectionPresenter.LoadFromModel();
+
+			app.Run(protocolSelectionView);
+		}
+
+		private void ShowExceptionDialog(IEngine engine, Exception exception)
+		{
+			ExceptionDialog exceptionDialog = new ExceptionDialog(engine, exception);
+			exceptionDialog.OkButton.Pressed += (sender, args) => engine.ExitFail("Something went wrong.");
+			app.ShowDialog(exceptionDialog);
 		}
 	}
 }
