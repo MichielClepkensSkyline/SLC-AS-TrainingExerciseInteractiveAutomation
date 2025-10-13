@@ -12,11 +12,13 @@
 	internal class ElementSelectionPresenter
 	{
 		private readonly IElementSelectionView elementSelectionView;
-		private readonly HashSet<IDmsElement> selectedElements = new HashSet<IDmsElement>();
+		private readonly IModel model;
+		private Dictionary<string, IDmsElement> elementsDictionary;
 
-		public ElementSelectionPresenter(IElementSelectionView view)
+		public ElementSelectionPresenter(IElementSelectionView view, IModel model)
 		{
-			elementSelectionView = view ?? throw new ArgumentNullException(nameof(view));
+			this.elementSelectionView = view ?? throw new ArgumentNullException(nameof(view));
+			this.model = model ?? throw new ArgumentNullException(nameof(model));
 
 			elementSelectionView.NextButton.Pressed += OnNextPressed;
 		}
@@ -25,15 +27,20 @@
 
 		public void LoadFromModel()
 		{
-			// Load protocols from model
+			// Load elements from model
+			elementsDictionary = model.Elements.ToDictionary(element => element.Name);
 
-			// Set protocols retrieved via model from dms to DropDown
-			// elementSelectionView.ElementsDropDown.SetOptions()
-			elementSelectionView.ElementsDropDown.Selected = $"This is still hardcoded but should be retrieved from model";
+			// Set elements to DropDown
+			elementSelectionView.ElementsDropDown.SetOptions(elementsDictionary.Keys);
+
+			// Set default value TODO: is this needed?
+			elementSelectionView.ElementsDropDown.Selected = "main-ird";
 		}
 
 		private void OnNextPressed(object sender, EventArgs e)
 		{
+			// TODO moeten we checken of er iets geselecteerd is?
+			StoreToModel();
 			Next?.Invoke(this, EventArgs.Empty);
 
 			/*if (selectedElements.Any()) // TODO deze check eens bekijken (ik denk dat je beter controleert of model.Selected != null
@@ -57,6 +64,8 @@
 
 		private void StoreToModel()
 		{
+			model.SelectedElement = elementsDictionary[elementSelectionView.ElementsDropDown.Selected];
+			
 			// string selected = elementSelectionView.ElementsDropDown.Selected;
 
 			// Write selected to model

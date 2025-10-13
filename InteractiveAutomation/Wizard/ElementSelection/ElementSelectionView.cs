@@ -12,17 +12,14 @@
 
 	internal class ElementSelectionView : Dialog, IElementSelectionView
 	{
-		private readonly Label titleLabel;
 		private readonly Label elementLabel;
 
 		public ElementSelectionView(IEngine engine) : base(engine)
 		{
 			// Alles wat op de UI komt aanmaken (komt allemaal uit de INteractiveAutomationScript package)
-			titleLabel = new Label($"This is supposed to be the title");
 			elementLabel = new Label($"Element: ");
 
-			var dms = engine.GetDms(); // Hier nog safety voor voorzien
-			ElementsDropDown = new DropDown(dms.GetElements().Select(element => element.Name)) { IsDisplayFilterShown = true, IsSorted = true };
+			ElementsDropDown = new DropDown() { IsDisplayFilterShown = true, IsSorted = true };
 			NextButton = new Button($"Next");
 
 			Title = "This is the title";

@@ -110,8 +110,9 @@ namespace InteractiveAutomation
 		private void RunSafe(IEngine engine)
 		{
 			// TODO: Define dialogs here
+			IModel model = new Model(engine.GetDms(), engine);
 			ElementSelectionView elementSelectionDialog = new ElementSelectionView(engine);
-			ElementSelectionPresenter elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionDialog);
+			ElementSelectionPresenter elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionDialog, model);
 			ParameterSelectionView parameterSelectionDialog = new ParameterSelectionView(engine);
 			ParameterSelectionPresenter parameterSelectionPresenter = new ParameterSelectionPresenter(parameterSelectionDialog);
 			SetValueView setValueDialog = new SetValueView(engine);
@@ -143,6 +144,8 @@ namespace InteractiveAutomation
 				engine.GenerateInformation("The value was set (not yet implemented)");
 				engine.ExitSuccess("Script finished");
 			};
+
+			elementSelectionPresenter.LoadFromModel();
 
 			app.ShowDialog(elementSelectionDialog);
 		}
