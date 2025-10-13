@@ -15,7 +15,8 @@
 
 		private List<IDmsElement> elements;
 		private IDmsElement selectedElement;
-		private object selectedParameter; // TODO hoe dit doen?
+		// private object selectedParameter; // TODO hoe dit doen?
+		private int selectedParameterId;
 
 		public Model(IDms dms, IEngine engine)
 		{
@@ -39,7 +40,7 @@
 				}
 
 				selectedElement = value;
-				selectedParameter = null;
+				// selectedParameter = null;
 			}
 		}
 
@@ -51,6 +52,25 @@
 			{
 				elements = (List<IDmsElement>)(elements ?? dms.GetElements());
 				return elements;
+			}
+		}
+
+		public int SelectedParameterId
+		{
+			get
+			{
+				return selectedParameterId; // TODO moet er hier een default value?
+			}
+
+			set
+			{
+				engine.Log($"The selected parameter id is: {value}");
+				if (value == selectedParameterId)
+				{
+					return;
+				}
+
+				selectedParameterId = value;
 			}
 		}
 	}

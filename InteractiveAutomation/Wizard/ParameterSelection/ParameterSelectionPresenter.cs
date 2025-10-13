@@ -9,10 +9,12 @@
 	internal class ParameterSelectionPresenter
 	{
 		private readonly IParameterSelectionView parameterSelectionView;
+		private readonly IModel model;
 
-		public ParameterSelectionPresenter(IParameterSelectionView view)
+		public ParameterSelectionPresenter(IParameterSelectionView view, IModel model)
 		{
 			parameterSelectionView = view ?? throw new ArgumentNullException(nameof(view));
+			this.model = model ?? throw new ArgumentNullException(nameof(model));
 
 			parameterSelectionView.NextButton.Pressed += OnNextPressed;
 			parameterSelectionView.BackButton.Pressed += OnBackPressed;
@@ -24,14 +26,20 @@
 
 		private void OnNextPressed(object sender, EventArgs e)
 		{
-			// StoreToModel
+			StoreToModel();
 			Next?.Invoke(this, EventArgs.Empty);
 		}
 
 		private void OnBackPressed(object sender, EventArgs e)
 		{
-			// StoreToModel
+			StoreToModel();
 			Back?.Invoke(this, EventArgs.Empty);
+		}
+
+		private void StoreToModel()
+		{
+			int parameterid = (int)parameterSelectionView.ParameterValue.Value;
+			model.SelectedParameterId = parameterid;
 		}
 	}
 }

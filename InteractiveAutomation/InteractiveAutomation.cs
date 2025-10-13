@@ -114,7 +114,7 @@ namespace InteractiveAutomation
 			ElementSelectionView elementSelectionDialog = new ElementSelectionView(engine);
 			ElementSelectionPresenter elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionDialog, model);
 			ParameterSelectionView parameterSelectionDialog = new ParameterSelectionView(engine);
-			ParameterSelectionPresenter parameterSelectionPresenter = new ParameterSelectionPresenter(parameterSelectionDialog);
+			ParameterSelectionPresenter parameterSelectionPresenter = new ParameterSelectionPresenter(parameterSelectionDialog, model);
 			SetValueView setValueDialog = new SetValueView(engine);
 			SetValuePresenter setValuePresenter = new SetValuePresenter(setValueDialog);
 

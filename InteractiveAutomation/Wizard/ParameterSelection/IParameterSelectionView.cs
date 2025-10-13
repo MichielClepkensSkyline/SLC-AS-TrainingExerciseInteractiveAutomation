@@ -9,6 +9,8 @@
 
 	internal interface IParameterSelectionView
 	{
+		Numeric ParameterValue { get; }
+
 		Button NextButton { get; }
 
 		Button BackButton { get; }

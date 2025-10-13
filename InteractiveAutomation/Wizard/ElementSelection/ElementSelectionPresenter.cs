@@ -65,17 +65,6 @@
 		private void StoreToModel()
 		{
 			model.SelectedElement = elementsDictionary[elementSelectionView.ElementsDropDown.Selected];
-			
-			// string selected = elementSelectionView.ElementsDropDown.Selected;
-
-			// Write selected to model
-
-			// Needed?
-			// model.SelectedElements.Clear();
-			// foreach (IDmsElement selectedElement in selectedElements)
-			// {
-			// 	model.SelectedElements.Add(selectedElement);
-			// }
 		}
 	}
 }

@@ -12,12 +12,13 @@
 	internal class ParameterSelectionView : Dialog, IParameterSelectionView
 	{
 		// private readonly Label titleLabel;
-		private readonly Label elementLabel;
+		private readonly Label parameterLabel;
 
 		public ParameterSelectionView(IEngine engine) : base(engine)
 		{
 			// Alles wat op de UI komt aanmaken (komt allemaal uit de INteractiveAutomationScript package)
-			elementLabel = new Label($"Parameter: ");
+			parameterLabel = new Label($"Parameter ID: ");
+			ParameterValue = new Numeric();
 
 			var dms = engine.GetDms(); // Hier nog safety voor voorzien
 			ElementsDropDown = new DropDown(dms.GetElements().Select(element => element.Name)) { IsDisplayFilterShown = true, IsSorted = true };
@@ -27,16 +28,16 @@
 			Title = $"Select your parameter:";
 
 			// Toevoegen van de UI components aan een bepaalde plek in de UI
-			AddWidget(elementLabel, 0, 0);
-			AddWidget((DropDown)ElementsDropDown, 0, 1);
+			AddWidget(parameterLabel, 0, 0);
+			AddWidget(ParameterValue, 0, 1);
 			AddWidget(BackButton, 1, 0);
 			AddWidget(NextButton, 1, 1);
 		}
 
+		public Numeric ParameterValue { get; private set; }
+
 		public Button NextButton { get; private set; }
 
 		public Button BackButton { get; private set; }
-
-		public IDropDown ElementsDropDown { get; }
 	}
 }
