@@ -24,7 +24,7 @@
 			DoubleValueBox = new Numeric() { Decimals = 2, StepSize = 0.01, Width = 150 };
 			DoubleButton = new Button($"Set Double Value") { Width = 110};
 
-			MessageBox = new TextBox() { IsReadOnly = true, IsMultiline = true };
+			MessageBox = new TextBox() { IsReadOnly = true, IsMultiline = true, IsEnabled = false };
 
 			FinishButton = new Button($"Exit");
 			BackButton = new Button($"Back...");

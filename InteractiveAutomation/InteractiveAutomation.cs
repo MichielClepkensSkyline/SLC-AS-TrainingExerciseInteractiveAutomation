@@ -127,6 +127,7 @@ namespace InteractiveAutomation
 
 			parameterSelectionPresenter.Back += (sender, args) =>
 			{
+				elementSelectionPresenter.LoadFromModel();
 				app.ShowDialog(elementSelectionDialog);
 			};
 
