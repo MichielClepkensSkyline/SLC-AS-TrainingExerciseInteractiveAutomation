@@ -12,5 +12,7 @@
 		IReadOnlyCollection<IDmsElement> Elements { get; }
 
 		IDmsElement SelectedElement { get; set; }
+
+		int SelectedParameterId { get; set; }
 	}
 }

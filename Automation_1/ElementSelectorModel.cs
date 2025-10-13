@@ -15,6 +15,8 @@
 		private IDmsElement[] elements;
 		private IDmsElement selectedElement;
 
+		private int selectedParameterId;
+
 		public ElementSelectorModel(IDms dms)
 		{
 			if (dms == null)
@@ -42,12 +44,30 @@
 
 			set
 			{
-				if(value == SelectedElement)
+				if (value == SelectedElement)
 				{
 					return;
 				}
 
 				selectedElement = value;
+			}
+		}
+
+		public int SelectedParameterId
+		{
+			get
+			{
+				return selectedParameterId;
+			}
+
+			set
+			{
+				if (value == SelectedParameterId)
+				{
+					return;
+				}
+
+				selectedParameterId = value;
 			}
 		}
 	}

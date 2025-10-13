@@ -51,11 +51,13 @@ DATE		VERSION		AUTHOR			COMMENTS
 
 namespace Automation_1
 {
-	using System;
 	using Automation_1.ElementSelection;
+
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
+
+	using System;
 
 	/// <summary>
 	/// Represents a DataMiner Automation script.
@@ -106,11 +108,11 @@ namespace Automation_1
 			// TODO: Define dialogs here
 			//engine.ShowUI();
 			var elementSelector = new ElementSelectorModel(engine.GetDms());
-			var protocolSelectionView = new ElementSelectionView(engine);
-			var protocolSelectionPresenter = new ElementSelectionPresenter(protocolSelectionView, elementSelector);
-			protocolSelectionPresenter.LoadFromModel();
+			var elementSelectionView = new ElementSelectionView(engine);
+			var elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionView, elementSelector);
+			elementSelectionPresenter.LoadFromModel();
 
-			app.Run(protocolSelectionView);
+			app.Run(elementSelectionView);
 		}
 
 		private void ShowExceptionDialog(IEngine engine, Exception exception)
