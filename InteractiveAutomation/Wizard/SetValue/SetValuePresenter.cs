@@ -16,11 +16,14 @@
 			setValueView = view ?? throw new ArgumentNullException(nameof(view));
 
 			setValueView.StringButton.Pressed += OnSetStringPressed;
+			setValueView.DoubleButton.Pressed += OnSetDoublePressed;
 			setValueView.FinishButton.Pressed += OnFinishPressed;
 			setValueView.BackButton.Pressed += OnBackPressed;
 		}
 
 		public event Action<String> SetString;
+
+		public event Action<Double> SetDouble;
 
 		public event EventHandler<EventArgs> Finish;
 
@@ -30,6 +33,12 @@
 		{
 			string value = setValueView.StringValueBox.Text;
 			SetString?.Invoke(value);
+		}
+
+		private void OnSetDoublePressed(object sender, EventArgs e)
+		{
+			double value = setValueView.DoubleValueBox.Value;
+			SetDouble?.Invoke(value);
 		}
 
 		private void OnFinishPressed(object sender, EventArgs e)

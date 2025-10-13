@@ -96,5 +96,26 @@
 
 			return "The selected element is not valid";
 		}
+
+		public string SetDoubleOnParameter(double value)
+		{
+			if (selectedElement != null && selectedElement.State == ElementState.Active)
+			{
+				try
+				{
+					// double? test = 55;
+					IDmsStandaloneParameter<double?> parameter = selectedElement.GetStandaloneParameter<double?>(selectedParameterId);
+					parameter.SetValue(value);
+					return "Success";
+				}
+				catch (Exception e)
+				{
+					engine.Log($"{e}");
+					return Convert.ToString(e);
+				}
+			}
+
+			return "The selected element is not valid";
+		}
 	}
 }

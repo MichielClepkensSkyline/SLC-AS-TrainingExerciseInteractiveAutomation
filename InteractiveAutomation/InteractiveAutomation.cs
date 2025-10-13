@@ -153,6 +153,13 @@ namespace InteractiveAutomation
 				engine.GenerateInformation("Set String");
 			};
 
+			setValuePresenter.SetDouble += (value) =>
+			{
+				// Model function aanroepen die de set doet op de waarde (de waarde en de paramid en elementid moeten bekend zijn checken of dit het geval is)
+				model.SetDoubleOnParameter(value);
+				engine.GenerateInformation("Set Double");
+			};
+
 			elementSelectionPresenter.LoadFromModel();
 
 			app.ShowDialog(elementSelectionDialog);

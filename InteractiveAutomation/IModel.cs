@@ -16,5 +16,7 @@
 		int SelectedParameterId { get; set; }
 
 		string SetStringOnParameter(string value);
+
+		string SetDoubleOnParameter(double value);
 	}
 }
