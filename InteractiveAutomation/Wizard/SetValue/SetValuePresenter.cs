@@ -15,13 +15,22 @@
 		{
 			setValueView = view ?? throw new ArgumentNullException(nameof(view));
 
+			setValueView.StringButton.Pressed += OnSetStringPressed;
 			setValueView.FinishButton.Pressed += OnFinishPressed;
 			setValueView.BackButton.Pressed += OnBackPressed;
 		}
 
+		public event Action<String> SetString;
+
 		public event EventHandler<EventArgs> Finish;
 
 		public event EventHandler<EventArgs> Back;
+
+		private void OnSetStringPressed(object sender, EventArgs e)
+		{
+			string value = setValueView.StringValueBox.Text;
+			SetString?.Invoke(value);
+		}
 
 		private void OnFinishPressed(object sender, EventArgs e)
 		{

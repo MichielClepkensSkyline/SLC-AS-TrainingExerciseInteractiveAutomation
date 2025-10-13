@@ -73,5 +73,28 @@
 				selectedParameterId = value;
 			}
 		}
+
+		public string SetStringOnParameter(string value)
+		{
+			if (selectedElement != null && selectedElement.State == ElementState.Active)
+			{
+				try
+				{
+					// How to set on an element
+					// selectedElement.
+					IDmsStandaloneParameter<string> parameter = selectedElement.GetStandaloneParameter<string>(selectedParameterId);
+					parameter.SetValue(value);
+					return "Success";
+				}
+				catch (Exception e)
+				{
+					// Fill exception into the textbox
+					engine.Log(Convert.ToString(e));
+					return Convert.ToString(e);
+				}
+			}
+
+			return "The selected element is not valid";
+		}
 	}
 }

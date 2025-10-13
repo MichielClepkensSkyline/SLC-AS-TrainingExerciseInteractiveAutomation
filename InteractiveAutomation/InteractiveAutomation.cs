@@ -50,17 +50,18 @@ DATE		VERSION		AUTHOR			COMMENTS
 */
 namespace InteractiveAutomation
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Globalization;
-	using System.Runtime.Remoting.Channels;
-	using System.Text;
 	using InteractiveAutomation.Wizard.ElementSelection;
 	using InteractiveAutomation.Wizard.ParameterSelection;
 	using InteractiveAutomation.Wizard.SetValue;
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
+	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
+	using System;
+	using System.Collections.Generic;
+	using System.Globalization;
+	using System.Runtime.Remoting.Channels;
+	using System.Text;
 
 	/// <summary>
 	/// Represents a DataMiner Automation script.
@@ -141,8 +142,14 @@ namespace InteractiveAutomation
 
 			setValuePresenter.Finish += (sender, args) =>
 			{
-				engine.GenerateInformation("The value was set (not yet implemented)");
 				engine.ExitSuccess("Script finished");
+			};
+
+			setValuePresenter.SetString += (value) =>
+			{
+				// Model function aanroepen die de set doet op de waarde(de waarde en de paramid en elementid moeten bekend zijn checken of dit het geval is)
+				model.SetStringOnParameter(value);
+				engine.GenerateInformation("Set String");
 			};
 
 			elementSelectionPresenter.LoadFromModel();
