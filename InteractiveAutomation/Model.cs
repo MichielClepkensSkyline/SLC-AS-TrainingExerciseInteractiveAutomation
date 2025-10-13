@@ -50,7 +50,7 @@
 		{
 			get
 			{
-				elements = (List<IDmsElement>)(elements ?? dms.GetElements()).Where(element => element.State == ElementState.Active);
+				elements = dms.GetElements().Where(element => element.State == ElementState.Active).ToList();
 				return elements;
 			}
 		}
