@@ -1,12 +1,12 @@
 ﻿namespace InteractiveAutomation
 {
-	using Skyline.DataMiner.Automation;
-	using Skyline.DataMiner.Core.DataMinerSystem.Common;
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Text;
 	using System.Threading.Tasks;
+	using Skyline.DataMiner.Automation;
+	using Skyline.DataMiner.Core.DataMinerSystem.Common;
 
 	internal class Model : IModel
 	{
@@ -15,6 +15,7 @@
 
 		private List<IDmsElement> elements;
 		private IDmsElement selectedElement;
+
 		// private object selectedParameter; // TODO hoe dit doen?
 		private int selectedParameterId;
 
@@ -40,17 +41,16 @@
 				}
 
 				selectedElement = value;
+
 				// selectedParameter = null;
 			}
 		}
-
-		// object SelectedParameter
 
 		public ICollection<IDmsElement> Elements
 		{
 			get
 			{
-				elements = (List<IDmsElement>)(elements ?? dms.GetElements());
+				elements = (List<IDmsElement>)(elements ?? dms.GetElements()).Where(element => element.State == ElementState.Active);
 				return elements;
 			}
 		}

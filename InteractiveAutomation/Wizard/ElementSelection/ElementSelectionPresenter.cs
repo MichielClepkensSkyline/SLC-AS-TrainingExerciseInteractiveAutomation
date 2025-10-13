@@ -54,14 +54,6 @@
 			}*/
 		}
 
-		private void ShowValidationProblem(string s)
-		{
-			Next?.Invoke(this, EventArgs.Empty);
-
-			// elementSelectionView.ValidationLabel.Text = s;
-			// elementSelectionView.ValidationLabel.IsVisible = true;
-		}
-
 		private void StoreToModel()
 		{
 			model.SelectedElement = elementsDictionary[elementSelectionView.ElementsDropDown.Selected];
