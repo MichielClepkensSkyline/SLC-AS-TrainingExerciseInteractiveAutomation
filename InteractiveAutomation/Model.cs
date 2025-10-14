@@ -25,6 +25,17 @@
 			this.engine = engine;
 		}
 
+		public IDictionary<string, IDmsElement> Elements
+		{
+			get
+			{
+				elements = dms.GetElements()
+					.Where(element => element.State == ElementState.Active)
+					.ToDictionary(element => element.Name);
+				return elements;
+			}
+		}
+
 		public string SelectedElementName
 		{
 			get
@@ -43,17 +54,6 @@
 				selectedElementName = value;
 
 				// selectedParameter = null;
-			}
-		}
-
-		public IDictionary<string, IDmsElement> Elements
-		{
-			get
-			{
-				elements = dms.GetElements()
-					.Where(element => element.State == ElementState.Active)
-					.ToDictionary(element => element.Name);
-				return elements;
 			}
 		}
 

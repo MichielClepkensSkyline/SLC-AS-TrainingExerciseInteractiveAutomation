@@ -13,7 +13,5 @@
 		Button NextButton { get; }
 
 		IDropDown ElementsDropDown { get; }
-
-		// Label ValidationLabel { get; }
 	}
 }

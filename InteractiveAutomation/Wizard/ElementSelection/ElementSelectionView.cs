@@ -33,7 +33,5 @@
 		public IDropDown ElementsDropDown { get; }
 
 		public Button NextButton { get; }
-
-		// public Label ValidationLabel { get; private set; }
 	}
 }
