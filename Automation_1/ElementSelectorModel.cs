@@ -16,6 +16,7 @@
 		private IDmsElement selectedElement;
 
 		private int selectedParameterId;
+		private string setParameterValueString;
 
 		public ElementSelectorModel(IDms dms)
 		{
@@ -68,6 +69,19 @@
 				}
 
 				selectedParameterId = value;
+			}
+		}
+
+		public string SetParameterValueString
+		{
+			get
+			{
+				return setParameterValueString;
+			}
+
+			set
+			{
+				setParameterValueString = value;
 			}
 		}
 	}

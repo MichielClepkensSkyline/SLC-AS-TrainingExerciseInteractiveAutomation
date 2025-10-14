@@ -14,5 +14,7 @@
 		IDmsElement SelectedElement { get; set; }
 
 		int SelectedParameterId { get; set; }
+
+		string SetParameterValueString { get; set; }
 	}
 }
