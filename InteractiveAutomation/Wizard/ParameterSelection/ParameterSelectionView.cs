@@ -33,10 +33,10 @@
 			AddWidget(NextButton, 1, 1);
 		}
 
-		public Numeric ParameterValue { get; private set; }
+		public Numeric ParameterValue { get; }
 
-		public Button NextButton { get; private set; }
+		public Button NextButton { get; }
 
-		public Button BackButton { get; private set; }
+		public Button BackButton { get; }
 	}
 }

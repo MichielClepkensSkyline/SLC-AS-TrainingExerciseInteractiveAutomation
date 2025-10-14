@@ -43,18 +43,18 @@
 			AddWidget(FinishButton, 3, 1);
 		}
 
-		public TextBox StringValueBox { get; private set; }
+		public TextBox StringValueBox { get; }
 
-		public Button StringButton { get; private set; }
+		public Button StringButton { get; }
 
-		public Numeric DoubleValueBox { get; private set; }
+		public Numeric DoubleValueBox { get; }
 
-		public Button DoubleButton { get; private set; }
+		public Button DoubleButton { get; }
 
-		public TextBox MessageBox { get; private set; }
+		public TextBox MessageBox { get; }
 
-		public Button FinishButton { get; private set; }
+		public Button FinishButton { get; }
 
-		public Button BackButton { get; private set; }
+		public Button BackButton { get; }
 	}
 }

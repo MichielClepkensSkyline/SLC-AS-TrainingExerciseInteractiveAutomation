@@ -30,9 +30,9 @@
 			AddWidget(NextButton, 1, 1);
 		}
 
-		public IDropDown ElementsDropDown { get; private set; }
+		public IDropDown ElementsDropDown { get; }
 
-		public Button NextButton { get; private set; }
+		public Button NextButton { get; }
 
 		// public Label ValidationLabel { get; private set; }
 	}
