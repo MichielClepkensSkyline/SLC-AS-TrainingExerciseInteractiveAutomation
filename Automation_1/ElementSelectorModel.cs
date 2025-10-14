@@ -80,7 +80,6 @@
 				selectedParameterId = value;
 				engine.Log("Selected Element is" + SelectedElement.Name);
 				engine.Log("Selected Parameter Id is" + selectedParameterId);
-				Element element = engine.FindElementByKey(SelectedElement.Id.ToString());
 				isParameterValid = false;
 
 				if (SelectedElement != null && selectedParameterId > 0)

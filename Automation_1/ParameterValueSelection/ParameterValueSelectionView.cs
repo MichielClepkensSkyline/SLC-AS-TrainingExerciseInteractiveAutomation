@@ -13,18 +13,22 @@ namespace Automation_1.ParameterValueSelection
 	{
 		public ParameterValueSelectionView(IEngine engine) : base(engine)
 		{
-			Title = "Set parameter value";
+			Title = "Parameter Value Set";
 			BackButton = new Button("Back");
 			SetStringValue = new Button("Set String Value");
 			SetDoubleValue = new Button("Set Double Value");
-			StringValue = new TextBox();
-			DoubleValue = new Numeric() { Decimals = 2, StepSize= 0.01 };
+			StringValue = new TextBox() { Width = 100};
+			DoubleValue = new Numeric() { Width = 100, Decimals = 2, StepSize= 0.01 };
 			Message = new TextBox() { IsMultiline = true, IsEnabled = false };
+			StringValueLabel = new Label("String Value");
+			DoubleValueLabel = new Label("Double Value");
 
-			AddWidget(StringValue, 0, 0);
-			AddWidget(SetStringValue, 0, 1);
-			AddWidget(DoubleValue, 1, 0);
-			AddWidget(SetDoubleValue, 1, 1);
+			AddWidget(StringValueLabel, 0, 0);
+			AddWidget(StringValue, 0, 1);
+			AddWidget(SetStringValue, 0, 2);
+			AddWidget(DoubleValueLabel, 1, 0);
+			AddWidget(DoubleValue, 1, 1);
+			AddWidget(SetDoubleValue, 1, 2);
 			AddWidget(BackButton, 2, 0);
 			AddWidget(Message, 3, 0, 1, 3);
 		}
@@ -40,5 +44,9 @@ namespace Automation_1.ParameterValueSelection
 		public Button SetDoubleValue { get; }
 
 		public TextBox Message { get; set; }
+
+		public Label StringValueLabel { get; }
+
+		public Label DoubleValueLabel { get; }
 	}
 }
