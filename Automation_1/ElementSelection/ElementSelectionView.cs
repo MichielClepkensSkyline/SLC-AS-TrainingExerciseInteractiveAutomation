@@ -11,18 +11,18 @@
 		public ElementSelectionView(IEngine engine) : base(engine)
 		{
 			ElementsDropDown = new DropDown { IsSorted = true, IsDisplayFilterShown = true };
-			ContinueButton = new Button("Continue...");
+			ContinueButton = new Button("Continue...") { Width = 150 };
+			SetParameterLabel = new Label("Select an element: ");
 			Title = "Pick an element";
-			ElementLabel = new Label("Element");
-			AddWidget(ElementLabel, 0, 0);
+			AddWidget(SetParameterLabel, 0, 0);
 			AddWidget(ElementsDropDown, 0, 1);
 			AddWidget(ContinueButton, 1, 1);
 		}
 
+		public Label SetParameterLabel { get; set; }
+
 		public DropDown ElementsDropDown { get; }
 
 		public Button ContinueButton { get; }
-
-		public Label ElementLabel { get; set; }
 	}
 }

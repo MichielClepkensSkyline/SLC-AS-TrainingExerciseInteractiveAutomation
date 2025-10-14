@@ -38,7 +38,7 @@
 		{
 			get
 			{
-				return elements ?? (elements = dms.GetElements().ToArray());
+				return elements ?? (elements = dms.GetElements().Where(x => x.State == ElementState.Active).ToArray());
 			}
 		}
 
@@ -80,6 +80,7 @@
 				selectedParameterId = value;
 				engine.Log("Selected Element is" + SelectedElement.Name);
 				engine.Log("Selected Parameter Id is" + selectedParameterId);
+				Element element = engine.FindElementByKey(SelectedElement.Id.ToString());
 				isParameterValid = false;
 
 				if (SelectedElement != null && selectedParameterId > 0)
