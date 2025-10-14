@@ -115,9 +115,9 @@ namespace InteractiveAutomation
 			ElementSelectionView elementSelectionDialog = new ElementSelectionView(engine);
 			ElementSelectionPresenter elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionDialog, model);
 			ParameterSelectionView parameterSelectionDialog = new ParameterSelectionView(engine);
-			ParameterSelectionPresenter parameterSelectionPresenter = new ParameterSelectionPresenter(parameterSelectionDialog, model);
+			ParameterSelectionPresenter parameterSelectionPresenter = new ParameterSelectionPresenter(parameterSelectionDialog, model, engine);
 			SetValueView setValueDialog = new SetValueView(engine);
-			SetValuePresenter setValuePresenter = new SetValuePresenter(setValueDialog);
+			SetValuePresenter setValuePresenter = new SetValuePresenter(setValueDialog, model);
 
 			// Define how windows move between each other
 			elementSelectionPresenter.Next += (sender, args) =>
@@ -134,20 +134,6 @@ namespace InteractiveAutomation
 			parameterSelectionPresenter.Next += (sender, args) =>
 			{
 				app.ShowDialog(setValueDialog);
-			};
-
-			setValuePresenter.SetString += (value) =>
-			{
-				// Model function aanroepen die de set doet op de waarde(de waarde en de paramid en elementid moeten bekend zijn checken of dit het geval is)
-				string message = model.SetStringOnParameter(value);
-				setValuePresenter.DisplayMessage(message);
-			};
-
-			setValuePresenter.SetDouble += (value) =>
-			{
-				// Model function aanroepen die de set doet op de waarde (de waarde en de paramid en elementid moeten bekend zijn checken of dit het geval is)
-				string message = model.SetDoubleOnParameter(value);
-				setValuePresenter.DisplayMessage(message);
 			};
 
 			setValuePresenter.Back += (sender, args) =>
