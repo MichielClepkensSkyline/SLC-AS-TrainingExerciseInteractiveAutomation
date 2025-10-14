@@ -52,6 +52,7 @@ DATE		VERSION		AUTHOR			COMMENTS
 namespace Automation_1
 {
 	using Automation_1.ElementSelection;
+	using Automation_1.ParameterSelection;
 
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
@@ -61,6 +62,7 @@ namespace Automation_1
 
 	/// <summary>
 	/// Represents a DataMiner Automation script.
+	/// IEngine.ShowUI();.
 	/// </summary>
 	public class Script
 	{
@@ -106,13 +108,24 @@ namespace Automation_1
 		private void RunSafe(IEngine engine)
 		{
 			// TODO: Define dialogs here
-			//engine.ShowUI();
 			var elementSelector = new ElementSelectorModel(engine.GetDms());
 			var elementSelectionView = new ElementSelectionView(engine);
 			var elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionView, elementSelector);
+			var parameterSelectionView = new ParameterSelectionView(engine);
+			var parameterSelectionPresenter = new ParameterSelectionPresenter(parameterSelectionView, elementSelector);
 			elementSelectionPresenter.LoadFromModel();
 
-			app.Run(elementSelectionView);
+			elementSelectionPresenter.Continue += (sender, args) =>
+			{
+				app.ShowDialog(parameterSelectionView);
+			};
+
+			parameterSelectionPresenter.Back += (sender, args) =>
+			{
+				app.ShowDialog(elementSelectionView);
+			};
+
+			app.ShowDialog(elementSelectionView);
 		}
 
 		private void ShowExceptionDialog(IEngine engine, Exception exception)
