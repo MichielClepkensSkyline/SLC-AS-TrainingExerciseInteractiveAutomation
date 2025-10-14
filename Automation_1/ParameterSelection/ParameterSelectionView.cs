@@ -14,13 +14,15 @@
 	{
 		public ParameterSelectionView(IEngine engine) : base(engine)
 		{
-
+			Title = "Parameter Set";
 			ContinueButton = new Button("Continue...");
 			BackButton = new Button("Back");
 			ParameterId = new Numeric();
+			SelectParameterLabel = new Label("Select a parameter: ");
 			ParameterId.Minimum = 0;
 
-			AddWidget(ParameterId, 0, 0);
+			AddWidget(SelectParameterLabel, 0, 0);
+			AddWidget(ParameterId, 0, 1);
 			AddWidget(BackButton, 1, 0);
 			AddWidget(ContinueButton, 1, 1);
 		}
@@ -30,5 +32,7 @@
 		public Button ContinueButton { get; }
 
 		public Button BackButton { get; }
+
+		public Label SelectParameterLabel { get; }
 	}
 }
