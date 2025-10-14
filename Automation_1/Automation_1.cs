@@ -109,11 +109,11 @@ namespace Automation_1
 		private void RunSafe(IEngine engine)
 		{
 			// TODO: Define dialogs here
-			var elementSelector = new ElementSelectorModel(engine.GetDms());
+			var elementSelector = new ElementSelectorModel(engine.GetDms(), engine);
 			var elementSelectionView = new ElementSelectionView(engine);
 			var elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionView, elementSelector);
 			var parameterSelectionView = new ParameterSelectionView(engine);
-			var parameterSelectionPresenter = new ParameterSelectionPresenter(parameterSelectionView, elementSelector);
+			var parameterSelectionPresenter = new ParameterSelectionPresenter(engine,parameterSelectionView, elementSelector);
 			var parameterValueSelectionView = new ParameterValueSelectionView(engine);
 			var parameterValueSelectionPresenter = new ParameterValueSelectionPresenter(parameterValueSelectionView, elementSelector);
 			elementSelectionPresenter.LoadFromModel();

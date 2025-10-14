@@ -9,6 +9,8 @@
 
 	public interface IElementSelector
 	{
+		event EventHandler SelectedParameterChanged;
+
 		IReadOnlyCollection<IDmsElement> Elements { get; }
 
 		IDmsElement SelectedElement { get; set; }
@@ -16,5 +18,9 @@
 		int SelectedParameterId { get; set; }
 
 		string SetParameterValueString { get; set; }
+
+		double SetParameterValueDouble { get; set; }
+
+		bool IsParameterValid { get; }
 	}
 }

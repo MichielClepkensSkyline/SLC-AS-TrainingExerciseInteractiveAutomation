@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Skyline.DataMiner.Net.Helper;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,13 +20,33 @@ namespace Automation_1.ParameterValueSelection
 			selector = elementSelector ?? throw new ArgumentNullException(nameof(elementSelector));
 
 			view.SetStringValue.Pressed += OnSetStringValuePressed;
+			view.SetDoubleValue.Pressed += OnSetDoubleValuePressed;
 		}
 
 		private void OnSetStringValuePressed(object sender, EventArgs e)
 		{
-			string valueToSet = view.StringValue.Text;
+				string valueToSet = view.StringValue.Text;
 
-			selector.SetParameterValueString = valueToSet;
+				selector.SetParameterValueString = valueToSet;
+
+				var element = selector.SelectedElement;
+				var parameterId = selector.SelectedParameterId;
+
+				if (valueToSet.IsNullOrEmpty())
+				{
+					view.Message.Text = $"Failed to set string parameter";
+				}
+				else
+				{
+					var parameter = element.GetStandaloneParameter<string>(parameterId);
+					parameter.SetValue(valueToSet);
+					view.Message.Text = "Success";
+				}
+		}
+
+		private void OnSetDoubleValuePressed(object sender, EventArgs e)
+		{
+			double valueToSet = view.DoubleValue.Value;
 
 			var element = selector.SelectedElement;
 			var parameterId = selector.SelectedParameterId;
@@ -39,8 +61,9 @@ namespace Automation_1.ParameterValueSelection
 				throw new InvalidOperationException("Invalid parameter ID selected.");
 			}
 
-			var parameter = element.GetStandaloneParameter<string>(parameterId);
+			var parameter = element.GetStandaloneParameter<double?>(parameterId);
 			parameter.SetValue(valueToSet);
 		}
+
 	}
 }
