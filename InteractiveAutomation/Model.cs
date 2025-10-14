@@ -13,8 +13,8 @@
 		private readonly IEngine engine;
 		private readonly IDms dms;
 
-		private List<IDmsElement> elements;
-		private IDmsElement selectedElement;
+		private IDictionary<string, IDmsElement> elements;
+		private string selectedElementName;
 
 		// private object selectedParameter; // TODO hoe dit doen?
 		private int selectedParameterId;
@@ -25,32 +25,34 @@
 			this.engine = engine;
 		}
 
-		public IDmsElement SelectedElement
+		public string SelectedElementName
 		{
 			get
 			{
-				return selectedElement ?? null; // TODO wat invullen indien er geen element geselecteerd is?
+				return selectedElementName ?? null; // TODO wat invullen indien er geen element geselecteerd is?
 			}
 
 			set
 			{
-				engine.Log($"The selected element is: {value.Name}");
-				if (value == selectedElement)
+				engine.Log($"The selected element is: {value}");
+				if (value == selectedElementName)
 				{
 					return;
 				}
 
-				selectedElement = value;
+				selectedElementName = value;
 
 				// selectedParameter = null;
 			}
 		}
 
-		public ICollection<IDmsElement> Elements
+		public IDictionary<string, IDmsElement> Elements
 		{
 			get
 			{
-				elements = dms.GetElements().Where(element => element.State == ElementState.Active).ToList();
+				elements = dms.GetElements()
+					.Where(element => element.State == ElementState.Active)
+					.ToDictionary(element => element.Name);
 				return elements;
 			}
 		}
@@ -76,6 +78,7 @@
 
 		public string SetStringOnParameter(string value)
 		{
+			IDmsElement selectedElement = dms.GetElement(selectedElementName);
 			if (selectedElement != null && selectedElement.State == ElementState.Active)
 			{
 				try
@@ -99,6 +102,7 @@
 
 		public string SetDoubleOnParameter(double value)
 		{
+			IDmsElement selectedElement = dms.GetElement(selectedElementName);
 			if (selectedElement != null && selectedElement.State == ElementState.Active)
 			{
 				try

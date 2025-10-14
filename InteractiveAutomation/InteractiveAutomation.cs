@@ -136,6 +136,20 @@ namespace InteractiveAutomation
 				app.ShowDialog(setValueDialog);
 			};
 
+			setValuePresenter.SetString += (value) =>
+			{
+				// Model function aanroepen die de set doet op de waarde(de waarde en de paramid en elementid moeten bekend zijn checken of dit het geval is)
+				string message = model.SetStringOnParameter(value);
+				setValuePresenter.DisplayMessage(message);
+			};
+
+			setValuePresenter.SetDouble += (value) =>
+			{
+				// Model function aanroepen die de set doet op de waarde (de waarde en de paramid en elementid moeten bekend zijn checken of dit het geval is)
+				string message = model.SetDoubleOnParameter(value);
+				setValuePresenter.DisplayMessage(message);
+			};
+
 			setValuePresenter.Back += (sender, args) =>
 			{
 				app.ShowDialog(parameterSelectionDialog);
@@ -144,20 +158,6 @@ namespace InteractiveAutomation
 			setValuePresenter.Finish += (sender, args) =>
 			{
 				engine.ExitSuccess("Script finished");
-			};
-
-			setValuePresenter.SetString += (value) =>
-			{
-				// Model function aanroepen die de set doet op de waarde(de waarde en de paramid en elementid moeten bekend zijn checken of dit het geval is)
-				model.SetStringOnParameter(value);
-				engine.GenerateInformation("Set String");
-			};
-
-			setValuePresenter.SetDouble += (value) =>
-			{
-				// Model function aanroepen die de set doet op de waarde (de waarde en de paramid en elementid moeten bekend zijn checken of dit het geval is)
-				model.SetDoubleOnParameter(value);
-				engine.GenerateInformation("Set Double");
 			};
 
 			elementSelectionPresenter.LoadFromModel();

@@ -6,6 +6,7 @@
 	using System.Text;
 	using System.Threading.Tasks;
 	using InteractiveAutomation.Wizard.ParameterSelection;
+	using Skyline.DataMiner.Core.DataMinerSystem.Common.Selectors;
 
 	internal class SetValuePresenter
 	{
@@ -28,6 +29,11 @@
 		public event EventHandler<EventArgs> Finish;
 
 		public event EventHandler<EventArgs> Back;
+
+		public void DisplayMessage(string message)
+		{
+			setValueView.MessageBox.Text = message;
+		}
 
 		private void OnSetStringPressed(object sender, EventArgs e)
 		{

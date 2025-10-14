@@ -9,9 +9,9 @@
 
 	internal interface IModel
 	{
-		ICollection<IDmsElement> Elements { get; }
+		IDictionary<string, IDmsElement> Elements { get; }
 
-		IDmsElement SelectedElement { get; set; }
+		string SelectedElementName { get; set; }
 
 		int SelectedParameterId { get; set; }
 

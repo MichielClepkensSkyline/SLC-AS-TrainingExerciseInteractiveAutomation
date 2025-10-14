@@ -13,7 +13,6 @@
 	{
 		private readonly IElementSelectionView elementSelectionView;
 		private readonly IModel model;
-		private Dictionary<string, IDmsElement> elementsDictionary;
 
 		public ElementSelectionPresenter(IElementSelectionView view, IModel model)
 		{
@@ -27,11 +26,8 @@
 
 		public void LoadFromModel()
 		{
-			// Load elements from model
-			elementsDictionary = model.Elements.ToDictionary(element => element.Name);
-
 			// Set elements to DropDown
-			elementSelectionView.ElementsDropDown.SetOptions(elementsDictionary.Keys);
+			elementSelectionView.ElementsDropDown.SetOptions(model.Elements.Keys);
 
 			// Set default value TODO: is this needed?
 			elementSelectionView.ElementsDropDown.Selected = "main-ird";
@@ -56,7 +52,7 @@
 
 		private void StoreToModel()
 		{
-			model.SelectedElement = elementsDictionary[elementSelectionView.ElementsDropDown.Selected];
+			model.SelectedElementName = elementSelectionView.ElementsDropDown.Selected;
 		}
 	}
 }
