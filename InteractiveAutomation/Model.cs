@@ -68,7 +68,33 @@
 					var parameters = element.Protocol.GetAllParameters();
 					if (parameters != null)
 					{
-						return parameters.Where(parameter => parameter.ID < 16000).ToDictionary(parameter => parameter.ID, parameter => parameter.DisplayName);
+						/*foreach (var parameter in parameters)
+						{
+							engine.Log($"---------{parameter.Name}---------");
+							engine.Log($"IsDynamicData: {parameter.IsDynamicData}");
+							engine.Log($"WriteType: {parameter.WriteType}");
+							engine.Log($"ArrayType: {parameter.ArrayType}");
+							engine.Log($"Category: {parameter.Category}");
+							engine.Log($"ComponentInfo: {parameter.ComponentInfo}");
+							engine.Log($"DynamicUnits: {parameter.DynamicUnits}");
+							engine.Log($"FixedType: {parameter.FixedType}");
+							engine.Log($"GetType(): {parameter.GetType()}");
+							engine.Log($"IsDiscreet: {parameter.IsDiscreet}");
+							engine.Log($"IsDouble: {parameter.IsDouble}");
+							engine.Log($"IsString: {parameter.IsString}");
+							engine.Log($"IsTable: {parameter.IsTable}");
+							engine.Log($"IsTableColumn: {parameter.IsTableColumn}");
+							engine.Log($"ParameterType: {parameter.ParameterType}");
+						}*/
+
+						return parameters
+							.Where(parameter =>
+								parameter.ID < 16000 &&
+								parameter.ParameterType != ParameterMeasurementType.Title &&
+								!parameter.IsTable &&
+								!parameter.IsTableColumn &&
+								!parameter.WriteType)
+							.ToDictionary(parameter => parameter.ID, parameter => parameter.DisplayName);
 					}
 				}
 
