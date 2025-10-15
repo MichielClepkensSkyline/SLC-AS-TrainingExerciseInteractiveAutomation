@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <DMSScript options="272" xmlns="http://www.skyline.be/automation">
-	<Name>Automation</Name>
+	<Name>Interactvie Automation Script Emir</Name>
 	<Description></Description>
 	<Type>Automation</Type>
-	<Author>SKYLINE2\XXX</Author>
+	<Author>SKYLINE2\EBU</Author>
 	<CheckSets>FALSE</CheckSets>
-	<Folder></Folder>
+	<Folder>Emir</Folder>
 
 	<Protocols>
 	</Protocols>
