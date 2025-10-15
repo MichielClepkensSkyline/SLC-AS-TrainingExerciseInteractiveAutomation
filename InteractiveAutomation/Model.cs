@@ -7,10 +7,13 @@
 	using System.Threading.Tasks;
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
+	using Skyline.DataMiner.Net.Exceptions;
 	using Skyline.DataMiner.Net.Messages;
 
 	internal class Model : IModel
 	{
+		private const int MaxParameterId = 64000;
+
 		private readonly IEngine engine;
 		private readonly IDms dms;
 
@@ -89,7 +92,7 @@
 
 						return parameters
 							.Where(parameter =>
-								parameter.ID < 16000 &&
+								parameter.ID < MaxParameterId &&
 								parameter.ParameterType != ParameterMeasurementType.Title &&
 								!parameter.IsTable &&
 								!parameter.IsTableColumn &&
@@ -123,48 +126,138 @@
 
 		public string SetStringOnParameter(string value)
 		{
-			IDmsElement selectedElement = dms.GetElement(selectedElementName);
-			if (selectedElement != null && selectedElement.State == Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active)
+			Element selectedElement = engine.FindElement(selectedElementName);
+			if (selectedElement != null && selectedElement.IsActive)
 			{
-				try
+				if (CheckParameterExists(selectedElement, selectedParameterId))
 				{
-					// How to set on an element
-					// selectedElement.
-					IDmsStandaloneParameter<string> parameter = selectedElement.GetStandaloneParameter<string>(selectedParameterId);
-					parameter.SetValue(value);
-					return "Success";
+					ParameterInfo parameter = selectedElement.Protocol.FindParameter(selectedParameterId);
+					if (CheckParameter(parameter) && parameter.IsString)
+					{
+						try
+						{
+							selectedElement.SetParameter(selectedParameterId, value);
+							return "Success";
+						}
+						catch (Exception e)
+						{
+							engine.Log($"{e}");
+							return Convert.ToString(e);
+						}
+					}
+					else if (!parameter.IsString)
+					{
+						return "The selected parameter is not of type string";
+					}
+					else if (parameter.IsTable || parameter.IsTableColumn)
+					{
+						return "The selected parameter is part of a table";
+					}
+					else if (parameter.WriteType)
+					{
+						return "The selected parameter is of type write";
+					}
+					else if (parameter.ParameterType != ParameterMeasurementType.Title)
+					{
+						return "The selected parameter is a title";
+					}
+					else
+					{
+						return "The selected parameter is out of range";
+					}
 				}
-				catch (Exception e)
+				else
 				{
-					// Fill exception into the textbox
-					engine.Log(Convert.ToString(e));
-					return Convert.ToString(e);
+					return "The selected parameter does not exist";
 				}
 			}
-
-			return "The selected element is not valid";
+			else if (selectedElement == null)
+			{
+				return "The selected element doesn't exist";
+			}
+			else
+			{
+				return "The selected element is not active";
+			}
 		}
 
 		public string SetDoubleOnParameter(double value)
 		{
-			IDmsElement selectedElement = dms.GetElement(selectedElementName);
-			if (selectedElement != null && selectedElement.State == Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active)
+			Element selectedElement = engine.FindElement(selectedElementName);
+			if (selectedElement != null && selectedElement.IsActive)
 			{
-				try
+				if (CheckParameterExists(selectedElement, selectedParameterId))
 				{
-					// double? test = 55;
-					IDmsStandaloneParameter<double?> parameter = selectedElement.GetStandaloneParameter<double?>(selectedParameterId);
-					parameter.SetValue(value);
-					return "Success";
+					ParameterInfo parameter = selectedElement.Protocol.FindParameter(selectedParameterId);
+					if (CheckParameter(parameter) && parameter.IsDouble)
+					{
+						try
+						{
+							selectedElement.SetParameter(selectedParameterId, value);
+							return "Success";
+						}
+						catch (Exception e)
+						{
+							engine.Log($"{e}");
+							return Convert.ToString(e);
+						}
+					}
+					else if (!parameter.IsDouble)
+					{
+						return "The selected parameter is not of type double";
+					}
+					else if (parameter.IsTable || parameter.IsTableColumn)
+					{
+						return "The selected parameter is part of a table";
+					}
+					else if (parameter.WriteType)
+					{
+						return "The selected parameter is of type write";
+					}
+					else if (parameter.ParameterType != ParameterMeasurementType.Title)
+					{
+						return "The selected parameter is a title";
+					}
+					else
+					{
+						return "The selected parameter is out of range";
+					}
 				}
-				catch (Exception e)
+				else
 				{
-					engine.Log($"{e}");
-					return Convert.ToString(e);
+					return "The selected parameter does not exist";
 				}
 			}
+			else if (selectedElement == null)
+			{
+				return "The selected element doesn't exist";
+			}
+			else
+			{
+				return "The selected element is not active";
+			}
+		}
 
-			return "The selected element is not valid";
+		private bool CheckParameterExists(Element element, int parameterId)
+		{
+			try
+			{
+				element.GetParameter(parameterId);
+				return true;
+			}
+			catch (DataMinerException)
+			{
+				return false;
+			}
+		}
+
+		private bool CheckParameter(ParameterInfo parameter)
+		{
+			return parameter.ID < MaxParameterId &&
+				!parameter.IsTable &&
+				!parameter.IsTableColumn &&
+				!parameter.WriteType &&
+				parameter.ParameterType != ParameterMeasurementType.Title;
 		}
 	}
 }
