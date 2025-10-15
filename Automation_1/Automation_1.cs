@@ -51,24 +51,114 @@ DATE		VERSION		AUTHOR			COMMENTS
 
 namespace Automation_1
 {
-	using System;
+    using Automation_1.ElementSelection;
+    using Automation_1.ParameterSelection;
+    using Automation_1.ParameterValueSelection;
+    using Skyline.DataMiner.Automation;
+    using Skyline.DataMiner.Core.DataMinerSystem.Automation;
+    using Skyline.DataMiner.Core.DataMinerSystem.Common;
+    using Skyline.DataMiner.Utils.InteractiveAutomationScript;
+    using System;
 	using System.Collections.Generic;
 	using System.Globalization;
 	using System.Text;
-	using Skyline.DataMiner.Automation;
-	
-	/// <summary>
-	/// Represents a DataMiner Automation script.
-	/// </summary>
-	public class Script
+
+    /// <summary>
+    /// Represents a DataMiner Automation script.
+    /// </summary>
+    /// IEngine.ShowUI();
+    public class Script
 	{
-		/// <summary>
-		/// The script entry point.
-		/// </summary>
-		/// <param name="engine">Link with SLAutomation process.</param>
-		public void Run(IEngine engine)
+        private InteractiveController app;
+
+        /// <summary>
+        /// The script entry point.
+        /// </summary>
+        /// <param name="engine">Link with SLAutomation process.</param>
+        public void Run(IEngine engine)
 		{
-	
-		}
-	}
+            try
+            {
+                app = new InteractiveController(engine);
+                RunSafe(engine);
+            }
+            catch (ScriptAbortException)
+            {
+                // Catch normal abort exceptions (engine.ExitFail or engine.ExitSuccess)
+                throw; // Comment if it should be treated as a normal exit of the script.
+            }
+            catch (ScriptForceAbortException)
+            {
+                // Catch forced abort exceptions, caused via external maintenance messages.
+                throw;
+            }
+            catch (ScriptTimeoutException)
+            {
+                // Catch timeout exceptions for when a script has been running for too long.
+                throw;
+            }
+            catch (InteractiveUserDetachedException)
+            {
+                // Catch a user detaching from the interactive script by closing the window.
+                // Only applicable for interactive scripts, can be removed for non-interactive scripts.
+                throw;
+            }
+            catch (Exception e)
+            {
+                engine.ExitFail("Run|Something went wrong: " + e);
+            }
+        }
+
+        private void RunSafe(IEngine engine)
+        {
+            // TODO: Define code here
+            engine.Log("EmirInteractiveAutomationScript|Start of the script");
+            IDms dms = engine.GetDms();
+            if (dms == null)
+            {
+                engine.ExitFail("No DMS found");
+            }
+
+            IElementSelector elementSelector = new ElementSelector(dms);
+            ElementSelectionView elementSelectionView = new ElementSelectionView(engine);
+            ElementSelectionPresenter elementSelectionPresenter = new ElementSelectionPresenter(elementSelector, elementSelectionView);
+
+            ParameterSelectionView parameterSelectorView = new ParameterSelectionView(engine);
+            ParameterSelectionPresenter parameterSelectorPresenter = new ParameterSelectionPresenter(elementSelector, parameterSelectorView);
+
+            ParameterValueSelectionView parameterValueSelectorView = new ParameterValueSelectionView(engine);
+            ParamtereValueSelectionPresenter parameterValuePresenter = new ParamtereValueSelectionPresenter(elementSelector, parameterValueSelectorView, engine);
+
+            ExceptionDialog dialog = new ExceptionDialog(engine, app);
+
+            elementSelectionPresenter.Next += (sender, args) =>
+            {
+                dialog.Check(elementSelectionPresenter.isElementActive, elementSelectionView, parameterSelectorView, "Element is inactive");
+            };
+
+            parameterSelectorPresenter.Back += (sender, args) =>
+            {
+                app.ShowDialog(elementSelectionView);
+            };
+
+            parameterSelectorPresenter.Next += (sender, args) =>
+            {
+                dialog.Check(parameterSelectorPresenter.ParameterExists, parameterSelectorView, parameterValueSelectorView, "Parameter doesn't exist");
+            };
+
+            parameterValuePresenter.Back += (sender, args) =>
+            {
+                app.ShowDialog(parameterSelectorView);
+            };
+
+            parameterValuePresenter.Exit += (sender, args) =>
+            {
+                engine.ExitSuccess("Scrip exited sucessfully");
+            };
+
+            elementSelectionPresenter.LoadFromModel();
+
+            app.ShowDialog(elementSelectionView);
+        }
+    }
 }
