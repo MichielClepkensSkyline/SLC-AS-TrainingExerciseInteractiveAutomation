@@ -75,7 +75,7 @@
 			var test = model.Parameters;
 			foreach (var x in test)
 			{
-				engine.Log($"Key: {x.Key} | Value: {x.Value}");
+				engine.Log($"Key: {x.Key} | Value: {x.Value.Name}");
 			}
 		}
 	}

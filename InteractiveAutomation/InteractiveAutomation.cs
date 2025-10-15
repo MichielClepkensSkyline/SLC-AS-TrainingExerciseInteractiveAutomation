@@ -53,7 +53,6 @@ namespace InteractiveAutomation
 	using System;
 	using System.Collections.Generic;
 	using System.Globalization;
-	using System.Reflection;
 	using System.Runtime.Remoting.Channels;
 	using System.Text;
 	using InteractiveAutomation.Wizard.ElementSelection;
@@ -62,6 +61,7 @@ namespace InteractiveAutomation
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
 	using Skyline.DataMiner.Net;
+	using Skyline.DataMiner.Net.Messages;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
 	/// <summary>
@@ -120,8 +120,10 @@ namespace InteractiveAutomation
 			ElementSelectionPresenter elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionDialog, model, engine);
 			ParameterSelectionView parameterSelectionDialog = new ParameterSelectionView(engine);
 			ParameterSelectionPresenter parameterSelectionPresenter = new ParameterSelectionPresenter(parameterSelectionDialog, model, engine);
-			SetValueView setValueDialog = new SetValueView(engine);
-			SetValuePresenter setValuePresenter = new SetValuePresenter(setValueDialog, model);
+			SetEmptyView setEmptyDialog = new SetEmptyView(engine);
+			SetDoubleView setDoubleDialog = new SetDoubleView(engine);
+			SetStringView setStringDialog = new SetStringView(engine);
+			SetValuePresenter setValuePresenter = new SetValuePresenter(setDoubleDialog, setStringDialog, setEmptyDialog, model);
 
 			// Define how windows move between each other
 			elementSelectionPresenter.Next += (sender, args) =>
@@ -138,7 +140,19 @@ namespace InteractiveAutomation
 
 			parameterSelectionPresenter.Next += (sender, args) =>
 			{
-				app.ShowDialog(setValueDialog);
+				ParameterInfo parameter = model.Parameters[model.SelectedParameterId];
+				if (parameter.IsDouble)
+				{
+					app.ShowDialog(setDoubleDialog);
+				}
+				else if (parameter.IsString)
+				{
+					app.ShowDialog(setStringDialog);
+				}
+				else
+				{
+					app.ShowDialog(setEmptyDialog);
+				}
 			};
 
 			setValuePresenter.Back += (sender, args) =>

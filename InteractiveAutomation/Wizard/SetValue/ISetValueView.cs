@@ -9,13 +9,7 @@
 
 	internal interface ISetValueView
 	{
-		TextBox StringValueBox { get; }
-
-		Button StringButton { get; }
-
-		Numeric DoubleValueBox { get; }
-
-		Button DoubleButton { get; }
+		Button SetButton { get; }
 
 		TextBox MessageBox { get; }
 

@@ -12,7 +12,7 @@
 	{
 		IDictionary<string, IDmsElement> Elements { get; }
 
-		IDictionary<int, string> Parameters { get; }
+		IDictionary<int, ParameterInfo> Parameters { get; }
 
 		string SelectedElementName { get; set; }
 

@@ -7,21 +7,33 @@
 	using System.Threading.Tasks;
 	using InteractiveAutomation.Wizard.ParameterSelection;
 	using Skyline.DataMiner.Core.DataMinerSystem.Common.Selectors;
+	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
 	internal class SetValuePresenter
 	{
-		private readonly ISetValueView setValueView;
+		private readonly SetDoubleView setDoubleView;
+		private readonly SetStringView setStringView;
+		private readonly SetEmptyView setEmptyView;
 		private readonly IModel model;
 
-		public SetValuePresenter(ISetValueView view, IModel model)
+		public SetValuePresenter(SetDoubleView setDoubleView, SetStringView setStringView, SetEmptyView setEmptyView, IModel model)
 		{
-			setValueView = view ?? throw new ArgumentNullException(nameof(view));
+			this.setDoubleView = setDoubleView ?? throw new ArgumentNullException(nameof(setDoubleView));
+			this.setStringView = setStringView ?? throw new ArgumentNullException(nameof(setStringView));
+			this.setEmptyView = setEmptyView ?? throw new ArgumentNullException(nameof(setEmptyView));
 			this.model = model ?? throw new ArgumentNullException(nameof(model));
 
-			setValueView.StringButton.Pressed += OnSetStringPressed;
-			setValueView.DoubleButton.Pressed += OnSetDoublePressed;
-			setValueView.FinishButton.Pressed += OnFinishPressed;
-			setValueView.BackButton.Pressed += OnBackPressed;
+			this.setDoubleView.SetButton.Pressed += OnSetDoublePressed;
+			this.setStringView.SetButton.Pressed += OnSetStringPressed;
+			this.setEmptyView.SetButton.Pressed += OnSetEmptyPressed;
+
+			this.setDoubleView.BackButton.Pressed += OnBackPressed;
+			this.setStringView.BackButton.Pressed += OnBackPressed;
+			this.setEmptyView.BackButton.Pressed += OnBackPressed;
+
+			this.setDoubleView.FinishButton.Pressed += OnFinishPressed;
+			this.setStringView.FinishButton.Pressed += OnFinishPressed;
+			this.setEmptyView.FinishButton.Pressed += OnFinishPressed;
 		}
 
 		public event EventHandler<EventArgs> Finish;
@@ -39,23 +51,29 @@
 			Back?.Invoke(this, EventArgs.Empty);
 		}
 
-		private void DisplayMessage(string message)
+		private void DisplayMessage(ISetValueView view, string message)
 		{
-			setValueView.MessageBox.Text = message;
-		}
-
-		private void OnSetStringPressed(object sender, EventArgs e)
-		{
-			string value = setValueView.StringValueBox.Text;
-			string message = model.SetStringOnParameter(value);
-			DisplayMessage(message);
+			view.MessageBox.Text = message;
 		}
 
 		private void OnSetDoublePressed(object sender, EventArgs e)
 		{
-			double value = setValueView.DoubleValueBox.Value;
+			double value = setDoubleView.ValueBox.Value;
 			string message = model.SetDoubleOnParameter(value);
-			DisplayMessage(message);
+			DisplayMessage(setDoubleView, message);
+		}
+
+		private void OnSetStringPressed(object sender, EventArgs e)
+		{
+			string value = setStringView.ValueBox.Text;
+			string message = model.SetStringOnParameter(value);
+			DisplayMessage(setStringView, message);
+		}
+
+		private void OnSetEmptyPressed(object sender, EventArgs e)
+		{
+			string message = "Not implemented yet!";
+			DisplayMessage(setDoubleView, message);
 		}
 	}
 }

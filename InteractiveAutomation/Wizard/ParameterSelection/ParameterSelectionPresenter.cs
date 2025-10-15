@@ -1,12 +1,12 @@
 ﻿namespace InteractiveAutomation.Wizard.ParameterSelection
 {
-	using Skyline.DataMiner.Automation;
-	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Text;
 	using System.Threading.Tasks;
+	using Skyline.DataMiner.Automation;
+	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
 	internal class ParameterSelectionPresenter
 	{
@@ -30,7 +30,7 @@
 
 		public void LoadFromModel()
 		{
-			parameterSelectionView.ParametersDropDown.SetOptions(model.Parameters.Select(x => $"{x.Key} {x.Value}"));
+			parameterSelectionView.ParametersDropDown.SetOptions(model.Parameters.Select(x => $"{x.Key} {x.Value.Name}"));
 		}
 
 		private void OnNextPressed(object sender, EventArgs e)

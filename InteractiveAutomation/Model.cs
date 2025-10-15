@@ -61,7 +61,7 @@
 			}
 		}
 
-		public IDictionary<int, string> Parameters
+		public IDictionary<int, ParameterInfo> Parameters
 		{
 			get
 			{
@@ -97,7 +97,7 @@
 								!parameter.IsTable &&
 								!parameter.IsTableColumn &&
 								!parameter.WriteType)
-							.ToDictionary(parameter => parameter.ID, parameter => parameter.DisplayName);
+							.ToDictionary(parameter => parameter.ID);
 					}
 				}
 
