@@ -7,6 +7,7 @@
 	using System.Threading.Tasks;
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
+	using Skyline.DataMiner.Net.Messages;
 
 	internal class Model : IModel
 	{
@@ -30,7 +31,7 @@
 			get
 			{
 				elements = dms.GetElements()
-					.Where(element => element.State == ElementState.Active)
+					.Where(element => element.State == Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active)
 					.ToDictionary(element => element.Name);
 				return elements;
 			}
@@ -57,6 +58,24 @@
 			}
 		}
 
+		public IDictionary<int, string> Parameters
+		{
+			get
+			{
+				Element element = engine.FindElement(SelectedElementName);
+				if (element != null)
+				{
+					var parameters = element.Protocol.GetAllParameters();
+					if (parameters != null)
+					{
+						return parameters.Where(parameter => parameter.ID < 16000).ToDictionary(parameter => parameter.ID, parameter => parameter.DisplayName);
+					}
+				}
+
+				return null;
+			}
+		}
+
 		public int SelectedParameterId
 		{
 			get
@@ -79,7 +98,7 @@
 		public string SetStringOnParameter(string value)
 		{
 			IDmsElement selectedElement = dms.GetElement(selectedElementName);
-			if (selectedElement != null && selectedElement.State == ElementState.Active)
+			if (selectedElement != null && selectedElement.State == Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active)
 			{
 				try
 				{
@@ -103,7 +122,7 @@
 		public string SetDoubleOnParameter(double value)
 		{
 			IDmsElement selectedElement = dms.GetElement(selectedElementName);
-			if (selectedElement != null && selectedElement.State == ElementState.Active)
+			if (selectedElement != null && selectedElement.State == Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active)
 			{
 				try
 				{

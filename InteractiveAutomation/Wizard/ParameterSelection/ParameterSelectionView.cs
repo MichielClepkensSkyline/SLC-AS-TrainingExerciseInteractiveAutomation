@@ -19,7 +19,7 @@
 		{
 			// Alles wat op de UI komt aanmaken (komt allemaal uit de INteractiveAutomationScript package)
 			parameterLabel = new Label($"Parameter ID: ");
-			ParameterValue = new Numeric();
+			ParametersDropDown = new DropDown();
 
 			NextButton = new Button($"Continue...");
 			BackButton = new Button($"Back...");
@@ -28,12 +28,12 @@
 
 			// Toevoegen van de UI components aan een bepaalde plek in de UI
 			AddWidget(parameterLabel, 0, 0);
-			AddWidget(ParameterValue, 0, 1);
+			AddWidget((DropDown)ParametersDropDown, 0, 1);
 			AddWidget(BackButton, 1, 0);
 			AddWidget(NextButton, 1, 1);
 		}
 
-		public Numeric ParameterValue { get; }
+		public IDropDown ParametersDropDown { get; }
 
 		public Button NextButton { get; }
 

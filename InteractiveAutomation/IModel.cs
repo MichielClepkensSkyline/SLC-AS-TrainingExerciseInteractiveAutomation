@@ -6,10 +6,13 @@
 	using System.Text;
 	using System.Threading.Tasks;
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
+	using Skyline.DataMiner.Net.Messages;
 
 	internal interface IModel
 	{
 		IDictionary<string, IDmsElement> Elements { get; }
+
+		IDictionary<int, string> Parameters { get; }
 
 		string SelectedElementName { get; set; }
 

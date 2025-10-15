@@ -9,7 +9,7 @@
 
 	internal interface IParameterSelectionView
 	{
-		Numeric ParameterValue { get; }
+		IDropDown ParametersDropDown { get; }
 
 		Button NextButton { get; }
 

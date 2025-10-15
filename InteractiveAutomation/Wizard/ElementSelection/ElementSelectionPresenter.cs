@@ -13,11 +13,13 @@
 	{
 		private readonly IElementSelectionView elementSelectionView;
 		private readonly IModel model;
+		private readonly IEngine engine;
 
-		public ElementSelectionPresenter(IElementSelectionView view, IModel model)
+		public ElementSelectionPresenter(IElementSelectionView view, IModel model, IEngine engine)
 		{
 			this.elementSelectionView = view ?? throw new ArgumentNullException(nameof(view));
 			this.model = model ?? throw new ArgumentNullException(nameof(model));
+			this.engine = engine;
 
 			elementSelectionView.NextButton.Pressed += OnNextPressed;
 		}
@@ -53,6 +55,28 @@
 		private void StoreToModel()
 		{
 			model.SelectedElementName = elementSelectionView.ElementsDropDown.Selected;
+		}
+
+		private void Test(string elementName)
+		{
+			Skyline.DataMiner.Automation.Element element = engine.FindElement(elementName);
+			var parameters = element.Protocol.Parameters;
+			foreach (var parameter in parameters)
+			{
+				engine.Log($"Parameter info: {parameter}");
+			}
+
+			var parameters2 = element.Protocol.GetAllParameters();
+			foreach (var parameter2 in parameters2)
+			{
+				engine.Log($"Parameter2 info: {parameter2}");
+			}
+
+			var test = model.Parameters;
+			foreach (var x in test)
+			{
+				engine.Log($"Key: {x.Key} | Value: {x.Value}");
+			}
 		}
 	}
 }

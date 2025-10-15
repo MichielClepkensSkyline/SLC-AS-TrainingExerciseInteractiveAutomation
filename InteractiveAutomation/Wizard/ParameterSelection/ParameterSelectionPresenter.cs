@@ -20,21 +20,17 @@
 			this.model = model ?? throw new ArgumentNullException(nameof(model));
 			this.engine = engine;
 
-			parameterSelectionView.ParameterValue.FocusLost += OnFocusLost;
-
 			parameterSelectionView.NextButton.Pressed += OnNextPressed;
 			parameterSelectionView.BackButton.Pressed += OnBackPressed;
 		}
-
-		// public event EventHandler<Numeric.NumericFocusLostEventArgs> Print;
 
 		public event EventHandler<EventArgs> Next;
 
 		public event EventHandler<EventArgs> Back;
 
-		private void OnFocusLost(object sender, Numeric.NumericFocusLostEventArgs e)
+		public void LoadFromModel()
 		{
-			engine.Log("[DEBUG] into onfocuslost");
+			parameterSelectionView.ParametersDropDown.SetOptions(model.Parameters.Select(x => $"{x.Key} {x.Value}"));
 		}
 
 		private void OnNextPressed(object sender, EventArgs e)
@@ -51,7 +47,7 @@
 
 		private void StoreToModel()
 		{
-			int parameterid = (int)parameterSelectionView.ParameterValue.Value;
+			int parameterid = Convert.ToInt32(parameterSelectionView.ParametersDropDown.Selected.Split(' ')[0]);
 			model.SelectedParameterId = parameterid;
 		}
 	}

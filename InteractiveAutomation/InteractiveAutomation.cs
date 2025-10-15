@@ -53,6 +53,7 @@ namespace InteractiveAutomation
 	using System;
 	using System.Collections.Generic;
 	using System.Globalization;
+	using System.Reflection;
 	using System.Runtime.Remoting.Channels;
 	using System.Text;
 	using InteractiveAutomation.Wizard.ElementSelection;
@@ -69,6 +70,7 @@ namespace InteractiveAutomation
 	public class Script
 	{
 		private InteractiveController app;
+		private IEngine engine;
 
 		/// <summary>
 		/// The Script entry point.
@@ -83,6 +85,8 @@ namespace InteractiveAutomation
 
 				engine.SetFlag(RunTimeFlags.NoKeyCaching);
 				engine.Timeout = TimeSpan.FromHours(10);
+
+				this.engine = engine;
 
 				RunSafe(engine);
 			}
@@ -113,7 +117,7 @@ namespace InteractiveAutomation
 			// TODO: Define dialogs here
 			IModel model = new Model(engine.GetDms(), engine);
 			ElementSelectionView elementSelectionDialog = new ElementSelectionView(engine);
-			ElementSelectionPresenter elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionDialog, model);
+			ElementSelectionPresenter elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionDialog, model, engine);
 			ParameterSelectionView parameterSelectionDialog = new ParameterSelectionView(engine);
 			ParameterSelectionPresenter parameterSelectionPresenter = new ParameterSelectionPresenter(parameterSelectionDialog, model, engine);
 			SetValueView setValueDialog = new SetValueView(engine);
@@ -122,6 +126,7 @@ namespace InteractiveAutomation
 			// Define how windows move between each other
 			elementSelectionPresenter.Next += (sender, args) =>
 			{
+				parameterSelectionPresenter.LoadFromModel();
 				app.ShowDialog(parameterSelectionDialog);
 			};
 
