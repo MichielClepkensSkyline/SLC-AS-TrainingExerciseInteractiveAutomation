@@ -11,11 +11,11 @@ namespace Automation_1.ParameterValueSelection
 {
 	public class ParameterValueSelectionPresenter
 	{
-		private readonly ParameterValueSelectionView view;
+		private readonly IParameterValueSelectionView view;
 
 		private readonly IElementSelector selector;
 
-		public ParameterValueSelectionPresenter(ParameterValueSelectionView parameterView, IElementSelector elementSelector)
+		public ParameterValueSelectionPresenter(IParameterValueSelectionView parameterView, IElementSelector elementSelector)
 		{
 			view = parameterView ?? throw new ArgumentNullException(nameof(parameterView));
 			selector = elementSelector ?? throw new ArgumentNullException(nameof(elementSelector));

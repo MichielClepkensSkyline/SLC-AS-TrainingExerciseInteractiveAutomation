@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Automation_1.ParameterValueSelection
 {
-	public class ParameterValueSelectionView : Dialog
+	public class ParameterValueSelectionView : Dialog, IParameterValueSelectionView
 	{
 		public ParameterValueSelectionView(IEngine engine) : base(engine)
 		{
