@@ -62,45 +62,11 @@
 			}
 		}
 
-		private bool isParameterValid;
-
-		public event EventHandler SelectedParameterChanged;
-
-		public bool IsParameterValid
-		{
-			get
-			{
-				return isParameterValid;
-			}
-		}
-
 		public int SelectedParameterId
 		{
 			get => selectedParameterId;
 			set
 			{
-				//engine.Log("Element: " + $"{SelectedElement.AgentId}/{SelectedElement.Id.ToString()}");
-				/*selectedParameterId = value;
-				isParameterValid = false;
-
-				if (SelectedElement != null && selectedParameterId > 0)
-				{
-					try
-					{
-						var parameter = selectedElement.GetStandaloneParameter<string>(selectedParameterId);
-						var types = parameter.GetType();
-				engine.Log($"is type of {types}");
-						var parameterValue = parameter.GetValue();
-						isParameterValid = true;
-					}
-					catch
-					{
-						isParameterValid = false;
-					}
-				}
-
-				SelectedParameterChanged?.Invoke(this, EventArgs.Empty);*/
-
 				if (value == selectedParameterId)
 				{
 					return;
@@ -143,9 +109,7 @@
 			{
 				Element element = engine.FindElement(SelectedElement.AgentId, SelectedElement.Id);
 				var parameters = element.Protocol.GetAllParameters().Where(p => p.ID < 63999 && p.IsTableColumn == false && p.IsTable == false);
-				//engine.Log("Frist parameter: " + parameters.First().Name);
 				parameterInfos = parameters;
-				//engine.Log("Type parameter: " + parameters.ElementAt(0).InterpreteType);
 				return parameterInfos;
 			}
 		}
