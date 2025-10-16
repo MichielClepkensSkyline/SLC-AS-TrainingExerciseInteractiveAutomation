@@ -26,24 +26,14 @@
 			parameterSelectionView = view ?? throw new ArgumentNullException(nameof(parameterSelectionView));
 			elementSelector = element ?? throw new ArgumentNullException(nameof(elementSelector));
 
-			//this.elementSelector.SelectedParameterChanged += OnSelectedParameterChanged;
 			parameterSelectionView.ContinueButton.Pressed += OnContinueButtonPressed;
 
 			parameterSelectionView.BackButton.Pressed += OnBackButtonPressed;
-
-			/*parameterSelectionView.ParameterId.Changed += OnParameterIdChanged;
-
-			UpdateContinueButtonState();*/
 		}
 
 		public event EventHandler<EventArgs> Continue;
 
 		public event EventHandler<EventArgs> Back;
-
-		private void OnParameterIdChanged(object sender, EventArgs e)
-		{
-			StoreToModel();
-		}
 
 		public void LoadFromModel()
 		{
@@ -66,17 +56,6 @@
 			parameterSelectionView.ParameterId.Selected = elementSelector.SelectedParameterId.ToString();
 		}
 
-		private void OnSelectedParameterChanged(object sender, EventArgs e)
-		{
-			//engine.Log($"Parameter changed. Valid: {elementSelector.IsParameterValid}");
-			UpdateContinueButtonState();
-		}
-
-		private void UpdateContinueButtonState()
-		{
-			parameterSelectionView.ContinueButton.IsEnabled = elementSelector.IsParameterValid;
-		}
-
 		private void OnContinueButtonPressed(object sender, EventArgs e)
 		{
 			StoreToModel();
@@ -95,7 +74,6 @@
 		{
 			string selected = parameterSelectionView.ParameterId.Selected;
 			elementSelector.SelectedParameterId = parametersByName[selected].ID;
-			//elementSelector.SelectedParameterId = (int)parameterSelectionView.ParameterId.Value;
 		}
 	}
 }
