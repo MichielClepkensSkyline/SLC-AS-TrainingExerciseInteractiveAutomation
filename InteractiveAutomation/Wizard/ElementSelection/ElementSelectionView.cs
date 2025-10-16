@@ -16,7 +16,6 @@
 
 		public ElementSelectionView(IEngine engine) : base(engine)
 		{
-			// Alles wat op de UI komt aanmaken (komt allemaal uit de INteractiveAutomationScript package)
 			elementLabel = new Label($"Element: ");
 
 			ElementsDropDown = new DropDown() { IsDisplayFilterShown = true, IsSorted = true };
@@ -24,7 +23,6 @@
 
 			Title = "Select element";
 
-			// Toevoegen van de UI components aan een bepaalde plek in de UI
 			AddWidget(elementLabel, 0, 0);
 			AddWidget((DropDown)ElementsDropDown, 0, 1);
 			AddWidget(NextButton, 1, 1);

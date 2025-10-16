@@ -25,7 +25,6 @@
 
 			Title = $"Set value";
 
-			// Toevoegen van de UI components aan een bepaalde plek in de UI
 			AddWidget(setLabel, 0, 0);
 			AddWidget(ValueBox, 0, 1);
 			AddWidget(SetButton, 0, 2);

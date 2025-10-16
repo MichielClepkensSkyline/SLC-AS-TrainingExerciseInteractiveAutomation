@@ -12,12 +12,10 @@
 
 	internal class ParameterSelectionView : Dialog, IParameterSelectionView
 	{
-		// private readonly Label titleLabel;
 		private readonly Label parameterLabel;
 
 		public ParameterSelectionView(IEngine engine) : base(engine)
 		{
-			// Alles wat op de UI komt aanmaken (komt allemaal uit de INteractiveAutomationScript package)
 			parameterLabel = new Label($"Parameter ID: ");
 			ParametersDropDown = new DropDown();
 
@@ -26,7 +24,6 @@
 
 			Title = $"Select parameter";
 
-			// Toevoegen van de UI components aan een bepaalde plek in de UI
 			AddWidget(parameterLabel, 0, 0);
 			AddWidget((DropDown)ParametersDropDown, 0, 1);
 			AddWidget(BackButton, 1, 0);

@@ -18,9 +18,9 @@
 		private readonly IDms dms;
 
 		private IDictionary<string, IDmsElement> elements;
-		private string selectedElementName;
+		private IDictionary<int, ParameterInfo> parameters;
 
-		// private object selectedParameter; // TODO hoe dit doen?
+		private string selectedElementName;
 		private int selectedParameterId;
 
 		public Model(IDms dms, IEngine engine)
@@ -35,7 +35,7 @@
 			{
 				elements = dms.GetElements()
 					.Where(element => element.State == Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active)
-					.ToDictionary(element => element.Name);
+					.ToDictionary(element => element.Name) ?? new Dictionary<string, IDmsElement>();
 				return elements;
 			}
 		}
@@ -44,20 +44,17 @@
 		{
 			get
 			{
-				return selectedElementName ?? null; // TODO wat invullen indien er geen element geselecteerd is?
+				return selectedElementName ?? elements.First().Key;
 			}
 
 			set
 			{
-				engine.Log($"The selected element is: {value}");
 				if (value == selectedElementName)
 				{
 					return;
 				}
 
 				selectedElementName = value;
-
-				// selectedParameter = null;
 			}
 		}
 
@@ -66,38 +63,20 @@
 			get
 			{
 				Element element = engine.FindElement(SelectedElementName);
-				if (element != null)
+				if (element != null && element.IsActive)
 				{
 					var parameters = element.Protocol.GetAllParameters();
 					if (parameters != null)
 					{
-						/*foreach (var parameter in parameters)
-						{
-							engine.Log($"---------{parameter.Name}---------");
-							engine.Log($"IsDynamicData: {parameter.IsDynamicData}");
-							engine.Log($"WriteType: {parameter.WriteType}");
-							engine.Log($"ArrayType: {parameter.ArrayType}");
-							engine.Log($"Category: {parameter.Category}");
-							engine.Log($"ComponentInfo: {parameter.ComponentInfo}");
-							engine.Log($"DynamicUnits: {parameter.DynamicUnits}");
-							engine.Log($"FixedType: {parameter.FixedType}");
-							engine.Log($"GetType(): {parameter.GetType()}");
-							engine.Log($"IsDiscreet: {parameter.IsDiscreet}");
-							engine.Log($"IsDouble: {parameter.IsDouble}");
-							engine.Log($"IsString: {parameter.IsString}");
-							engine.Log($"IsTable: {parameter.IsTable}");
-							engine.Log($"IsTableColumn: {parameter.IsTableColumn}");
-							engine.Log($"ParameterType: {parameter.ParameterType}");
-						}*/
-
-						return parameters
+						this.parameters = parameters
 							.Where(parameter =>
 								parameter.ID < MaxParameterId &&
 								parameter.ParameterType != ParameterMeasurementType.Title &&
 								!parameter.IsTable &&
 								!parameter.IsTableColumn &&
 								!parameter.WriteType)
-							.ToDictionary(parameter => parameter.ID);
+							.ToDictionary(parameter => parameter.ID) ?? new Dictionary<int, ParameterInfo>();
+						return this.parameters;
 					}
 				}
 
@@ -109,12 +88,11 @@
 		{
 			get
 			{
-				return selectedParameterId; // TODO moet er hier een default value?
+				return selectedParameterId;
 			}
 
 			set
 			{
-				engine.Log($"The selected parameter id is: {value}");
 				if (value == selectedParameterId)
 				{
 					return;
@@ -126,79 +104,84 @@
 
 		public string SetStringOnParameter(string value)
 		{
-			Element selectedElement = engine.FindElement(selectedElementName);
-			if (selectedElement != null && selectedElement.IsActive)
+			if (!String.IsNullOrWhiteSpace(value))
 			{
-				if (CheckParameterExists(selectedElement, selectedParameterId))
+				Element selectedElement = engine.FindElement(SelectedElementName);
+				if (selectedElement != null && selectedElement.IsActive)
 				{
-					ParameterInfo parameter = selectedElement.Protocol.FindParameter(selectedParameterId);
-					if (CheckParameter(parameter) && parameter.IsString)
+					if (CheckParameterExists(selectedElement, SelectedParameterId))
 					{
-						try
+						ParameterInfo parameter = selectedElement.Protocol.FindParameter(SelectedParameterId);
+						if (CheckParameter(parameter) && parameter.IsString)
 						{
-							selectedElement.SetParameter(selectedParameterId, value);
-							return "Success";
+							try
+							{
+								selectedElement.SetParameter(SelectedParameterId, value);
+								return "Success";
+							}
+							catch (Exception e)
+							{
+								return Convert.ToString(e);
+							}
 						}
-						catch (Exception e)
+						else if (!parameter.IsString)
 						{
-							engine.Log($"{e}");
-							return Convert.ToString(e);
+							return "The selected parameter is not of type string";
 						}
-					}
-					else if (!parameter.IsString)
-					{
-						return "The selected parameter is not of type string";
-					}
-					else if (parameter.IsTable || parameter.IsTableColumn)
-					{
-						return "The selected parameter is part of a table";
-					}
-					else if (parameter.WriteType)
-					{
-						return "The selected parameter is of type write";
-					}
-					else if (parameter.ParameterType != ParameterMeasurementType.Title)
-					{
-						return "The selected parameter is a title";
+						else if (parameter.IsTable || parameter.IsTableColumn)
+						{
+							return "The selected parameter is part of a table";
+						}
+						else if (parameter.WriteType)
+						{
+							return "The selected parameter is of type write";
+						}
+						else if (parameter.ParameterType != ParameterMeasurementType.Title)
+						{
+							return "The selected parameter is a title";
+						}
+						else
+						{
+							return "The selected parameter is out of range";
+						}
 					}
 					else
 					{
-						return "The selected parameter is out of range";
+						return "The selected parameter does not exist";
 					}
+				}
+				else if (selectedElement == null)
+				{
+					return "The selected element doesn't exist";
 				}
 				else
 				{
-					return "The selected parameter does not exist";
+					return "The selected element is not active";
 				}
-			}
-			else if (selectedElement == null)
-			{
-				return "The selected element doesn't exist";
 			}
 			else
 			{
-				return "The selected element is not active";
+				return "Value can't be null or whitespace";
 			}
 		}
 
 		public string SetDoubleOnParameter(double value)
 		{
-			Element selectedElement = engine.FindElement(selectedElementName);
+			Element selectedElement = engine.FindElement(SelectedElementName);
 			if (selectedElement != null && selectedElement.IsActive)
 			{
-				if (CheckParameterExists(selectedElement, selectedParameterId))
+				if (CheckParameterExists(selectedElement, SelectedParameterId))
 				{
-					ParameterInfo parameter = selectedElement.Protocol.FindParameter(selectedParameterId);
+					ParameterInfo parameter = selectedElement.Protocol.FindParameter(SelectedParameterId);
 					if (CheckParameter(parameter) && parameter.IsDouble)
 					{
 						try
 						{
-							selectedElement.SetParameter(selectedParameterId, value);
+							selectedElement.SetParameter(SelectedParameterId, value);
 							return "Success";
 						}
 						catch (Exception e)
 						{
-							engine.Log($"{e}");
 							return Convert.ToString(e);
 						}
 					}

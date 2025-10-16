@@ -47,7 +47,6 @@
 
 		private void OnBackPressed(object sender, EventArgs e)
 		{
-			// StoreToModel TODO implementeren dat waarde die eerder zet is onthouden wordt?
 			Back?.Invoke(this, EventArgs.Empty);
 		}
 

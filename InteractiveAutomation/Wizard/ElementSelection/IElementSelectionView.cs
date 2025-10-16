@@ -8,7 +8,7 @@
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
-	internal interface IElementSelectionView // : IDialog
+	internal interface IElementSelectionView
 	{
 		Button NextButton { get; }
 

@@ -114,7 +114,7 @@ namespace InteractiveAutomation
 
 		private void RunSafe(IEngine engine)
 		{
-			// TODO: Define dialogs here
+			// Define dialogs
 			IModel model = new Model(engine.GetDms(), engine);
 			ElementSelectionView elementSelectionDialog = new ElementSelectionView(engine);
 			ElementSelectionPresenter elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionDialog, model, engine);

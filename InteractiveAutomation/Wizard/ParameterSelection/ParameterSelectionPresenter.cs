@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
+	using System.Reflection;
 	using System.Text;
 	using System.Threading.Tasks;
 	using Skyline.DataMiner.Automation;
@@ -47,7 +48,13 @@
 
 		private void StoreToModel()
 		{
-			int parameterid = Convert.ToInt32(parameterSelectionView.ParametersDropDown.Selected.Split(' ')[0]);
+			string[] parameterinfo = parameterSelectionView.ParametersDropDown.Selected.Split(' ');
+			int parameterid = 0;
+			if (parameterinfo.Length > 0 && !String.IsNullOrWhiteSpace(parameterinfo[0]))
+			{
+				parameterid = Convert.ToInt32(parameterinfo[0]);
+			}
+
 			model.SelectedParameterId = parameterid;
 		}
 	}
