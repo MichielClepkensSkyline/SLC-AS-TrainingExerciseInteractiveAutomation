@@ -1,4 +1,5 @@
-﻿using Skyline.DataMiner.Net.Helper;
+﻿using Skyline.DataMiner.Core.DataMinerSystem.Common;
+using Skyline.DataMiner.Net.Helper;
 
 using System;
 using System.Collections.Generic;
@@ -25,23 +26,41 @@ namespace Automation_1.ParameterValueSelection
 
 		private void OnSetStringValuePressed(object sender, EventArgs e)
 		{
-				string valueToSet = view.StringValue.Text;
+			string valueToSet = view.StringValue.Text;
+
+			if (string.IsNullOrWhiteSpace(valueToSet))
+			{
+				view.Message.Text = "String value cannot be empty.";
+				return;
+			}
+
+			var element = selector.SelectedElement;
+			var parameterId = selector.SelectedParameterId;
+
+			if (!IsElementValid(element))
+			{
+				view.Message.Text = "Selected element is invalid or inactive.";
+				return;
+			}
+
+			if (parameterId <= 0)
+			{
+				view.Message.Text = "Invalid parameter ID.";
+				return;
+			}
+
+			try
+			{
+				var parameter = element.GetStandaloneParameter<string>(parameterId);
+				parameter.SetValue(valueToSet);
 
 				selector.SetParameterValueString = valueToSet;
-
-				var element = selector.SelectedElement;
-				var parameterId = selector.SelectedParameterId;
-
-				if (valueToSet.IsNullOrEmpty())
-				{
-					view.Message.Text = $"Failed to set string parameter";
-				}
-				else
-				{
-					var parameter = element.GetStandaloneParameter<string>(parameterId);
-					parameter.SetValue(valueToSet);
-					view.Message.Text = "Success";
-				}
+				view.Message.Text = "String parameter set successfull!";
+			}
+			catch (Exception ex)
+			{
+				view.Message.Text = $"Failed to set string parameter: {ex.Message}";
+			}
 		}
 
 		private void OnSetDoubleValuePressed(object sender, EventArgs e)
@@ -51,19 +70,33 @@ namespace Automation_1.ParameterValueSelection
 			var element = selector.SelectedElement;
 			var parameterId = selector.SelectedParameterId;
 
-			if (element == null)
+			if (!IsElementValid(element))
 			{
-				throw new InvalidOperationException("No element is selected.");
+				view.Message.Text = "Selected element is invalid or inactive.";
+				return;
 			}
 
 			if (parameterId <= 0)
 			{
-				throw new InvalidOperationException("Invalid parameter ID selected.");
+				view.Message.Text = "Invalid parameter ID.";
+				return;
 			}
 
-			var parameter = element.GetStandaloneParameter<double?>(parameterId);
-			parameter.SetValue(valueToSet);
+			try
+			{
+				var parameter = element.GetStandaloneParameter<double?>(parameterId);
+				parameter.SetValue(valueToSet);
+				view.Message.Text = "Double parameter set successfully.";
+			}
+			catch (Exception ex)
+			{
+				view.Message.Text = $"Failed to set double parameter: {ex.Message}";
+			}
 		}
 
+		private bool IsElementValid(IDmsElement element)
+		{
+			return element != null && element.State == ElementState.Active;
+		}
 	}
 }
