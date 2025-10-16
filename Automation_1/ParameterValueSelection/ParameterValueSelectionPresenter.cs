@@ -91,6 +91,14 @@ namespace Automation_1.ParameterValueSelection
 				var element = selector.SelectedElement;
 				var parameterId = selector.SelectedParameterId;
 
+				var type = selector.Parameters.Where(p => p.ID == parameterId).First().InterpreteType.ToString();
+
+				if (!type.Contains("Double"))
+				{
+					view.Message.Text = "Parameter is not type of double";
+					return;
+				}
+
 				if (!IsElementValid(element))
 				{
 					view.Message.Text = "Selected element is invalid or inactive.";
