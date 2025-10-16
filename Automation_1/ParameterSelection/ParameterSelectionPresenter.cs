@@ -13,11 +13,11 @@
 
 	public class ParameterSelectionPresenter
 	{
-		private readonly ParameterSelectionView parameterSelectionView;
+		private readonly IParameterSelectionView parameterSelectionView;
 		private readonly IElementSelector elementSelector;
 		private readonly IEngine engine;
 
-		public ParameterSelectionPresenter(IEngine engine, ParameterSelectionView view, IElementSelector element)
+		public ParameterSelectionPresenter(IEngine engine, IParameterSelectionView view, IElementSelector element)
 		{
 			this.engine = engine;
 			parameterSelectionView = view ?? throw new ArgumentNullException(nameof(parameterSelectionView));

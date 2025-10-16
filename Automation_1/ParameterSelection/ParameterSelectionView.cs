@@ -10,7 +10,7 @@
 	using System.Text;
 	using System.Threading.Tasks;
 
-	public class ParameterSelectionView : Dialog
+	public class ParameterSelectionView : Dialog, IParameterSelectionView
 	{
 		public ParameterSelectionView(IEngine engine) : base(engine)
 		{
