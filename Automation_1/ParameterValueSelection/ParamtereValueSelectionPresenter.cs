@@ -1,4 +1,5 @@
 ﻿using Skyline.DataMiner.Automation;
+using Skyline.DataMiner.Net.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,21 +49,27 @@ namespace Automation_1.ParameterValueSelection
                 if (String.IsNullOrWhiteSpace(valueToSet))
                 {
                     _view.ExceptionTextBox.Text = "Please enter a valid string value";
+                    return;
                 }
-                else
+
+                _model.StringValue = valueToSet;
+
+                var element = _model.SelectedElement;
+
+                var parameterId = _model.SelectedParameter;
+
+                var type = _model.Parameters.Where(p => p.ID == parameterId).First().InterpreteType;
+
+                if (type != ParameterInterpreteType.String)
                 {
-                    _model.StringValue = valueToSet;
-
-                    var element = _model.SelectedElement;
-
-                    var parameterId = _model.SelectedParameter;
-
-                    var parameter = element.GetStandaloneParameter<string>(parameterId);
-                    parameter.SetValue(valueToSet);
-
-                    _view.ExceptionTextBox.Text = "Success";
+                    _view.ExceptionTextBox.Text = "Parameter isn't of type strng";
+                    return;
                 }
 
+                var parameter = element.GetStandaloneParameter<string>(parameterId);
+
+                parameter.SetValue(valueToSet);
+                _view.ExceptionTextBox.Text = "Success";
             }
             catch (Exception ex)
             {
@@ -80,20 +87,27 @@ namespace Automation_1.ParameterValueSelection
                 if (valueToSet<0)
                 {
                     _view.ExceptionTextBox.Text = "Please enter a valid double value";
+                    return;
                 }
-                else
+
+                _model.DoubleValue = valueToSet;
+
+                var element = _model.SelectedElement;
+
+                var parameterId = _model.SelectedParameter;
+
+                var type = _model.Parameters.Where(p => p.ID == parameterId).First().InterpreteType;
+
+                if(type != ParameterInterpreteType.Double)
                 {
-                    _model.DoubleValue = valueToSet;
-
-                    var element = _model.SelectedElement;
-
-                    var parameterId = _model.SelectedParameter;
-
-                    var parameter = element.GetStandaloneParameter<double?>(parameterId);
-                    parameter.SetValue(valueToSet);
-
-                    _view.ExceptionTextBox.Text ="Success";
+                    _view.ExceptionTextBox.Text = "Parameter isn't of type double";
+                    return;
                 }
+
+                var parameter = element.GetStandaloneParameter<double?>(parameterId);
+
+                parameter.SetValue(valueToSet);
+                _view.ExceptionTextBox.Text ="Success";
             }
             catch (Exception ex)
             {

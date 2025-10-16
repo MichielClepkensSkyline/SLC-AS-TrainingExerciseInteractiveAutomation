@@ -1,4 +1,6 @@
-﻿using Skyline.DataMiner.Core.DataMinerSystem.Common;
+﻿using Skyline.DataMiner.Automation;
+using Skyline.DataMiner.Core.DataMinerSystem.Common;
+using Skyline.DataMiner.Net.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +11,19 @@ namespace Automation_1
 {
     public class ElementSelector : IElementSelector
     {
+        private readonly IEngine _engine;
         private readonly IDms dms;
 
         private List<IDmsElement> elements;
         private IDmsElement selectedElement;
+        private IEnumerable<ParameterInfo> parameters;
         private int selectedParameter;
         private string stringValue;
         private double doubleValue;
 
-        public ElementSelector(IDms dms)
+        public ElementSelector(IEngine engine, IDms dms)
         {
+            _engine= engine;
             this.dms=dms;
         }
 
@@ -73,6 +78,17 @@ namespace Automation_1
             set
             {
                 doubleValue = value;
+            }
+        }
+
+        public IEnumerable<ParameterInfo> Parameters
+        {
+            get
+            {
+                Element element = _engine.FindElement(SelectedElement.AgentId, SelectedElement.Id);
+                var parameterInfos = element.Protocol.GetAllParameters().Where(p => p.ID < 63999 && p.IsTable == false);
+                parameters = parameterInfos;
+                return parameters;
             }
         }
     }

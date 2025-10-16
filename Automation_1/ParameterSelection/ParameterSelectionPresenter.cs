@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Skyline.DataMiner.Automation;
+using Skyline.DataMiner.Net.Messages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +10,11 @@ namespace Automation_1.ParameterSelection
 {
     public class ParameterSelectionPresenter
     {
+        private Dictionary<string, ParameterInfo> parametersByName;
+        public bool ParameterExists;
         private readonly IElementSelector _model;
         private readonly IParameterSelectionView _view;
-        public bool ParameterExists;
+
 
         public ParameterSelectionPresenter(IElementSelector model, IParameterSelectionView view)
         {
@@ -50,8 +54,28 @@ namespace Automation_1.ParameterSelection
 
         private void StoreToModel()
         {
-            int parameterId = (int)_view.ParameterId.Value;
-            _model.SelectedParameter=parameterId;
+            string selected = _view.ParameterIdDropDown.Selected;
+            _model.SelectedParameter = parametersByName[selected].ID;
+        }
+
+        public void LoadFromModel()
+        {
+            if (_model.Elements == null || !_model.Elements.Any())
+            {
+                _view.ParameterIdDropDown.SetOptions(new List<string>());
+                return;
+            }
+
+            if (_model.Parameters == null || !_model.Parameters.Any())
+            {
+                _view.ParameterIdDropDown.SetOptions(new List<string>());
+                return;
+            }
+
+            parametersByName = _model.Parameters.ToDictionary(p => p.ID.ToString());
+
+            _view.ParameterIdDropDown.SetOptions(parametersByName.Keys);
+            _view.ParameterIdDropDown.Selected = _model.SelectedParameter.ToString();
         }
     }
 }

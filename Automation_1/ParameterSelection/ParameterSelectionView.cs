@@ -12,18 +12,18 @@ namespace Automation_1.ParameterSelection
     {
         public ParameterSelectionView(IEngine engine) : base(engine)
         {
-            ParameterId = new Numeric();
+            ParameterIdDropDown = new DropDown { IsSorted = true, IsDisplayFilterShown = true };
 
             NextButton = new Button("Next");
             BackButton = new Button("Back");
 
             AddWidget(new Label("Parameter ID"), 0, 0);
-            AddWidget(ParameterId, 0, 1);
+            AddWidget(ParameterIdDropDown, 0, 1);
             AddWidget(BackButton, 1, 0);
             AddWidget(NextButton, 1, 1);
         }
 
-        public Numeric ParameterId { get; }
+        public DropDown ParameterIdDropDown { get; }
 
         public Button NextButton { get; }
 

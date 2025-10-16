@@ -119,7 +119,7 @@ namespace Automation_1
                 engine.ExitFail("No DMS found");
             }
 
-            IElementSelector elementSelector = new ElementSelector(dms);
+            IElementSelector elementSelector = new ElementSelector(engine,dms);
             ElementSelectionView elementSelectionView = new ElementSelectionView(engine);
             ElementSelectionPresenter elementSelectionPresenter = new ElementSelectionPresenter(elementSelector, elementSelectionView);
 
@@ -133,6 +133,7 @@ namespace Automation_1
 
             elementSelectionPresenter.Next += (sender, args) =>
             {
+                parameterSelectorPresenter.LoadFromModel();
                 dialog.Check(elementSelectionPresenter.isElementActive, elementSelectionView, parameterSelectorView, "Element is inactive");
             };
 
