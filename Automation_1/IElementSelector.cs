@@ -6,6 +6,7 @@
 	using System.Text;
 	using System.Threading.Tasks;
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
+	using Skyline.DataMiner.Net.Messages;
 
 	public interface IElementSelector
 	{
@@ -22,5 +23,7 @@
 		double SetParameterValueDouble { get; set; }
 
 		bool IsParameterValid { get; }
+
+		IEnumerable<ParameterInfo> Parameters { get; }
 	}
 }

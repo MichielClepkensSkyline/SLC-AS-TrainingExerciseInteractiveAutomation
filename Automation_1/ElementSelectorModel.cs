@@ -9,6 +9,7 @@
 
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
+	using Skyline.DataMiner.Net.Messages;
 	using Skyline.DataMiner.Net.ReportsAndDashboards;
 
 	public class ElementSelectorModel : IElementSelector
@@ -17,6 +18,7 @@
 		private IDmsElement[] elements;
 		private IDmsElement selectedElement;
 		private IEngine engine;
+		private IEnumerable<ParameterInfo> parameterInfos;
 
 		private int selectedParameterId;
 		private string setParameterValueString;
@@ -38,7 +40,7 @@
 		{
 			get
 			{
-				return elements ?? (elements = dms.GetElements().Where(x => x.State == ElementState.Active).ToArray());
+				return elements ?? (elements = dms.GetElements().Where(x => x.State == Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active).ToArray());
 			}
 		}
 
@@ -77,17 +79,17 @@
 			get => selectedParameterId;
 			set
 			{
-				selectedParameterId = value;
-				engine.Log("Selected Element is" + SelectedElement.Name);
-				engine.Log("Selected Parameter Id is" + selectedParameterId);
+				//engine.Log("Element: " + $"{SelectedElement.AgentId}/{SelectedElement.Id.ToString()}");
+				/*selectedParameterId = value;
 				isParameterValid = false;
 
 				if (SelectedElement != null && selectedParameterId > 0)
 				{
 					try
 					{
-						engine.Log("LogLine -----------------------------");
 						var parameter = selectedElement.GetStandaloneParameter<string>(selectedParameterId);
+						var types = parameter.GetType();
+				engine.Log($"is type of {types}");
 						var parameterValue = parameter.GetValue();
 						isParameterValid = true;
 					}
@@ -97,7 +99,14 @@
 					}
 				}
 
-				SelectedParameterChanged?.Invoke(this, EventArgs.Empty);
+				SelectedParameterChanged?.Invoke(this, EventArgs.Empty);*/
+
+				if (value == selectedParameterId)
+				{
+					return;
+				}
+
+				selectedParameterId = value;
 			}
 		}
 
@@ -128,6 +137,17 @@
 			}
 		}
 
-
+		public IEnumerable<ParameterInfo> Parameters
+		{
+			get
+			{
+				Element element = engine.FindElement(SelectedElement.AgentId, SelectedElement.Id);
+				var parameters = element.Protocol.GetAllParameters().Where(p => p.ID < 63999 && p.IsTableColumn == false && p.IsTable == false);
+				//engine.Log("Frist parameter: " + parameters.First().Name);
+				parameterInfos = parameters;
+				//engine.Log("Type parameter: " + parameters.ElementAt(0).InterpreteType);
+				return parameterInfos;
+			}
+		}
 	}
 }

@@ -3,7 +3,9 @@
 	using Automation_1.ElementSelection;
 
 	using Skyline.DataMiner.Automation;
+	using Skyline.DataMiner.Core.DataMinerSystem.Common;
 	using Skyline.DataMiner.Core.DataMinerSystem.Common.Selectors;
+	using Skyline.DataMiner.Net.Messages;
 
 	using System;
 	using System.Collections.Generic;
@@ -16,6 +18,7 @@
 		private readonly IParameterSelectionView parameterSelectionView;
 		private readonly IElementSelector elementSelector;
 		private readonly IEngine engine;
+		private Dictionary<string, ParameterInfo> parametersByName;
 
 		public ParameterSelectionPresenter(IEngine engine, IParameterSelectionView view, IElementSelector element)
 		{
@@ -23,14 +26,14 @@
 			parameterSelectionView = view ?? throw new ArgumentNullException(nameof(parameterSelectionView));
 			elementSelector = element ?? throw new ArgumentNullException(nameof(elementSelector));
 
-			this.elementSelector.SelectedParameterChanged += OnSelectedParameterChanged;
+			//this.elementSelector.SelectedParameterChanged += OnSelectedParameterChanged;
 			parameterSelectionView.ContinueButton.Pressed += OnContinueButtonPressed;
 
 			parameterSelectionView.BackButton.Pressed += OnBackButtonPressed;
 
-			parameterSelectionView.ParameterId.Changed += OnParameterIdChanged;
+			/*parameterSelectionView.ParameterId.Changed += OnParameterIdChanged;
 
-			UpdateContinueButtonState();
+			UpdateContinueButtonState();*/
 		}
 
 		public event EventHandler<EventArgs> Continue;
@@ -40,6 +43,27 @@
 		private void OnParameterIdChanged(object sender, EventArgs e)
 		{
 			StoreToModel();
+		}
+
+		public void LoadFromModel()
+		{
+			if (elementSelector.Elements == null || !elementSelector.Elements.Any())
+			{
+				parameterSelectionView.ParameterId.SetOptions(new List<string>());
+				return;
+			}
+
+			if (elementSelector.Parameters == null || !elementSelector.Parameters.Any())
+			{
+				engine.Log("No parameters found for the selected element.");
+				parameterSelectionView.ParameterId.SetOptions(new List<string>());
+				return;
+			}
+
+			parametersByName = elementSelector.Parameters.ToDictionary(p => p.ID.ToString());
+
+			parameterSelectionView.ParameterId.SetOptions(parametersByName.Keys);
+			parameterSelectionView.ParameterId.Selected = elementSelector.SelectedParameterId.ToString();
 		}
 
 		private void OnSelectedParameterChanged(object sender, EventArgs e)
@@ -69,7 +93,9 @@
 
 		private void StoreToModel()
 		{
-			elementSelector.SelectedParameterId = (int)parameterSelectionView.ParameterId.Value;
+			string selected = parameterSelectionView.ParameterId.Selected;
+			elementSelector.SelectedParameterId = parametersByName[selected].ID;
+			//elementSelector.SelectedParameterId = (int)parameterSelectionView.ParameterId.Value;
 		}
 	}
 }
