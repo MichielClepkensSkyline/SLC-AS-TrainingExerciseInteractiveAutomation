@@ -17,9 +17,8 @@
 			Title = "Parameter Set";
 			ContinueButton = new Button("Continue...");
 			BackButton = new Button("Back");
-			ParameterId = new Numeric();
+			ParameterId = new DropDown() { IsSorted = true, IsDisplayFilterShown = true };
 			SelectParameterLabel = new Label("Select a parameter: ");
-			ParameterId.Minimum = 0;
 
 			AddWidget(SelectParameterLabel, 0, 0);
 			AddWidget(ParameterId, 0, 1);
@@ -27,7 +26,7 @@
 			AddWidget(ContinueButton, 1, 1);
 		}
 
-		public Numeric ParameterId { get; }
+		public DropDown ParameterId { get; }
 
 		public Button ContinueButton { get; }
 
