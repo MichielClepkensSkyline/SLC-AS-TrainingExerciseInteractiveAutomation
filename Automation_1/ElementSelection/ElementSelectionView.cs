@@ -6,7 +6,7 @@
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
-	public class ElementSelectionView : Dialog
+	public class ElementSelectionView : Dialog, IElementSelectionView
 	{
 		public ElementSelectionView(IEngine engine) : base(engine)
 		{

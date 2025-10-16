@@ -14,11 +14,11 @@
 	{
 		private readonly IElementSelector selector;
 
-		private readonly ElementSelectionView view;
+		private readonly IElementSelectionView view;
 
 		private Dictionary<string, IDmsElement> elementsByName;
 
-		public ElementSelectionPresenter(ElementSelectionView elementView, IElementSelector elementSelector)
+		public ElementSelectionPresenter(IElementSelectionView elementView, IElementSelector elementSelector)
 		{
 			selector = elementSelector ?? throw new ArgumentNullException(nameof(elementSelector)); ;
 			view = elementView ?? throw new ArgumentNullException(nameof(elementView));
