@@ -51,16 +51,11 @@ DATE		VERSION		AUTHOR			COMMENTS
 namespace InteractiveAutomation
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Globalization;
-	using System.Runtime.Remoting.Channels;
-	using System.Text;
 	using InteractiveAutomation.Wizard.ElementSelection;
 	using InteractiveAutomation.Wizard.ParameterSelection;
 	using InteractiveAutomation.Wizard.SetValue;
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
-	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Messages;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 

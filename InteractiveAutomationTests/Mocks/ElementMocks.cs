@@ -1,14 +1,9 @@
 ﻿namespace InteractiveAutomationTests.Mocks
 {
-	using System;
 	using System.Collections.Generic;
-	using System.Linq;
-	using System.Text;
-	using System.Threading.Tasks;
 	using Moq;
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
-	using Skyline.DataMiner.Net.ReportsAndDashboards;
 
 	/// <summary>
 	/// Mock of the elements.

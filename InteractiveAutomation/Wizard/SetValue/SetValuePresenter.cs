@@ -1,13 +1,6 @@
 ﻿namespace InteractiveAutomation.Wizard.SetValue
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Text;
-	using System.Threading.Tasks;
-	using InteractiveAutomation.Wizard.ParameterSelection;
-	using Skyline.DataMiner.Core.DataMinerSystem.Common.Selectors;
-	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
 	internal class SetValuePresenter
 	{

@@ -1,13 +1,8 @@
 ﻿namespace InteractiveAutomation.Wizard.ParameterSelection
 {
 	using System;
-	using System.Collections.Generic;
 	using System.Linq;
-	using System.Reflection;
-	using System.Text;
-	using System.Threading.Tasks;
 	using Skyline.DataMiner.Automation;
-	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
 	internal class ParameterSelectionPresenter
 	{
