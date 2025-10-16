@@ -46,6 +46,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Actions", "Actions", "{4F06
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteractiveAutomation", "InteractiveAutomation\InteractiveAutomation.csproj", "{3B1F905B-3B96-0239-FD8E-487A7E116F99}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InteractiveAutomationTests", "InteractiveAutomationTests\InteractiveAutomationTests.csproj", "{8D687975-5E37-4AE0-9411-136987DC5D6A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{3B1F905B-3B96-0239-FD8E-487A7E116F99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B1F905B-3B96-0239-FD8E-487A7E116F99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B1F905B-3B96-0239-FD8E-487A7E116F99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D687975-5E37-4AE0-9411-136987DC5D6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D687975-5E37-4AE0-9411-136987DC5D6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D687975-5E37-4AE0-9411-136987DC5D6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D687975-5E37-4AE0-9411-136987DC5D6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
