@@ -9,8 +9,9 @@
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
 	using Skyline.DataMiner.Net.Exceptions;
 	using Skyline.DataMiner.Net.Messages;
+	using ElementState = Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState;
 
-	internal class Model : IModel
+	public class Model : IModel
 	{
 		private const int MaxParameterId = 64000;
 
@@ -34,7 +35,7 @@
 			get
 			{
 				elements = dms.GetElements()
-					.Where(element => element.State == Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active)
+					.Where(element => element.State == ElementState.Active)
 					.ToDictionary(element => element.Name) ?? new Dictionary<string, IDmsElement>();
 				return elements;
 			}
@@ -124,25 +125,9 @@
 								return Convert.ToString(e);
 							}
 						}
-						else if (!parameter.IsString)
-						{
-							return "The selected parameter is not of type string";
-						}
-						else if (parameter.IsTable || parameter.IsTableColumn)
-						{
-							return "The selected parameter is part of a table";
-						}
-						else if (parameter.WriteType)
-						{
-							return "The selected parameter is of type write";
-						}
-						else if (parameter.ParameterType != ParameterMeasurementType.Title)
-						{
-							return "The selected parameter is a title";
-						}
 						else
 						{
-							return "The selected parameter is out of range";
+							return GenerateReturnMessage(parameter, parameter.IsString, "string");
 						}
 					}
 					else
@@ -185,25 +170,9 @@
 							return Convert.ToString(e);
 						}
 					}
-					else if (!parameter.IsDouble)
-					{
-						return "The selected parameter is not of type double";
-					}
-					else if (parameter.IsTable || parameter.IsTableColumn)
-					{
-						return "The selected parameter is part of a table";
-					}
-					else if (parameter.WriteType)
-					{
-						return "The selected parameter is of type write";
-					}
-					else if (parameter.ParameterType != ParameterMeasurementType.Title)
-					{
-						return "The selected parameter is a title";
-					}
 					else
 					{
-						return "The selected parameter is out of range";
+						return GenerateReturnMessage(parameter, parameter.IsDouble, "double");
 					}
 				}
 				else
@@ -221,7 +190,31 @@
 			}
 		}
 
-		private bool CheckParameterExists(Element element, int parameterId)
+		private static string GenerateReturnMessage(ParameterInfo parameter, bool typeCheck, string type)
+		{
+			if (!typeCheck)
+			{
+				return $"The selected parameter is not of type {type}";
+			}
+			else if (parameter.IsTable || parameter.IsTableColumn)
+			{
+				return "The selected parameter is part of a table";
+			}
+			else if (parameter.WriteType)
+			{
+				return "The selected parameter is of type write";
+			}
+			else if (parameter.ParameterType != ParameterMeasurementType.Title)
+			{
+				return "The selected parameter is a title";
+			}
+			else
+			{
+				return "The selected parameter is out of range";
+			}
+		}
+
+		private static bool CheckParameterExists(Element element, int parameterId)
 		{
 			try
 			{
@@ -234,7 +227,7 @@
 			}
 		}
 
-		private bool CheckParameter(ParameterInfo parameter)
+		private static bool CheckParameter(ParameterInfo parameter)
 		{
 			return parameter.ID < MaxParameterId &&
 				!parameter.IsTable &&
