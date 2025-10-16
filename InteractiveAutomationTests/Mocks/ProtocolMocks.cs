@@ -1,4 +1,8 @@
-﻿namespace InteractiveAutomationTests.Mocks
+﻿// <copyright file="ProtocolMocks.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace InteractiveAutomationTests.Mocks
 {
 	using System;
 	using System.Collections.Generic;
@@ -18,6 +22,7 @@
 		/// Initializes a new instance of the <see cref="ProtocolMocks"/> class.
 		/// Represents a DataMiner Automation script.
 		/// </summary>
+		/// <param name="parameterMocks">Mocks of the parameters.</param>
 		public ProtocolMocks(ParameterMocks parameterMocks)
 		{
 			var mocks = new MockRepository(MockBehavior.Default) { DefaultValue = DefaultValue.Mock };

@@ -20,7 +20,8 @@
 		/// Represents a DataMiner Automation script.
 		/// </summary>
 		/// <param name="protocolMocks">Mocks of the protocols.</param>
-		public ElementMocks(ProtocolMocks protocolMocks)
+		/// <param name="parameterMocks">Mocks of the parameters.</param>
+		public ElementMocks(ProtocolMocks protocolMocks, ParameterMocks parameterMocks)
 		{
 			var mocks = new MockRepository(MockBehavior.Default) { DefaultValue = DefaultValue.Mock };
 
@@ -34,7 +35,8 @@
 				element =>
 					element.Name == "Microsoft Platform A" &&
 					element.Protocol == protocolMocks.MicrosoftPlatform &&
-					element.IsActive == true);
+					element.IsActive == true &&
+					element.GetParameter(22) == parameterMocks.StringValue);
 
 			this.MicrosoftPlatformB = mocks.OneOf<IDmsElement>(
 				element =>

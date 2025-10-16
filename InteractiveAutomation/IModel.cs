@@ -8,7 +8,7 @@
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
 	using Skyline.DataMiner.Net.Messages;
 
-	internal interface IModel
+	public interface IModel
 	{
 		IDictionary<string, IDmsElement> Elements { get; }
 

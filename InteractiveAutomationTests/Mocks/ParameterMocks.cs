@@ -1,4 +1,8 @@
-﻿namespace InteractiveAutomationTests.Mocks
+﻿// <copyright file="ParameterMocks.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace InteractiveAutomationTests.Mocks
 {
 	using System;
 	using System.Collections.Generic;
@@ -9,8 +13,15 @@
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
 	using Skyline.DataMiner.Net.Messages;
 
+	/// <summary>
+	/// Mock of the parameters.
+	/// </summary>
 	public class ParameterMocks
 	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ParameterMocks"/> class.
+		/// Represents a DataMiner Automation script.
+		/// </summary>
 		public ParameterMocks()
 		{
 			var mocks = new MockRepository(MockBehavior.Default) { DefaultValue = DefaultValue.Mock };
@@ -29,33 +40,45 @@
 					parameter.ParameterType == ParameterMeasurementType.String &&
 					parameter.WriteType == false);
 
-			this.Value = mocks.OneOf<ParameterInfo>(
+			this.StringValue = mocks.OneOf<ParameterInfo>(
 				parameter =>
 					parameter.Name == "Value" &&
 					parameter.ID == 22 &&
-					parameter.ParameterType == ParameterMeasurementType.Analog &&
+					parameter.ParameterType == ParameterMeasurementType.String &&
 					parameter.WriteType == false);
 
-			this.All = new[] { this.Id, this.Name, this.Value };
+			this.DoubleValue = mocks.OneOf<ParameterInfo>(
+				parameter =>
+					parameter.Name == "Value" &&
+					parameter.ID == 23 &&
+					parameter.ParameterType == ParameterMeasurementType.Number &&
+					parameter.WriteType == false);
+
+			this.All = new[] { this.Id, this.Name, this.StringValue, this.DoubleValue };
 		}
 
 		/// <summary>
-		/// Gets the microsoft platform protocol of the mock.
+		/// Gets parameter info of the Id parameter.
 		/// </summary>
 		public ParameterInfo Id { get; }
 
 		/// <summary>
-		/// Gets the Cisco converged broadband router of the mock.
+		/// Gets parameter info of the Name parameter.
 		/// </summary>
 		public ParameterInfo Name { get; }
 
 		/// <summary>
-		/// Gets the generic ping protocol of the mock.
+		/// Gets parameter info of the StringValue parameter.
 		/// </summary>
-		public ParameterInfo Value { get; }
+		public ParameterInfo StringValue { get; }
 
 		/// <summary>
-		/// Gets all the protocols of the mock.
+		/// Gets parameter info of the DoubleValue parameter.
+		/// </summary>
+		public ParameterInfo DoubleValue { get; }
+
+		/// <summary>
+		/// Gets all parameter info.
 		/// </summary>
 		public IEnumerable<ParameterInfo> All { get; }
 	}
