@@ -2,7 +2,6 @@
 {
 	using System;
 	using System.Linq;
-	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
 	using Skyline.DataMiner.Net.Messages;
 

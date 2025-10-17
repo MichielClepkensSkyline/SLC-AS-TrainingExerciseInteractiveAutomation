@@ -9,10 +9,11 @@
 
 	public class ElementSelectorModel : IElementSelector
 	{
+		private const int ParameterIdRange = 64000;
 		private readonly IDms dms;
+		private readonly IEngine engine;
 		private IDmsElement[] elements;
 		private IDmsElement selectedElement;
-		private IEngine engine;
 		private IEnumerable<ParameterInfo> parameterInfos;
 
 		private int selectedParameterId;
@@ -101,7 +102,7 @@
 			get
 			{
 				Element element = engine.FindElement(SelectedElement.AgentId, SelectedElement.Id);
-				var parameters = element.Protocol.GetAllParameters().Where(p => p.ID < 63999 && p.IsTableColumn == false && p.IsTable == false);
+				var parameters = element.Protocol.GetAllParameters().Where(p => p.ID < ParameterIdRange && p.IsTableColumn == false && p.IsTable == false && p.WriteType == false && p.ParameterType != ParameterMeasurementType.Title);
 				parameterInfos = parameters;
 				return parameterInfos;
 			}
