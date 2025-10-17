@@ -17,16 +17,16 @@
 			Title = "Parameter Set";
 			ContinueButton = new Button("Continue...");
 			BackButton = new Button("Back");
-			ParameterId = new DropDown() { IsSorted = true, IsDisplayFilterShown = true };
+			ParameterIdDropDown = new DropDown() { IsSorted = true, IsDisplayFilterShown = true };
 			SelectParameterLabel = new Label("Select a parameter: ");
 
 			AddWidget(SelectParameterLabel, 0, 0);
-			AddWidget(ParameterId, 0, 1);
+			AddWidget(ParameterIdDropDown, 0, 1);
 			AddWidget(BackButton, 1, 0);
 			AddWidget(ContinueButton, 1, 1);
 		}
 
-		public DropDown ParameterId { get; }
+		public DropDown ParameterIdDropDown { get; }
 
 		public Button ContinueButton { get; }
 

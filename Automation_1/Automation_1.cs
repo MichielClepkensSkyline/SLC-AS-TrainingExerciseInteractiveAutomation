@@ -57,6 +57,7 @@ namespace Automation_1
 
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
+	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
 	using System;
@@ -115,11 +116,12 @@ namespace Automation_1
 			var parameterSelectionView = new ParameterSelectionView(engine);
 			var parameterSelectionPresenter = new ParameterSelectionPresenter(engine,parameterSelectionView, elementSelector);
 			var parameterValueSelectionView = new ParameterValueSelectionView(engine);
-			var parameterValueSelectionPresenter = new ParameterValueSelectionPresenter(parameterValueSelectionView, elementSelector);
+			var parameterValueSelectionPresenter = new ParameterValueSelectionPresenter(engine, parameterValueSelectionView, elementSelector);
 			elementSelectionPresenter.LoadFromModel();
 
 			elementSelectionPresenter.Continue += (sender, args) =>
 			{
+				parameterSelectionPresenter.LoadFromModel();
 				app.ShowDialog(parameterSelectionView);
 			};
 
@@ -133,11 +135,10 @@ namespace Automation_1
 				app.ShowDialog(parameterValueSelectionView);
 			};
 
-			parameterValueSelectionView.Back += (sender, args) =>
+			parameterValueSelectionPresenter.Back += (sender, args) =>
 			{
 				app.ShowDialog(parameterSelectionView);
 			};
-
 
 			app.ShowDialog(elementSelectionView);
 		}
