@@ -18,12 +18,12 @@ namespace Automation_1.ParameterSelection
             BackButton = new Button("Back");
 
             AddWidget(new Label("Parameter ID"), 0, 0);
-            AddWidget(ParameterIdDropDown, 0, 1);
+            AddWidget((Widget)ParameterIdDropDown, 0, 1);
             AddWidget(BackButton, 1, 0);
             AddWidget(NextButton, 1, 1);
         }
 
-        public DropDown ParameterIdDropDown { get; }
+        public IDropDown ParameterIdDropDown { get; }
 
         public Button NextButton { get; }
 

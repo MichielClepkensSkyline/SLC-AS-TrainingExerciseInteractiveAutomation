@@ -9,7 +9,7 @@ namespace Automation_1.ParameterSelection
 {
     public interface IParameterSelectionView
     {
-        DropDown ParameterIdDropDown { get; }
+        IDropDown ParameterIdDropDown { get; }
 
         Button NextButton { get; }
 

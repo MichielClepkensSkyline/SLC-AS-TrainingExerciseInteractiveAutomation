@@ -11,6 +11,6 @@ namespace Automation_1.ElementSelection
     {
         Button NextButton { get; }
 
-        DropDown ElementDropDown { get; }
+        IDropDown ElementDropDown { get; }
     }
 }

@@ -16,12 +16,12 @@ namespace Automation_1.ElementSelection
             NextButton = new Button("Next");
 
             AddWidget(new Label("Element"), 0, 0);
-            AddWidget(ElementDropDown, 0, 1);
+            AddWidget((Widget)ElementDropDown, 0, 1);
             AddWidget(NextButton, 1, 1);
         }
 
         public Button NextButton { get; }
 
-        public DropDown ElementDropDown { get; }
+        public IDropDown ElementDropDown { get; }
     }
 }

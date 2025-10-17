@@ -10,11 +10,10 @@ namespace Automation_1.ParameterSelection
 {
     public class ParameterSelectionPresenter
     {
-        private Dictionary<string, ParameterInfo> parametersByName;
+        public Dictionary<string, ParameterInfo> parametersByName;
         public bool ParameterExists;
         private readonly IElementSelector _model;
         private readonly IParameterSelectionView _view;
-
 
         public ParameterSelectionPresenter(IElementSelector model, IParameterSelectionView view)
         {
@@ -29,7 +28,7 @@ namespace Automation_1.ParameterSelection
 
         public event EventHandler<EventArgs> Back;
 
-        private void OnNextButtonPressed(object sender, EventArgs e)
+        public void OnNextButtonPressed(object sender, EventArgs e)
         {
             StoreToModel();
             try
@@ -46,13 +45,13 @@ namespace Automation_1.ParameterSelection
             Next?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnBackButtonPressed(object sender, EventArgs e)
+        public void OnBackButtonPressed(object sender, EventArgs e)
         {
             StoreToModel();
             Back?.Invoke(this, EventArgs.Empty);
         }
 
-        private void StoreToModel()
+        public void StoreToModel()
         {
             string selected = _view.ParameterIdDropDown.Selected;
             _model.SelectedParameter = parametersByName[selected].ID;
