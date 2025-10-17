@@ -1,15 +1,9 @@
 ﻿namespace Automation_1.ParameterValueSelection
 {
 	using System;
-	using System.Collections.Generic;
 	using System.Linq;
-	using System.Runtime.InteropServices;
-	using System.Text;
-	using System.Threading.Tasks;
-	using Automation_1.ParameterSelection;
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
-	using Skyline.DataMiner.Net.Helper;
 	using Skyline.DataMiner.Net.Messages;
 
 	public class ParameterValueSelectionPresenter
@@ -17,9 +11,8 @@
 		private readonly IParameterValueSelectionView view;
 
 		private readonly IElementSelector selector;
-		private readonly IEngine engine;
 
-		public ParameterValueSelectionPresenter(IEngine engine, IParameterValueSelectionView parameterView, IElementSelector elementSelector)
+		public ParameterValueSelectionPresenter(IParameterValueSelectionView parameterView, IElementSelector elementSelector)
 		{
 			view = parameterView ?? throw new ArgumentNullException(nameof(parameterView));
 			selector = elementSelector ?? throw new ArgumentNullException(nameof(elementSelector));

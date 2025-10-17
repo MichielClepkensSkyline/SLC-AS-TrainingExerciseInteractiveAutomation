@@ -1,8 +1,5 @@
 ﻿namespace Automation_1.ElementSelection
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 

@@ -1,16 +1,10 @@
-﻿using Skyline.DataMiner.Utils.InteractiveAutomationScript;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Automation_1.ParameterSelection
+﻿namespace Automation_1.ParameterSelection
 {
+	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
+
 	public interface IParameterSelectionView
 	{
-		DropDown ParameterId { get; }
+		DropDown ParameterIdDropDown { get; }
 
 		Button ContinueButton { get; }
 

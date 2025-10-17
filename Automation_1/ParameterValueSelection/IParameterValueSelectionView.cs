@@ -1,13 +1,7 @@
-﻿using Skyline.DataMiner.Utils.InteractiveAutomationScript;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Automation_1.ParameterValueSelection
+﻿namespace Automation_1.ParameterValueSelection
 {
+	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
+
 	public interface IParameterValueSelectionView
 	{
 		Button BackButton { get; }
