@@ -13,7 +13,7 @@ namespace Automation_1.ElementSelection
         private readonly IElementSelectionView _view;
         private readonly IElementSelector _model;
 
-        private Dictionary<string, IDmsElement> _elementsByName;
+        public Dictionary<string, IDmsElement> _elementsByName;
 
         public ElementSelectionPresenter(IElementSelector model, IElementSelectionView view)
         {
@@ -47,7 +47,7 @@ namespace Automation_1.ElementSelection
             }
         }
 
-        private void OnNextButtonPressed(object sender, EventArgs e)
+        public void OnNextButtonPressed(object sender, EventArgs e)
         {
             StoreToModel();
 
