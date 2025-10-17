@@ -11,6 +11,7 @@
 			ContinueButton = new Button("Continue...") { Width = 150 };
 			SetParameterLabel = new Label("Select an element: ");
 			Title = "Element Set";
+
 			AddWidget(SetParameterLabel, 0, 0);
 			AddWidget(ElementsDropDown, 0, 1);
 			AddWidget(ContinueButton, 1, 1);
