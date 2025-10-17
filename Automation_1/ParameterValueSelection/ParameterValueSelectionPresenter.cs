@@ -1,18 +1,17 @@
-﻿using Automation_1.ParameterSelection;
-
-using Skyline.DataMiner.Automation;
-using Skyline.DataMiner.Core.DataMinerSystem.Common;
-using Skyline.DataMiner.Net.Helper;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Automation_1.ParameterValueSelection
+﻿namespace Automation_1.ParameterValueSelection
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Runtime.InteropServices;
+	using System.Text;
+	using System.Threading.Tasks;
+	using Automation_1.ParameterSelection;
+	using Skyline.DataMiner.Automation;
+	using Skyline.DataMiner.Core.DataMinerSystem.Common;
+	using Skyline.DataMiner.Net.Helper;
+	using Skyline.DataMiner.Net.Messages;
+
 	public class ParameterValueSelectionPresenter
 	{
 		private readonly IParameterValueSelectionView view;
@@ -52,9 +51,9 @@ namespace Automation_1.ParameterValueSelection
 				var element = selector.SelectedElement;
 				var parameterId = selector.SelectedParameterId;
 
-				var type = selector.Parameters.Where(p => p.ID == parameterId).First().InterpreteType.ToString();
+				var type = selector.Parameters.Where(p => p.ID == parameterId).First().InterpreteType;
 
-				if(!type.Contains("String"))
+				if (type != ParameterInterpreteType.String)
 				{
 					view.Message.Text = "Parameter is not type of string";
 					return;
@@ -91,9 +90,9 @@ namespace Automation_1.ParameterValueSelection
 				var element = selector.SelectedElement;
 				var parameterId = selector.SelectedParameterId;
 
-				var type = selector.Parameters.Where(p => p.ID == parameterId).First().InterpreteType.ToString();
+				var type = selector.Parameters.Where(p => p.ID == parameterId).First().InterpreteType;
 
-				if (!type.Contains("Double"))
+				if (type != ParameterInterpreteType.Double)
 				{
 					view.Message.Text = "Parameter is not type of double";
 					return;
@@ -137,7 +136,7 @@ namespace Automation_1.ParameterValueSelection
 
 		private bool IsElementValid(IDmsElement element)
 		{
-			return element != null && element.State == ElementState.Active;
+			return element != null && element.State == Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active;
 		}
 
 		private void OnBackButtonPressed(object sender, EventArgs e)
