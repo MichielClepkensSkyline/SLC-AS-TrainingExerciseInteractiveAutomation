@@ -20,6 +20,7 @@
 			view.SetStringValue.Pressed += OnSetStringValuePressed;
 			view.SetDoubleValue.Pressed += OnSetDoubleValuePressed;
 			view.BackButton.Pressed += OnBackButtonPressed;
+			view.ExitButton.Pressed += OnExitButtonPressed;
 		}
 
 		public event EventHandler<EventArgs> SetStringValue;
@@ -27,6 +28,8 @@
 		public event EventHandler<EventArgs> SetDoubleValue;
 
 		public event EventHandler<EventArgs> Back;
+
+		public event EventHandler<EventArgs> Exit;
 
 		private void OnSetStringValue()
 		{
@@ -135,6 +138,11 @@
 		private void OnBackButtonPressed(object sender, EventArgs e)
 		{
 			Back?.Invoke(this, EventArgs.Empty);
+		}
+
+		private void OnExitButtonPressed(object sender, EventArgs e)
+		{
+			Exit?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }

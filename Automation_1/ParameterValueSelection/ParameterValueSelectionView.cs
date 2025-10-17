@@ -9,11 +9,12 @@
 		{
 			Title = "Parameter Value Set";
 			BackButton = new Button("Back");
+			ExitButton = new Button("Exit");
 			SetStringValue = new Button("Set String Value");
 			SetDoubleValue = new Button("Set Double Value");
 			StringValue = new TextBox() { Width = 100};
 			DoubleValue = new Numeric() { Width = 100, Decimals = 2, StepSize= 0.01 };
-			Message = new TextBox() { IsMultiline = true, IsEnabled = false };
+			Message = new TextBox() { IsMultiline = true, IsEnabled = false, IsReadOnly = true };
 			StringValueLabel = new Label("String Value");
 			DoubleValueLabel = new Label("Double Value");
 
@@ -23,9 +24,12 @@
 			AddWidget(DoubleValueLabel, 1, 0);
 			AddWidget(DoubleValue, 1, 1);
 			AddWidget(SetDoubleValue, 1, 2);
-			AddWidget(BackButton, 2, 0);
-			AddWidget(Message, 3, 0, 1, 3);
+			AddWidget(Message, 2, 0, 1, 3);
+			AddWidget(BackButton, 3, 0);
+			AddWidget(ExitButton, 3, 2);
 		}
+
+		public Button ExitButton { get; }
 
 		public Button BackButton { get; }
 

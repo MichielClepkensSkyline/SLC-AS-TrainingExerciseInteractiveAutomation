@@ -4,6 +4,8 @@
 
 	public interface IParameterValueSelectionView
 	{
+		Button ExitButton { get; }
+
 		Button BackButton { get; }
 
 		TextBox StringValue { get; }

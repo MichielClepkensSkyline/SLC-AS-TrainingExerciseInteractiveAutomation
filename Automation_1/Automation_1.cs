@@ -111,7 +111,7 @@ namespace Automation_1
 			var elementSelectionView = new ElementSelectionView(engine);
 			var elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionView, elementSelector);
 			var parameterSelectionView = new ParameterSelectionView(engine);
-			var parameterSelectionPresenter = new ParameterSelectionPresenter(engine,parameterSelectionView, elementSelector);
+			var parameterSelectionPresenter = new ParameterSelectionPresenter(engine, parameterSelectionView, elementSelector);
 			var parameterValueSelectionView = new ParameterValueSelectionView(engine);
 			var parameterValueSelectionPresenter = new ParameterValueSelectionPresenter(parameterValueSelectionView, elementSelector);
 			elementSelectionPresenter.LoadFromModel();
@@ -135,6 +135,11 @@ namespace Automation_1
 			parameterValueSelectionPresenter.Back += (sender, args) =>
 			{
 				app.ShowDialog(parameterSelectionView);
+			};
+
+			parameterValueSelectionPresenter.Exit += (sender, args) =>
+			{
+				engine.ExitSuccess("Script executed successfully!");
 			};
 
 			app.ShowDialog(elementSelectionView);
