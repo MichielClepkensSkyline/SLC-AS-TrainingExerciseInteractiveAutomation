@@ -1,14 +1,9 @@
 ﻿namespace Automation_1.ElementSelection
 {
-	using Automation_1.ParameterSelection;
-
-	using Skyline.DataMiner.Core.DataMinerSystem.Common;
-
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using System.Text;
-	using System.Threading.Tasks;
+	using Skyline.DataMiner.Core.DataMinerSystem.Common;
 
 	public class ElementSelectionPresenter
 	{
@@ -20,7 +15,7 @@
 
 		public ElementSelectionPresenter(IElementSelectionView elementView, IElementSelector elementSelector)
 		{
-			selector = elementSelector ?? throw new ArgumentNullException(nameof(elementSelector)); ;
+			selector = elementSelector ?? throw new ArgumentNullException(nameof(elementSelector));
 			view = elementView ?? throw new ArgumentNullException(nameof(elementView));
 
 			view.ContinueButton.Pressed += OnContinueButtonPressed;

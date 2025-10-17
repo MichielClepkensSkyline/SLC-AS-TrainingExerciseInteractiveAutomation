@@ -1,17 +1,10 @@
 ﻿namespace Automation_1.ParameterSelection
 {
-	using Automation_1.ElementSelection;
-
-	using Skyline.DataMiner.Automation;
-	using Skyline.DataMiner.Core.DataMinerSystem.Common;
-	using Skyline.DataMiner.Core.DataMinerSystem.Common.Selectors;
-	using Skyline.DataMiner.Net.Messages;
-
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using System.Text;
-	using System.Threading.Tasks;
+	using Skyline.DataMiner.Automation;
+	using Skyline.DataMiner.Net.Messages;
 
 	public class ParameterSelectionPresenter
 	{
@@ -39,21 +32,22 @@
 		{
 			if (elementSelector.Elements == null || !elementSelector.Elements.Any())
 			{
-				parameterSelectionView.ParameterId.SetOptions(new List<string>());
+				engine.Log("No elements found for the selected dms.");
+				parameterSelectionView.ParameterIdDropDown.SetOptions(new List<string>());
 				return;
 			}
 
 			if (elementSelector.Parameters == null || !elementSelector.Parameters.Any())
 			{
 				engine.Log("No parameters found for the selected element.");
-				parameterSelectionView.ParameterId.SetOptions(new List<string>());
+				parameterSelectionView.ParameterIdDropDown.SetOptions(new List<string>());
 				return;
 			}
 
 			parametersByName = elementSelector.Parameters.ToDictionary(p => p.ID.ToString());
 
-			parameterSelectionView.ParameterId.SetOptions(parametersByName.Keys);
-			parameterSelectionView.ParameterId.Selected = elementSelector.SelectedParameterId.ToString();
+			parameterSelectionView.ParameterIdDropDown.SetOptions(parametersByName.Keys);
+			parameterSelectionView.ParameterIdDropDown.Selected = elementSelector.SelectedParameterId.ToString();
 		}
 
 		private void OnContinueButtonPressed(object sender, EventArgs e)
@@ -72,7 +66,7 @@
 
 		private void StoreToModel()
 		{
-			string selected = parameterSelectionView.ParameterId.Selected;
+			string selected = parameterSelectionView.ParameterIdDropDown.Selected;
 			elementSelector.SelectedParameterId = parametersByName[selected].ID;
 		}
 	}

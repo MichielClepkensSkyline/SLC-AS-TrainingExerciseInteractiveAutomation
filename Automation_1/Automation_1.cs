@@ -1,6 +1,6 @@
 /*
 ****************************************************************************
-*  Copyright (c) 2024,  Skyline Communications NV  All Rights Reserved.    *
+*  Copyright (c) 2025,  Skyline Communications NV  All Rights Reserved.    *
 ****************************************************************************
 
 By using this script, you expressly agree with the usage terms and
@@ -45,22 +45,19 @@ Revision History:
 
 DATE		VERSION		AUTHOR			COMMENTS
 
-22/01/2024	1.0.0.1		TSA, Skyline	Initial version
+09/10/2025	1.0.0.1		TSA, Skyline	Initial version
 ****************************************************************************
 */
 
 namespace Automation_1
 {
+	using System;
 	using Automation_1.ElementSelection;
 	using Automation_1.ParameterSelection;
 	using Automation_1.ParameterValueSelection;
-
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
-	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
-
-	using System;
 
 	/// <summary>
 	/// Represents a DataMiner Automation script.
@@ -69,6 +66,7 @@ namespace Automation_1
 	public class Script
 	{
 		private InteractiveController app;
+
 		/// <summary>
 		/// The script entry point.
 		/// </summary>
@@ -109,14 +107,13 @@ namespace Automation_1
 
 		private void RunSafe(IEngine engine)
 		{
-			// TODO: Define dialogs here
 			var elementSelector = new ElementSelectorModel(engine.GetDms(), engine);
 			var elementSelectionView = new ElementSelectionView(engine);
 			var elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionView, elementSelector);
 			var parameterSelectionView = new ParameterSelectionView(engine);
 			var parameterSelectionPresenter = new ParameterSelectionPresenter(engine,parameterSelectionView, elementSelector);
 			var parameterValueSelectionView = new ParameterValueSelectionView(engine);
-			var parameterValueSelectionPresenter = new ParameterValueSelectionPresenter(engine, parameterValueSelectionView, elementSelector);
+			var parameterValueSelectionPresenter = new ParameterValueSelectionPresenter(parameterValueSelectionView, elementSelector);
 			elementSelectionPresenter.LoadFromModel();
 
 			elementSelectionPresenter.Continue += (sender, args) =>
