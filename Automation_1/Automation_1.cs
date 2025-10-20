@@ -51,23 +51,20 @@ DATE		VERSION		AUTHOR			COMMENTS
 
 namespace Automation_1
 {
-    using Automation_1.ElementSelection;
-    using Automation_1.ParameterSelection;
-    using Automation_1.ParameterValueSelection;
-    using Skyline.DataMiner.Automation;
-    using Skyline.DataMiner.Core.DataMinerSystem.Automation;
-    using Skyline.DataMiner.Core.DataMinerSystem.Common;
-    using Skyline.DataMiner.Utils.InteractiveAutomationScript;
-    using System;
-	using System.Collections.Generic;
-	using System.Globalization;
-	using System.Text;
+	using System;
+	using Automation_1.ElementSelection;
+	using Automation_1.ParameterSelection;
+	using Automation_1.ParameterValueSelection;
+	using Skyline.DataMiner.Automation;
+	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
+	using Skyline.DataMiner.Core.DataMinerSystem.Common;
+	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
     /// <summary>
     /// Represents a DataMiner Automation script.
     /// </summary>
     /// IEngine.ShowUI();
-    public class Script
+	public class Script
 	{
         private InteractiveController app;
 
@@ -134,7 +131,7 @@ namespace Automation_1
             elementSelectionPresenter.Next += (sender, args) =>
             {
                 parameterSelectorPresenter.LoadFromModel();
-                dialog.Check(elementSelectionPresenter.isElementActive, elementSelectionView, parameterSelectorView, "Element is inactive");
+                dialog.Check(elementSelectionPresenter.IsElementActive, elementSelectionView, parameterSelectorView, "Element is inactive");
             };
 
             parameterSelectorPresenter.Back += (sender, args) =>

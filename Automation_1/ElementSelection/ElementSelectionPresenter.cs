@@ -1,15 +1,13 @@
-﻿using Skyline.DataMiner.Core.DataMinerSystem.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Automation_1.ElementSelection
+﻿namespace Automation_1.ElementSelection
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Skyline.DataMiner.Core.DataMinerSystem.Common;
+
     public class ElementSelectionPresenter
     {
-        public bool isElementActive;
+        public bool IsElementActive;
         private readonly IElementSelectionView _view;
         private readonly IElementSelector _model;
 
@@ -39,11 +37,11 @@ namespace Automation_1.ElementSelection
             _model.SelectedElement = _elementsByName[selected];
             if (_model.SelectedElement.State!= Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active)
             {
-                isElementActive = false;
+                IsElementActive = false;
             }
             else
             {
-                isElementActive = true;
+                IsElementActive = true;
             }
         }
 

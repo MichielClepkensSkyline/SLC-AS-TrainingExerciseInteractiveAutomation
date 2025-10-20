@@ -1,13 +1,8 @@
-﻿using Skyline.DataMiner.Automation;
-using Skyline.DataMiner.Utils.InteractiveAutomationScript;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Automation_1.ParameterSelection
+﻿namespace Automation_1.ParameterSelection
 {
+    using Skyline.DataMiner.Automation;
+    using Skyline.DataMiner.Utils.InteractiveAutomationScript;
+
     public class ParameterSelectionView : Dialog, IParameterSelectionView
     {
         public ParameterSelectionView(IEngine engine) : base(engine)

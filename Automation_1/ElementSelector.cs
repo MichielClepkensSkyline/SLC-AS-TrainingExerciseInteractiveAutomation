@@ -1,14 +1,11 @@
-﻿using Skyline.DataMiner.Automation;
-using Skyline.DataMiner.Core.DataMinerSystem.Common;
-using Skyline.DataMiner.Net.Messages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Automation_1
+﻿namespace Automation_1
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Skyline.DataMiner.Automation;
+    using Skyline.DataMiner.Core.DataMinerSystem.Common;
+    using Skyline.DataMiner.Net.Messages;
+
     public class ElementSelector : IElementSelector
     {
         private readonly IEngine _engine;
@@ -34,25 +31,32 @@ namespace Automation_1
 
         public IDmsElement SelectedElement
         {
-            get { return selectedElement ?? (selectedElement = Elements.First()); }
+			get
+			{
+				return selectedElement ?? (selectedElement = Elements.First());
+			}
 
-            set
-            {
-                if (value == selectedElement) return;
-
-                selectedElement = value;
-            }
+			set
+			{
+				if (value == selectedElement)
+					return;
+				selectedElement = value;
+			}
         }
 
         public int SelectedParameter
         {
-            get { return selectedParameter; }
+			get
+			{
+				return selectedParameter;
+			}
 
-            set
-            {
-                if (value == selectedParameter) return;
+			set
+			{
+                if (value == selectedParameter)
+					return;
                 selectedParameter = value;
-            }
+			}
         }
 
         public string StringValue
