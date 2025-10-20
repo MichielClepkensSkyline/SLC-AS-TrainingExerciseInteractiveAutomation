@@ -30,7 +30,7 @@
 
 		public event EventHandler<EventArgs> Exit;
 
-		private void OnSetStringValue()
+		public void OnSetStringValue()
 		{
 			try
 			{
@@ -76,12 +76,13 @@
 			}
 		}
 
-		private void OnSetDoubleValue()
+		public void OnSetDoubleValue()
 		{
 			try
 			{
 				double valueToSet = view.DoubleValue.Value;
 
+				selector.SetParameterValueDouble = valueToSet;
 				var element = selector.SelectedElement;
 				var parameterId = selector.SelectedParameterId;
 
