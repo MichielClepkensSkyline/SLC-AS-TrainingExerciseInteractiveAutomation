@@ -192,7 +192,7 @@
 		{
 			if (!typeCheck)
 			{
-				return $"The selected parameter is not of type {type}";
+				return $"Cannot set {parameter.Name} of type {parameter.InterpreteType} to a value of type {type}.";
 			}
 			else if (parameter.IsTable || parameter.IsTableColumn)
 			{
