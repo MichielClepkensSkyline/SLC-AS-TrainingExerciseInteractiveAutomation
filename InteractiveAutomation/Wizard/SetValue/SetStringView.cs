@@ -3,13 +3,12 @@
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
-	internal class SetStringView : Dialog, ISetValueView
+	internal class SetStringView : ASetValueView, ISetValueView
 	{
 		private readonly Label setLabel;
 
 		public SetStringView(IEngine engine) : base(engine)
 		{
-			setLabel = new Label($"Value: ");
 			ValueBox = new TextBox() { Width = 150 };
 			SetButton = new Button($"Set Value");
 
@@ -20,7 +19,6 @@
 
 			Title = $"Set value";
 
-			AddWidget(setLabel, 0, 0);
 			AddWidget(ValueBox, 0, 1);
 			AddWidget(SetButton, 0, 2);
 			AddWidget(MessageBox, 2, 0, 1, 3);

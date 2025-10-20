@@ -3,13 +3,10 @@
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
-	internal class SetEmptyView : Dialog , ISetValueView
+	internal class SetEmptyView : ASetValueView, ISetValueView
 	{
-		private readonly Label setLabel;
-
 		public SetEmptyView(IEngine engine) : base(engine)
 		{
-			setLabel = new Label($"Value: ");
 			ValueBox = new TextBox() { Width = 150, IsEnabled = false };
 			SetButton = new Button($"Set Value");
 
@@ -20,7 +17,6 @@
 
 			Title = $"Set value";
 
-			AddWidget(setLabel, 0, 0);
 			AddWidget(ValueBox, 0, 1);
 			AddWidget(SetButton, 0, 2);
 			AddWidget(MessageBox, 2, 0, 1, 3);
