@@ -79,7 +79,7 @@ namespace InteractiveAutomation
 				app = new InteractiveController(engine);
 
 				engine.SetFlag(RunTimeFlags.NoKeyCaching);
-				engine.Timeout = TimeSpan.FromHours(10);
+				engine.Timeout = TimeSpan.FromHours(1);
 
 				this.engine = engine;
 
