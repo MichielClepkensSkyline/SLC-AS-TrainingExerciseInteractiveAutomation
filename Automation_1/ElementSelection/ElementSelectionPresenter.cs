@@ -33,7 +33,7 @@ namespace Automation_1.ElementSelection
             _view.ElementDropDown.Selected = _model.SelectedElement.Name;
         }
 
-        private void StoreToModel()
+        public void StoreToModel()
         {
             string selected = _view.ElementDropDown.Selected;
             _model.SelectedElement = _elementsByName[selected];

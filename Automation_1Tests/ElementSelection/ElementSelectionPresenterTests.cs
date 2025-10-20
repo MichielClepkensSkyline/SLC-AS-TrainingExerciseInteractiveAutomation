@@ -94,15 +94,13 @@ namespace Automation_1.ElementSelection.Tests
             };
 
             // Act
-            var storeToModelMethod = typeof(ElementSelectionPresenter)
-                .GetMethod("StoreToModel", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-
-            storeToModelMethod.Invoke(presenter, null);
+            presenter.StoreToModel();
 
             // Assert
             Assert.AreEqual(dmsElementMock.Object, modelMock.Object.SelectedElement);
             Assert.IsTrue(presenter.isElementActive);
         }
+
 
         [TestMethod]
         public void StoreToModel_SelectedElementIsNotActive_SetsFlagFalse()
@@ -126,20 +124,18 @@ namespace Automation_1.ElementSelection.Tests
 
             var presenter = new ElementSelectionPresenter(modelMock.Object, viewMock.Object);
             presenter._elementsByName = new Dictionary<string, IDmsElement>
-            {
-                { elementName, dmsElementMock.Object }
-            };
+    {
+        { elementName, dmsElementMock.Object }
+    };
 
             // Act
-            var storeToModelMethod = typeof(ElementSelectionPresenter)
-                .GetMethod("StoreToModel", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-
-            storeToModelMethod.Invoke(presenter, null);
+            presenter.StoreToModel(); 
 
             // Assert
             Assert.AreEqual(dmsElementMock.Object, modelMock.Object.SelectedElement);
             Assert.IsFalse(presenter.isElementActive);
         }
+
 
         [TestMethod]
         public void OnNextButtonPressed_StoresToModelAndRaisesNextEvent()

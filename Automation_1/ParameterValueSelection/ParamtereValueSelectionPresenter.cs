@@ -40,7 +40,7 @@ namespace Automation_1.ParameterValueSelection
             Exit?.Invoke(this, EventArgs.Empty);
         }
 
-        private void OnSetStringValueButtonPressed(object sender, EventArgs e)
+        public void OnSetStringValueButtonPressed(object sender, EventArgs e)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace Automation_1.ParameterValueSelection
             }
         }
 
-        private void OnSetDoubleValueButtonPressed(object sender, EventArgs e)
+        public void OnSetDoubleValueButtonPressed(object sender, EventArgs e)
         {
             try
             {
