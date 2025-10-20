@@ -112,9 +112,9 @@ namespace InteractiveAutomation
 			// Define dialogs
 			IModel model = new Model(engine.GetDms(), engine);
 			ElementSelectionView elementSelectionDialog = new ElementSelectionView(engine);
-			ElementSelectionPresenter elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionDialog, model, engine);
+			ElementSelectionPresenter elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionDialog, model);
 			ParameterSelectionView parameterSelectionDialog = new ParameterSelectionView(engine);
-			ParameterSelectionPresenter parameterSelectionPresenter = new ParameterSelectionPresenter(parameterSelectionDialog, model, engine);
+			ParameterSelectionPresenter parameterSelectionPresenter = new ParameterSelectionPresenter(parameterSelectionDialog, model);
 			SetEmptyView setEmptyDialog = new SetEmptyView(engine);
 			SetDoubleView setDoubleDialog = new SetDoubleView(engine);
 			SetStringView setStringDialog = new SetStringView(engine);

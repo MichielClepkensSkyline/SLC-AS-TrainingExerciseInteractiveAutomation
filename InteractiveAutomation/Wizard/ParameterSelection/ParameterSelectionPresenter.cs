@@ -8,13 +8,11 @@
 	{
 		private readonly IParameterSelectionView parameterSelectionView;
 		private readonly IModel model;
-		private readonly IEngine engine;
 
-		public ParameterSelectionPresenter(IParameterSelectionView view, IModel model, IEngine engine)
+		public ParameterSelectionPresenter(IParameterSelectionView view, IModel model)
 		{
 			parameterSelectionView = view ?? throw new ArgumentNullException(nameof(view));
 			this.model = model ?? throw new ArgumentNullException(nameof(model));
-			this.engine = engine;
 
 			parameterSelectionView.NextButton.Pressed += OnNextPressed;
 			parameterSelectionView.BackButton.Pressed += OnBackPressed;

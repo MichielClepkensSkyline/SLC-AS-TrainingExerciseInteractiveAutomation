@@ -7,13 +7,11 @@
 	{
 		private readonly IElementSelectionView elementSelectionView;
 		private readonly IModel model;
-		private readonly IEngine engine;
 
-		public ElementSelectionPresenter(IElementSelectionView view, IModel model, IEngine engine)
+		public ElementSelectionPresenter(IElementSelectionView view, IModel model)
 		{
 			this.elementSelectionView = view ?? throw new ArgumentNullException(nameof(view));
 			this.model = model ?? throw new ArgumentNullException(nameof(model));
-			this.engine = engine;
 
 			elementSelectionView.NextButton.Pressed += OnNextPressed;
 		}
