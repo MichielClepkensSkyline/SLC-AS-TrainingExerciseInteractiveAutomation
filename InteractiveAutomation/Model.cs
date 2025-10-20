@@ -156,7 +156,7 @@
 				if (CheckParameterExists(selectedElement, SelectedParameterId))
 				{
 					ParameterInfo parameter = selectedElement.Protocol.FindParameter(SelectedParameterId);
-					if (CheckParameter(parameter) && parameter.IsDouble)
+					if (CheckParameter(parameter) && parameter.IsDouble && (parameter.HasRange ? RangeCheck(parameter, value) : true))
 					{
 						try
 						{
@@ -202,9 +202,13 @@
 			{
 				return "The selected parameter is of type write";
 			}
-			else if (parameter.ParameterType != ParameterMeasurementType.Title)
+			else if (parameter.ParameterType == ParameterMeasurementType.Title)
 			{
 				return "The selected parameter is a title";
+			}
+			else if (parameter.HasRange)
+			{
+				return "The value is out of range for the selected parameter";
 			}
 			else
 			{
@@ -232,6 +236,11 @@
 				!parameter.IsTableColumn &&
 				!parameter.WriteType &&
 				parameter.ParameterType != ParameterMeasurementType.Title;
+		}
+
+		private static bool RangeCheck(ParameterInfo parameter, double value)
+		{
+			return parameter.RangeLow <= value && value <= parameter.RangeHigh;
 		}
 	}
 }
