@@ -5,8 +5,6 @@
 
 	internal class SetStringView : ASetValueView, ISetValueView
 	{
-		private readonly Label setLabel;
-
 		public SetStringView(IEngine engine) : base(engine)
 		{
 			ValueBox = new TextBox() { Width = 150 };
