@@ -44,7 +44,7 @@
 				return;
 			}
 
-			parametersByName = elementSelector.Parameters.ToDictionary(p => p.ID.ToString());
+			parametersByName = elementSelector.Parameters.ToDictionary(parameter => $"{parameter.Name} ({parameter.ID.ToString()})");
 
 			parameterSelectionView.ParameterIdDropDown.SetOptions(parametersByName.Keys);
 			parameterSelectionView.ParameterIdDropDown.Selected = elementSelector.SelectedParameterId.ToString();
@@ -66,8 +66,8 @@
 
 		private void StoreToModel()
 		{
-			string selected = parameterSelectionView.ParameterIdDropDown.Selected;
-			elementSelector.SelectedParameterId = parametersByName[selected].ID;
+			string selectedParameter = parameterSelectionView.ParameterIdDropDown.Selected;
+			elementSelector.SelectedParameterId = parametersByName[selectedParameter].ID;
 		}
 	}
 }

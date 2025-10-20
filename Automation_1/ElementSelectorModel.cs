@@ -35,7 +35,7 @@
 		{
 			get
 			{
-				return elements ?? (elements = dms.GetElements().Where(x => x.State == Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active).ToArray());
+				return elements ?? (elements = dms.GetElements().Where(parameter => parameter.State == Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active).ToArray());
 			}
 		}
 
@@ -102,7 +102,7 @@
 			get
 			{
 				Element element = engine.FindElement(SelectedElement.AgentId, SelectedElement.Id);
-				var parameters = element.Protocol.GetAllParameters().Where(p => p.ID < ParameterIdRange && p.IsTableColumn == false && p.IsTable == false && p.WriteType == false && p.ParameterType != ParameterMeasurementType.Title);
+				var parameters = element.Protocol.GetAllParameters().Where(parameter => parameter.ID < ParameterIdRange && parameter.IsTableColumn == false && parameter.IsTable == false && parameter.WriteType == false && parameter.ParameterType != ParameterMeasurementType.Title);
 				parameterInfos = parameters;
 				return parameterInfos;
 			}

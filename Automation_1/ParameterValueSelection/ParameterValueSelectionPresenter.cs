@@ -46,7 +46,7 @@
 				var element = selector.SelectedElement;
 				var parameterId = selector.SelectedParameterId;
 
-				var type = selector.Parameters.Where(p => p.ID == parameterId).First().InterpreteType;
+				var type = selector.Parameters.Where(parameterInfo => parameterInfo.ID == parameterId).First().InterpreteType;
 
 				if (type != ParameterInterpreteType.String)
 				{
@@ -85,8 +85,9 @@
 				selector.SetParameterValueDouble = valueToSet;
 				var element = selector.SelectedElement;
 				var parameterId = selector.SelectedParameterId;
-
-				var type = selector.Parameters.Where(p => p.ID == parameterId).First().InterpreteType;
+				var type = selector.Parameters.Where(parameterInfo => parameterInfo.ID == parameterId).First().InterpreteType;
+				var rangeMax = selector.Parameters.Where(parameterInfo => parameterInfo.ID == parameterId).First().RangeHigh;
+				var rangeMin = selector.Parameters.Where(parameterInfo => parameterInfo.ID == parameterId).First().RangeLow;
 
 				if (type != ParameterInterpreteType.Double)
 				{
