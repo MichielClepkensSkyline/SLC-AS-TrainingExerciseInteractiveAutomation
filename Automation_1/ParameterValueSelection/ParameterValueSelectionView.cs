@@ -43,8 +43,8 @@
 
 		public TextBox Message { get; set; }
 
-		public Label StringValueLabel { get; }
+		public Label StringValueLabel { get; private set; }
 
-		public Label DoubleValueLabel { get; }
+		public Label DoubleValueLabel { get; private set; }
 	}
 }

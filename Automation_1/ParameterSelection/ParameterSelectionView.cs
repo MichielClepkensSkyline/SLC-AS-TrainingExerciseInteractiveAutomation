@@ -25,6 +25,6 @@
 
 		public Button BackButton { get; }
 
-		public Label SelectParameterLabel { get; }
+		public Label SelectParameterLabel { get; private set; }
 	}
 }

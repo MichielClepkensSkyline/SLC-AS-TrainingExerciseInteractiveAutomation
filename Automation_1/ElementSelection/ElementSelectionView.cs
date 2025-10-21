@@ -17,7 +17,7 @@
 			AddWidget(ContinueButton, 1, 1);
 		}
 
-		public Label SetParameterLabel { get; set; }
+		public Label SetParameterLabel { get; private set; }
 
 		public DropDown ElementsDropDown { get; }
 

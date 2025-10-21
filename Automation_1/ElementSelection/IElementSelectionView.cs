@@ -4,7 +4,7 @@
 
 	public interface IElementSelectionView
 	{
-		Label SetParameterLabel { get; set; }
+		Label SetParameterLabel { get; }
 
 		DropDown ElementsDropDown { get; }
 

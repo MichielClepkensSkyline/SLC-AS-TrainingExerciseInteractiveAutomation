@@ -39,8 +39,8 @@
 
 		private void StoreToModel()
 		{
-			string selected = view.ElementsDropDown.Selected;
-			selector.SelectedElement = elementsByName[selected];
+			string selectedElement = view.ElementsDropDown.Selected;
+			selector.SelectedElement = elementsByName[selectedElement];
 		}
 
 		private void OnContinueButtonPressed(object sender, EventArgs e)

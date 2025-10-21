@@ -16,7 +16,7 @@
 
 		Button SetDoubleValue { get; }
 
-		TextBox Message { get; set; }
+		TextBox Message { get; }
 
 		Label StringValueLabel { get; }
 
