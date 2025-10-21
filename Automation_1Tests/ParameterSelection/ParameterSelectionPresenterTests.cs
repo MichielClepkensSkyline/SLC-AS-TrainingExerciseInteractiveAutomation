@@ -51,7 +51,7 @@
 			DropDown dropDown = new DropDown();
 			Button continueButton = new Button("Continue");
 			Button backButton = new Button("Back");
-			var parameter = new ParameterInfo { ID = 312 };
+			var parameter = new ParameterInfo { ID = 312, Name = "Audio Output Level" };
 			selector.Setup(s => s.Elements).Returns(new List<IDmsElement> { Mock.Of<IDmsElement>() });
 			selector.Setup(s => s.Parameters).Returns(new List<ParameterInfo> { parameter });
 			selector.Setup(s => s.SelectedParameterId).Returns(312);
@@ -62,7 +62,7 @@
 
 			presenter.LoadFromModel();
 
-			Assert.IsTrue(dropDown.Options.Contains("312"));
+			Assert.IsTrue(dropDown.Options.Contains("Audio Output Level (312)"));
 			Assert.AreEqual("312", dropDown.Selected);
 		}
 	}

@@ -41,6 +41,11 @@
 			var element = new Mock<IDmsElement>();
 			element.Setup(e => e.GetStandaloneParameter<string>(parameterId)).Returns(parameter.Object);
 			element.Setup(e => e.State).Returns(Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active);
+			element.Setup(e => e.AgentId).Returns(123);
+			element.Setup(e => e.Id).Returns(456);
+
+			var elementEngine = new Mock<Element>();
+			elementEngine.Setup(e => e.IsActive).Returns(true);
 
 			var model = new Mock<IElementSelector>();
 			model.SetupProperty(m => m.SetParameterValueString);
@@ -52,8 +57,9 @@
 				});
 
 			var engineMock = new Mock<IEngine>();
+			engineMock.Setup(e => e.FindElement(123, 456)).Returns(elementEngine.Object);
 
-			var presenter = new ParameterValueSelectionPresenter(view.Object, model.Object);
+			var presenter = new ParameterValueSelectionPresenter(engineMock.Object, view.Object, model.Object);
 
 			presenter.OnSetStringValue();
 
@@ -88,6 +94,11 @@
 			var element = new Mock<IDmsElement>();
 			element.Setup(e => e.GetStandaloneParameter<double?>(parameterId)).Returns(parameter.Object);
 			element.Setup(e => e.State).Returns(Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active);
+			element.Setup(e => e.AgentId).Returns(123);
+			element.Setup(e => e.Id).Returns(456);
+
+			var elementEngine = new Mock<Element>();
+			elementEngine.Setup(e => e.IsActive).Returns(true);
 
 			var model = new Mock<IElementSelector>();
 			model.SetupProperty(m => m.SetParameterValueDouble);
@@ -95,12 +106,13 @@
 			model.Setup(m => m.SelectedParameterId).Returns(parameterId);
 			model.Setup(m => m.Parameters).Returns(new List<ParameterInfo>
 				{
-					new ParameterInfo { ID = parameterId, InterpreteType = ParameterInterpreteType.Double },
+					new ParameterInfo { ID = parameterId, InterpreteType = ParameterInterpreteType.Double, RangeLow = 0, RangeHigh = 100 },
 				});
 
 			var engineMock = new Mock<IEngine>();
+			engineMock.Setup(e => e.FindElement(123, 456)).Returns(elementEngine.Object);
 
-			var presenter = new ParameterValueSelectionPresenter(view.Object, model.Object);
+			var presenter = new ParameterValueSelectionPresenter(engineMock.Object, view.Object, model.Object);
 
 			presenter.OnSetDoubleValue();
 
