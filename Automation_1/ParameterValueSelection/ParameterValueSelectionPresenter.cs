@@ -88,8 +88,16 @@
 				selector.SetParameterValueDouble = valueToSet;
 				var element = selector.SelectedElement;
 				var parameterId = selector.SelectedParameterId;
-				var type = selector.Parameters.Where(parameterInfo => parameterInfo.ID == parameterId).First().InterpreteType;
-				bool hasRange = selector.Parameters.Where(parameterInfo => parameterInfo.ID == parameterId).First().HasRange;
+				var parameter = selector.Parameters.Where(parameterInfo => parameterInfo.ID == parameterId).FirstOrDefault();
+
+				if (parameter == null)
+				{
+					view.Message.Text = "There are no parameters for selected parameter id!";
+					return;
+				}
+
+				var type = parameter.InterpreteType;
+				bool hasRange = parameter.HasRange;
 				bool checkedElementState = engine.FindElement(element.AgentId, element.Id).IsActive;
 
 				if (!checkedElementState)
@@ -106,8 +114,8 @@
 
 				if (hasRange)
 				{
-					var rangeMax = selector.Parameters.Where(parameterInfo => parameterInfo.ID == parameterId).First().RangeHigh;
-					var rangeMin = selector.Parameters.Where(parameterInfo => parameterInfo.ID == parameterId).First().RangeLow;
+					var rangeMax = parameter.RangeHigh;
+					var rangeMin = parameter.RangeLow;
 
 					if(valueToSet<rangeMin || valueToSet > rangeMax)
 					{
@@ -122,8 +130,8 @@
 					return;
 				}
 
-				var parameter = element.GetStandaloneParameter<double?>(parameterId);
-				parameter.SetValue(valueToSet);
+				var elementParameter = element.GetStandaloneParameter<double?>(parameterId);
+				elementParameter.SetValue(valueToSet);
 				view.Message.Text = "Double parameter set successfull!";
 			}
 			catch (Exception ex)
