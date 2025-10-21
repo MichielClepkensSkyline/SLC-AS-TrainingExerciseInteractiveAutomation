@@ -17,7 +17,7 @@
 		{
 			view = parameterView ?? throw new ArgumentNullException(nameof(parameterView));
 			selector = elementSelector ?? throw new ArgumentNullException(nameof(elementSelector));
-			this.engine = engine;
+			this.engine = engine ?? throw new ArgumentNullException(nameof(engine));
 			view.SetStringValue.Pressed += OnSetStringValuePressed;
 			view.SetDoubleValue.Pressed += OnSetDoubleValuePressed;
 			view.BackButton.Pressed += OnBackButtonPressed;

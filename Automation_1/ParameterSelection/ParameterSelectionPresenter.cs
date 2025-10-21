@@ -15,9 +15,9 @@
 
 		public ParameterSelectionPresenter(IEngine engine, IParameterSelectionView view, IElementSelector element)
 		{
-			this.engine = engine;
-			parameterSelectionView = view ?? throw new ArgumentNullException(nameof(parameterSelectionView));
-			elementSelector = element ?? throw new ArgumentNullException(nameof(elementSelector));
+			this.engine = engine ?? throw new ArgumentNullException(nameof(engine));
+			parameterSelectionView = view ?? throw new ArgumentNullException(nameof(view));
+			elementSelector = element ?? throw new ArgumentNullException(nameof(element));
 
 			parameterSelectionView.ContinueButton.Pressed += OnContinueButtonPressed;
 
@@ -30,7 +30,6 @@
 
 		public void LoadFromModel()
 		{
-
 			if (elementSelector.Elements == null || !elementSelector.Elements.Any())
 			{
 				engine.Log("No elements found for the selected dms.");
