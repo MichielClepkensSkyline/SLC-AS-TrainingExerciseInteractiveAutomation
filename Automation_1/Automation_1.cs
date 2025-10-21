@@ -78,7 +78,7 @@ namespace Automation_1
 				app = new InteractiveController(engine);
 
 				engine.SetFlag(RunTimeFlags.NoKeyCaching);
-				engine.Timeout = TimeSpan.FromHours(10);
+				engine.Timeout = TimeSpan.FromHours(2);
 
 				RunSafe(engine);
 			}
@@ -109,7 +109,7 @@ namespace Automation_1
 		{
 			var elementSelector = new ElementSelectorModel(engine.GetDms(), engine);
 			var elementSelectionView = new ElementSelectionView(engine);
-			var elementSelectionPresenter = new ElementSelectionPresenter(engine, elementSelectionView, elementSelector);
+			var elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionView, elementSelector);
 			var parameterSelectionView = new ParameterSelectionView(engine);
 			var parameterSelectionPresenter = new ParameterSelectionPresenter(engine, parameterSelectionView, elementSelector);
 			var parameterValueSelectionView = new ParameterValueSelectionView(engine);

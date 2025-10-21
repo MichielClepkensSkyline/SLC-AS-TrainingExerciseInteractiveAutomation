@@ -1,9 +1,7 @@
 ﻿namespace Automation_1.ParameterValueSelection.Tests
 {
 	using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 	using Moq;
-
 	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
 	using Skyline.DataMiner.Net.Messages;
