@@ -2,6 +2,8 @@
 {
 	using Microsoft.VisualStudio.TestTools.UnitTesting;
 	using Moq;
+
+	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
 	using Skyline.DataMiner.Utils.InteractiveAutomationScript;
 
@@ -19,13 +21,14 @@
 		{
 			Mock<IElementSelector> selector = new Mock<IElementSelector>();
 			Mock<IElementSelectionView> view = new Mock<IElementSelectionView>();
+			Mock<IEngine> engine = new Mock<IEngine>();
 			DropDown dropDown = new DropDown();
 			Button continueButton = new Button("Continue");
 			view.Setup(view => view.ElementsDropDown).Returns(dropDown);
 			view.Setup(view => view.ContinueButton).Returns(continueButton);
 			selector.Setup(selector => selector.Elements).Returns(new List<IDmsElement>());
 
-			var presenter = new ElementSelectionPresenter(view.Object, selector.Object);
+			var presenter = new ElementSelectionPresenter(engine.Object, view.Object, selector.Object);
 
 			presenter.LoadFromModel();
 
@@ -40,6 +43,7 @@
 		{
 			Mock<IElementSelector> selector = new Mock<IElementSelector>();
 			Mock<IElementSelectionView> view = new Mock<IElementSelectionView>();
+			Mock<IEngine> engine = new Mock<IEngine>();
 			DropDown dropDown = new DropDown();
 			Button continueButton = new Button("Continue");
 			var element1 = new Mock<IDmsElement>();
@@ -56,7 +60,7 @@
 			selector.Setup(selector => selector.Elements).Returns(elements);
 			selector.Setup(selector => selector.SelectedElement).Returns(element1.Object);
 
-			var presenter = new ElementSelectionPresenter(view.Object, selector.Object);
+			var presenter = new ElementSelectionPresenter(engine.Object, view.Object, selector.Object);
 
 			presenter.LoadFromModel();
 
