@@ -1,9 +1,11 @@
 ﻿namespace Automation_1.ParameterValueSelection
 {
-	using System;
-	using System.Linq;
+	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
 	using Skyline.DataMiner.Net.Messages;
+
+	using System;
+	using System.Linq;
 
 	public class ParameterValueSelectionPresenter
 	{
@@ -11,11 +13,13 @@
 
 		private readonly IElementSelector selector;
 
-		public ParameterValueSelectionPresenter(IParameterValueSelectionView parameterView, IElementSelector elementSelector)
+		private readonly IEngine engine;
+
+		public ParameterValueSelectionPresenter(IEngine engine, IParameterValueSelectionView parameterView, IElementSelector elementSelector)
 		{
 			view = parameterView ?? throw new ArgumentNullException(nameof(parameterView));
 			selector = elementSelector ?? throw new ArgumentNullException(nameof(elementSelector));
-
+			this.engine = engine;
 			view.SetStringValue.Pressed += OnSetStringValuePressed;
 			view.SetDoubleValue.Pressed += OnSetDoubleValuePressed;
 			view.BackButton.Pressed += OnBackButtonPressed;
@@ -47,16 +51,17 @@
 				var parameterId = selector.SelectedParameterId;
 
 				var type = selector.Parameters.Where(parameterInfo => parameterInfo.ID == parameterId).First().InterpreteType;
+				bool checkedElementState = engine.FindElement(element.AgentId, element.Id).IsActive;
+
+				if (!checkedElementState)
+				{
+					view.Message.Text = "Selected element is inactive!";
+					return;
+				}
 
 				if (type != ParameterInterpreteType.String)
 				{
 					view.Message.Text = "Parameter is not type of string";
-					return;
-				}
-
-				if (!IsElementValid(element))
-				{
-					view.Message.Text = "Selected element is invalid or inactive.";
 					return;
 				}
 
@@ -86,19 +91,31 @@
 				var element = selector.SelectedElement;
 				var parameterId = selector.SelectedParameterId;
 				var type = selector.Parameters.Where(parameterInfo => parameterInfo.ID == parameterId).First().InterpreteType;
-				var rangeMax = selector.Parameters.Where(parameterInfo => parameterInfo.ID == parameterId).First().RangeHigh;
-				var rangeMin = selector.Parameters.Where(parameterInfo => parameterInfo.ID == parameterId).First().RangeLow;
+				bool hasRange = selector.Parameters.Where(parameterInfo => parameterInfo.ID == parameterId).First().HasRange;
+				bool checkedElementState = engine.FindElement(element.AgentId, element.Id).IsActive;
 
-				if (type != ParameterInterpreteType.Double)
+				if (!checkedElementState)
 				{
-					view.Message.Text = "Parameter is not type of double";
+					view.Message.Text = "Selected element is inactive!";
 					return;
 				}
 
-				if (!IsElementValid(element))
+				if (type != ParameterInterpreteType.Double)
 				{
-					view.Message.Text = "Selected element is invalid or inactive.";
+					view.Message.Text = "Parameter is not type of double!";
 					return;
+				}
+
+				if (hasRange)
+				{
+					var rangeMax = selector.Parameters.Where(parameterInfo => parameterInfo.ID == parameterId).First().RangeHigh;
+					var rangeMin = selector.Parameters.Where(parameterInfo => parameterInfo.ID == parameterId).First().RangeLow;
+
+					if(valueToSet<rangeMin || valueToSet > rangeMax)
+					{
+						view.Message.Text = "Parameter value is out of range of the parameter!";
+						return;
+					}
 				}
 
 				if (parameterId <= 0)
@@ -129,11 +146,6 @@
 			OnSetStringValue();
 
 			SetStringValue?.Invoke(this, EventArgs.Empty);
-		}
-
-		private bool IsElementValid(IDmsElement element)
-		{
-			return element != null && element.State == Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active;
 		}
 
 		private void OnBackButtonPressed(object sender, EventArgs e)
