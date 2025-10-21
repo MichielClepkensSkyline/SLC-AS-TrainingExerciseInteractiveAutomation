@@ -35,7 +35,7 @@
 		{
 			get
 			{
-				elements = dms.GetElements().Where(element => element.State == Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active).ToArray();
+				elements = dms.GetElements().Where(element => element.State == Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active && element != null && !string.IsNullOrWhiteSpace(element.Name)).ToArray();
 				return elements;
 			}
 		}

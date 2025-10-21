@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
+	using Skyline.DataMiner.Automation;
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
 
 	public class ElementSelectionPresenter
@@ -11,12 +12,15 @@
 
 		private readonly IElementSelectionView view;
 
+		private readonly IEngine engine;
+
 		private Dictionary<string, IDmsElement> elementsByName;
 
-		public ElementSelectionPresenter(IElementSelectionView elementView, IElementSelector elementSelector)
+		public ElementSelectionPresenter(IEngine engine, IElementSelectionView elementView, IElementSelector elementSelector)
 		{
 			selector = elementSelector ?? throw new ArgumentNullException(nameof(elementSelector));
 			view = elementView ?? throw new ArgumentNullException(nameof(elementView));
+			this.engine = engine ?? throw new ArgumentNullException(nameof(engine));
 			view.ContinueButton.Pressed += OnContinueButtonPressed;
 		}
 
@@ -26,11 +30,12 @@
 		{
 			if (selector.Elements == null || !selector.Elements.Any())
 			{
+				engine.Log("No elements found for the selected dms.");
 				view.ElementsDropDown.SetOptions(new List<string>());
 				return;
 			}
 
-			elementsByName = selector.Elements.Where(element => element != null && !string.IsNullOrWhiteSpace(element.Name)).ToDictionary(element => element.Name);
+			elementsByName = selector.Elements.ToDictionary(element => element.Name);
 
 			view.ElementsDropDown.SetOptions(elementsByName.Keys);
 			view.ElementsDropDown.Selected = selector.SelectedElement.Name;
