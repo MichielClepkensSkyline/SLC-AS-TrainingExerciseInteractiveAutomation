@@ -1,6 +1,7 @@
 ﻿namespace InteractiveAutomation.Wizard.ElementSelection
 {
 	using System;
+	using System.Linq;
 	using Skyline.DataMiner.Automation;
 
 	internal class ElementSelectionPresenter
@@ -20,8 +21,11 @@
 
 		public void LoadFromModel()
 		{
-			// Set elements to DropDown
-			elementSelectionView.ElementsDropDown.SetOptions(model.Elements.Keys);
+			if (model.Elements != null && model.Elements.Any())
+			{
+				// Set elements to DropDown
+				elementSelectionView.ElementsDropDown.SetOptions(model.Elements.Keys);
+			}
 		}
 
 		private void OnNextPressed(object sender, EventArgs e)

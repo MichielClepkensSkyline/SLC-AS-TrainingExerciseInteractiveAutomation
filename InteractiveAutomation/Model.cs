@@ -33,7 +33,7 @@
 			get
 			{
 				elements = dms.GetElements()
-					.Where(element => element.State == ElementState.Active)
+					.Where(element => element != null && element.State == ElementState.Active && !string.IsNullOrWhiteSpace(element.Name))
 					.ToDictionary(element => element.Name) ?? new Dictionary<string, IDmsElement>();
 				return elements;
 			}
@@ -68,8 +68,9 @@
 					if (parameters != null)
 					{
 						this.parameters = parameters
-							.Where(parameter =>
+							.Where(parameter => parameter != null &&
 								parameter.ID < MaxParameterId &&
+								parameter.ID >= 0 &&
 								parameter.ParameterType != ParameterMeasurementType.Title &&
 								!parameter.IsTable &&
 								!parameter.IsTableColumn &&
@@ -231,7 +232,9 @@
 
 		private static bool CheckParameter(ParameterInfo parameter)
 		{
-			return parameter.ID < MaxParameterId &&
+			return parameter != null &&
+				parameter.ID < MaxParameterId &&
+				parameter.ID >= 0 &&
 				!parameter.IsTable &&
 				!parameter.IsTableColumn &&
 				!parameter.WriteType &&

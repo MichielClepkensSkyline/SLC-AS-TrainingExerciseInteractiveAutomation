@@ -24,7 +24,10 @@
 
 		public void LoadFromModel()
 		{
-			parameterSelectionView.ParametersDropDown.SetOptions(model.Parameters.Select(x => $"{x.Key} {x.Value.Name}"));
+			if (model.Parameters != null && model.Parameters.Any())
+			{
+				parameterSelectionView.ParametersDropDown.SetOptions(model.Parameters.Select(x => $"{x.Key} {x.Value.Name}"));
+			}
 		}
 
 		private void OnNextPressed(object sender, EventArgs e)
