@@ -76,8 +76,6 @@ namespace Automation_1
 			try
 			{
 				app = new InteractiveController(engine);
-
-				engine.SetFlag(RunTimeFlags.NoKeyCaching);
 				engine.Timeout = TimeSpan.FromHours(2);
 
 				RunSafe(engine);
