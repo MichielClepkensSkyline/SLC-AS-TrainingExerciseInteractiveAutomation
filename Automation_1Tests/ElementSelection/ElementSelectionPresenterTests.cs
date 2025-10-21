@@ -21,11 +21,12 @@
 			Mock<IElementSelectionView> view = new Mock<IElementSelectionView>();
 			DropDown dropDown = new DropDown();
 			Button continueButton = new Button("Continue");
-			view.Setup(v => v.ElementsDropDown).Returns(dropDown);
-			view.Setup(v => v.ContinueButton).Returns(continueButton);
-			selector.Setup(s => s.Elements).Returns(new List<IDmsElement>());
+			view.Setup(view => view.ElementsDropDown).Returns(dropDown);
+			view.Setup(view => view.ContinueButton).Returns(continueButton);
+			selector.Setup(selector => selector.Elements).Returns(new List<IDmsElement>());
 
 			var presenter = new ElementSelectionPresenter(view.Object, selector.Object);
+
 			presenter.LoadFromModel();
 
 			Assert.AreEqual(0, dropDown.Options.ToList().Count);
@@ -41,22 +42,22 @@
 			Mock<IElementSelectionView> view = new Mock<IElementSelectionView>();
 			DropDown dropDown = new DropDown();
 			Button continueButton = new Button("Continue");
-			view.Setup(v => v.ElementsDropDown).Returns(dropDown);
-			view.Setup(v => v.ContinueButton).Returns(continueButton);
-			selector.Setup(s => s.Elements).Returns(new List<IDmsElement>());
-
 			var element1 = new Mock<IDmsElement>();
-			element1.Setup(e => e.Name).Returns("HTTP element");
-
 			var element2 = new Mock<IDmsElement>();
-			element2.Setup(e => e.Name).Returns("Starlink");
+
+			view.Setup(view => view.ElementsDropDown).Returns(dropDown);
+			view.Setup(view => view.ContinueButton).Returns(continueButton);
+			selector.Setup(selector => selector.Elements).Returns(new List<IDmsElement>());
+			element1.Setup(e => e.Name).Returns("HTTP element");
+			element2.Setup(element2 => element2.Name).Returns("Starlink");
 
 			var elements = new List<IDmsElement> { element1.Object, element2.Object };
 
-			selector.Setup(s => s.Elements).Returns(elements);
-			selector.Setup(s => s.SelectedElement).Returns(element1.Object);
+			selector.Setup(selector => selector.Elements).Returns(elements);
+			selector.Setup(selector => selector.SelectedElement).Returns(element1.Object);
 
 			var presenter = new ElementSelectionPresenter(view.Object, selector.Object);
+
 			presenter.LoadFromModel();
 
 			CollectionAssert.AreEquivalent(new[] { "HTTP element", "Starlink" }, dropDown.Options.ToArray());

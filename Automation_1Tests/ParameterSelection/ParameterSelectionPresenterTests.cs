@@ -26,11 +26,11 @@
 			Button continueButton = new Button("Continue");
 			Button backButton = new Button("Back");
 
-			view.Setup(v => v.ParameterIdDropDown).Returns(dropDown);
-			view.Setup(v => v.ContinueButton).Returns(continueButton);
-			view.Setup(v => v.BackButton).Returns(backButton);
-			selector.Setup(s => s.Elements).Returns(new List<IDmsElement> { Mock.Of<IDmsElement>() });
-			selector.Setup(s => s.Parameters).Returns(new List<ParameterInfo>());
+			view.Setup(view => view.ParameterIdDropDown).Returns(dropDown);
+			view.Setup(view => view.ContinueButton).Returns(continueButton);
+			view.Setup(view => view.BackButton).Returns(backButton);
+			selector.Setup(selector => selector.Elements).Returns(new List<IDmsElement> { Mock.Of<IDmsElement>() });
+			selector.Setup(selector => selector.Parameters).Returns(new List<ParameterInfo>());
 
 			ParameterSelectionPresenter presenter = new ParameterSelectionPresenter(engine.Object, view.Object, selector.Object);
 
@@ -52,12 +52,14 @@
 			Button continueButton = new Button("Continue");
 			Button backButton = new Button("Back");
 			var parameter = new ParameterInfo { ID = 312, Name = "Audio Output Level" };
-			selector.Setup(s => s.Elements).Returns(new List<IDmsElement> { Mock.Of<IDmsElement>() });
-			selector.Setup(s => s.Parameters).Returns(new List<ParameterInfo> { parameter });
-			selector.Setup(s => s.SelectedParameterId).Returns(312);
-			view.Setup(v => v.ParameterIdDropDown).Returns(dropDown);
-			view.Setup(v => v.ContinueButton).Returns(continueButton);
-			view.Setup(v => v.BackButton).Returns(backButton);
+
+			selector.Setup(selector => selector.Elements).Returns(new List<IDmsElement> { Mock.Of<IDmsElement>() });
+			selector.Setup(selector => selector.Parameters).Returns(new List<ParameterInfo> { parameter });
+			selector.Setup(selector => selector.SelectedParameterId).Returns(312);
+			view.Setup(view => view.ParameterIdDropDown).Returns(dropDown);
+			view.Setup(view => view.ContinueButton).Returns(continueButton);
+			view.Setup(view => view.BackButton).Returns(backButton);
+
 			ParameterSelectionPresenter presenter = new ParameterSelectionPresenter(engine.Object, view.Object, selector.Object);
 
 			presenter.LoadFromModel();

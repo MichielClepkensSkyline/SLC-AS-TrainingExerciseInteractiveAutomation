@@ -21,43 +21,37 @@
 		{
 			string parameterValue = "Value";
 			int parameterId = 123;
-
 			var stringTextBox = new TextBox { Text = parameterValue };
 			var messageTextBox = new TextBox();
-
 			var view = new Mock<IParameterValueSelectionView>();
-			view.Setup(v => v.StringValue).Returns(stringTextBox);
-			view.Setup(v => v.Message).Returns(messageTextBox);
-			view.Setup(v => v.ExitButton).Returns(Mock.Of<Button>());
-			view.Setup(v => v.BackButton).Returns(Mock.Of<Button>());
-			view.Setup(v => v.SetStringValue).Returns(Mock.Of<Button>());
-			view.Setup(v => v.SetDoubleValue).Returns(Mock.Of<Button>());
-
 			var parameter = new Mock<IDmsStandaloneParameter<string>>();
-			parameter.Setup(p => p.SetValue(parameterValue));
-
 			var element = new Mock<IDmsElement>();
-			element.Setup(e => e.GetStandaloneParameter<string>(parameterId)).Returns(parameter.Object);
-			element.Setup(e => e.State).Returns(Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active);
-			element.Setup(e => e.AgentId).Returns(123);
-			element.Setup(e => e.Id).Returns(456);
-
 			var elementEngine = new Mock<Element>();
-			elementEngine.Setup(e => e.IsActive).Returns(true);
-
 			var model = new Mock<IElementSelector>();
-			model.SetupProperty(m => m.SetParameterValueString);
-			model.Setup(m => m.SelectedElement).Returns(element.Object);
-			model.Setup(m => m.SelectedParameterId).Returns(parameterId);
-			model.Setup(m => m.Parameters).Returns(new List<ParameterInfo>
+			var engine = new Mock<IEngine>();
+
+			view.Setup(view => view.StringValue).Returns(stringTextBox);
+			view.Setup(view => view.Message).Returns(messageTextBox);
+			view.Setup(view => view.ExitButton).Returns(Mock.Of<Button>());
+			view.Setup(view => view.BackButton).Returns(Mock.Of<Button>());
+			view.Setup(view => view.SetStringValue).Returns(Mock.Of<Button>());
+			view.Setup(view => view.SetDoubleValue).Returns(Mock.Of<Button>());
+			parameter.Setup(parameter => parameter.SetValue(parameterValue));
+			element.Setup(element => element.GetStandaloneParameter<string>(parameterId)).Returns(parameter.Object);
+			element.Setup(element => element.State).Returns(Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active);
+			element.Setup(element => element.AgentId).Returns(123);
+			element.Setup(element => element.Id).Returns(456);
+			elementEngine.Setup(elementEngine => elementEngine.IsActive).Returns(true);
+			model.SetupProperty(model => model.SetParameterValueString);
+			model.Setup(model => model.SelectedElement).Returns(element.Object);
+			model.Setup(model => model.SelectedParameterId).Returns(parameterId);
+			model.Setup(model => model.Parameters).Returns(new List<ParameterInfo>
 				{
 					new ParameterInfo { ID = parameterId, InterpreteType = ParameterInterpreteType.String },
 				});
+			engine.Setup(engine => engine.FindElement(123, 456)).Returns(elementEngine.Object);
 
-			var engineMock = new Mock<IEngine>();
-			engineMock.Setup(e => e.FindElement(123, 456)).Returns(elementEngine.Object);
-
-			var presenter = new ParameterValueSelectionPresenter(engineMock.Object, view.Object, model.Object);
+			var presenter = new ParameterValueSelectionPresenter(engine.Object, view.Object, model.Object);
 
 			presenter.OnSetStringValue();
 
@@ -74,43 +68,37 @@
 		{
 			double parameterValue = 10.2;
 			int parameterId = 123;
-
 			var stringTextBox = new Numeric { Value = parameterValue };
 			var messageTextBox = new TextBox();
-
 			var view = new Mock<IParameterValueSelectionView>();
-			view.Setup(v => v.DoubleValue).Returns(stringTextBox);
-			view.Setup(v => v.Message).Returns(messageTextBox);
-			view.Setup(v => v.ExitButton).Returns(Mock.Of<Button>());
-			view.Setup(v => v.BackButton).Returns(Mock.Of<Button>());
-			view.Setup(v => v.SetStringValue).Returns(Mock.Of<Button>());
-			view.Setup(v => v.SetDoubleValue).Returns(Mock.Of<Button>());
-
 			var parameter = new Mock<IDmsStandaloneParameter<double?>>();
-			parameter.Setup(p => p.SetValue(parameterValue));
-
 			var element = new Mock<IDmsElement>();
-			element.Setup(e => e.GetStandaloneParameter<double?>(parameterId)).Returns(parameter.Object);
-			element.Setup(e => e.State).Returns(Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active);
-			element.Setup(e => e.AgentId).Returns(123);
-			element.Setup(e => e.Id).Returns(456);
-
 			var elementEngine = new Mock<Element>();
-			elementEngine.Setup(e => e.IsActive).Returns(true);
-
 			var model = new Mock<IElementSelector>();
-			model.SetupProperty(m => m.SetParameterValueDouble);
-			model.Setup(m => m.SelectedElement).Returns(element.Object);
-			model.Setup(m => m.SelectedParameterId).Returns(parameterId);
-			model.Setup(m => m.Parameters).Returns(new List<ParameterInfo>
+			var engine = new Mock<IEngine>();
+
+			view.Setup(view => view.DoubleValue).Returns(stringTextBox);
+			view.Setup(view => view.Message).Returns(messageTextBox);
+			view.Setup(view => view.ExitButton).Returns(Mock.Of<Button>());
+			view.Setup(view => view.BackButton).Returns(Mock.Of<Button>());
+			view.Setup(view => view.SetStringValue).Returns(Mock.Of<Button>());
+			view.Setup(view => view.SetDoubleValue).Returns(Mock.Of<Button>());
+			parameter.Setup(parameter => parameter.SetValue(parameterValue));
+			element.Setup(element => element.GetStandaloneParameter<double?>(parameterId)).Returns(parameter.Object);
+			element.Setup(element => element.State).Returns(Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active);
+			element.Setup(element => element.AgentId).Returns(123);
+			element.Setup(element => element.Id).Returns(456);
+			elementEngine.Setup(elementEngine => elementEngine.IsActive).Returns(true);
+			model.SetupProperty(model => model.SetParameterValueDouble);
+			model.Setup(model => model.SelectedElement).Returns(element.Object);
+			model.Setup(model => model.SelectedParameterId).Returns(parameterId);
+			model.Setup(model => model.Parameters).Returns(new List<ParameterInfo>
 				{
 					new ParameterInfo { ID = parameterId, InterpreteType = ParameterInterpreteType.Double, RangeLow = 0, RangeHigh = 100 },
 				});
+			engine.Setup(engine => engine.FindElement(123, 456)).Returns(elementEngine.Object);
 
-			var engineMock = new Mock<IEngine>();
-			engineMock.Setup(e => e.FindElement(123, 456)).Returns(elementEngine.Object);
-
-			var presenter = new ParameterValueSelectionPresenter(engineMock.Object, view.Object, model.Object);
+			var presenter = new ParameterValueSelectionPresenter(engine.Object, view.Object, model.Object);
 
 			presenter.OnSetDoubleValue();
 
