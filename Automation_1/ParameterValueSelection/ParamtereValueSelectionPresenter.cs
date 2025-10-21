@@ -41,6 +41,7 @@
         {
             try
             {
+
                 string valueToSet = _view.StringValueTextBox.Text;
 
                 if (String.IsNullOrWhiteSpace(valueToSet))
@@ -52,6 +53,14 @@
                 _model.StringValue = valueToSet;
 
                 var element = _model.SelectedElement;
+
+                bool elementIsActive = _engine.FindElement(element.AgentId, element.Id).IsActive;
+
+                if (!elementIsActive)
+                {
+                    _view.ExceptionTextBox.Text = "The element is inactive";
+                    return;
+                }
 
                 var parameterId = _model.SelectedParameter;
 
@@ -90,6 +99,14 @@
                 _model.DoubleValue = valueToSet;
 
                 var element = _model.SelectedElement;
+
+                bool elementIsActive = _engine.FindElement(element.AgentId, element.Id).IsActive;
+
+                if (!elementIsActive)
+                {
+                    _view.ExceptionTextBox.Text = "The element is inactive";
+                    return;
+                }
 
                 var parameterId = _model.SelectedParameter;
 
