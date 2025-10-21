@@ -90,7 +90,7 @@
             get
             {
                 Element element = _engine.FindElement(SelectedElement.AgentId, SelectedElement.Id);
-                var parameterInfos = element.Protocol.GetAllParameters().Where(p => p.ID < 63999 && p.IsTable == false);
+                var parameterInfos = element.Protocol.GetAllParameters().Where(parameter => parameter.ID < 63999 && parameter.IsTable == false);
                 parameters = parameterInfos;
                 return parameters;
             }

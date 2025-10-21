@@ -35,7 +35,7 @@
         {
             string selected = _view.ElementDropDown.Selected;
             _model.SelectedElement = _elementsByName[selected];
-            if (_model.SelectedElement.State!= Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active)
+            if (_model.SelectedElement.State!=ElementState.Active)
             {
                 IsElementActive = false;
             }

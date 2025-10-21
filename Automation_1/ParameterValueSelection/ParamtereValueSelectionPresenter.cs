@@ -41,7 +41,6 @@
         {
             try
             {
-
                 string valueToSet = _view.StringValueTextBox.Text;
 
                 if (String.IsNullOrWhiteSpace(valueToSet))
@@ -64,7 +63,7 @@
 
                 var parameterId = _model.SelectedParameter;
 
-                var type = _model.Parameters.Where(p => p.ID == parameterId).First().InterpreteType;
+                var type = _model.Parameters.Where(parameters => parameters.ID == parameterId).First().InterpreteType;
 
                 if (type != ParameterInterpreteType.String)
                 {
@@ -90,12 +89,6 @@
             {
                 double valueToSet = _view.DoubleValueNumeric.Value;
 
-                if (valueToSet<0)
-                {
-                    _view.ExceptionTextBox.Text = "Please enter a valid double value";
-                    return;
-                }
-
                 _model.DoubleValue = valueToSet;
 
                 var element = _model.SelectedElement;
@@ -110,11 +103,22 @@
 
                 var parameterId = _model.SelectedParameter;
 
-                var type = _model.Parameters.Where(p => p.ID == parameterId).First().InterpreteType;
+                var parameterData = _model.Parameters.Where(parameters => parameters.ID == parameterId).First();
 
-                if(type != ParameterInterpreteType.Double)
+                var type = parameterData.InterpreteType;
+
+                if (type != ParameterInterpreteType.Double)
                 {
                     _view.ExceptionTextBox.Text = "Parameter isn't of type double";
+                    return;
+                }
+
+                var maxRange = parameterData.RangeHigh;
+                var minRange = parameterData.RangeLow;
+
+                if (valueToSet < minRange || valueToSet > maxRange)
+                {
+                    _view.ExceptionTextBox.Text = "Double value is outside of parameter range";
                     return;
                 }
 

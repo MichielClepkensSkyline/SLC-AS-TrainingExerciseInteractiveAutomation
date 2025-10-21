@@ -68,7 +68,7 @@
                 return;
             }
 
-            parametersByName = _model.Parameters.ToDictionary(p => p.ID.ToString());
+            parametersByName = _model.Parameters.ToDictionary(parameter => $"{parameter.Name} ({parameter.ID.ToString()})");
 
             _view.ParameterIdDropDown.SetOptions(parametersByName.Keys);
             _view.ParameterIdDropDown.Selected = _model.SelectedParameter.ToString();
