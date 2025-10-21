@@ -1,10 +1,12 @@
 ﻿namespace Automation_1.ParameterSelection
 {
+	using Skyline.DataMiner.Automation;
+	using Skyline.DataMiner.Net.Messages;
+	using Skyline.DataMiner.Net.ReportsAndDashboards;
+
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using Skyline.DataMiner.Automation;
-	using Skyline.DataMiner.Net.Messages;
 
 	public class ParameterSelectionPresenter
 	{
@@ -30,6 +32,7 @@
 
 		public void LoadFromModel()
 		{
+
 			if (elementSelector.Elements == null || !elementSelector.Elements.Any())
 			{
 				engine.Log("No elements found for the selected dms.");

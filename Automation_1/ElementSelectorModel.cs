@@ -35,7 +35,8 @@
 		{
 			get
 			{
-				return elements ?? (elements = dms.GetElements().Where(parameter => parameter.State == Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active).ToArray());
+				elements = dms.GetElements().Where(element => element.State == Skyline.DataMiner.Core.DataMinerSystem.Common.ElementState.Active).ToArray();
+				return elements;
 			}
 		}
 
@@ -59,7 +60,11 @@
 
 		public int SelectedParameterId
 		{
-			get => selectedParameterId;
+			get
+			{
+				return selectedParameterId;
+			}
+
 			set
 			{
 				if (value == selectedParameterId)

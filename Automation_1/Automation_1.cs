@@ -109,11 +109,11 @@ namespace Automation_1
 		{
 			var elementSelector = new ElementSelectorModel(engine.GetDms(), engine);
 			var elementSelectionView = new ElementSelectionView(engine);
-			var elementSelectionPresenter = new ElementSelectionPresenter(elementSelectionView, elementSelector);
+			var elementSelectionPresenter = new ElementSelectionPresenter(engine, elementSelectionView, elementSelector);
 			var parameterSelectionView = new ParameterSelectionView(engine);
 			var parameterSelectionPresenter = new ParameterSelectionPresenter(engine, parameterSelectionView, elementSelector);
 			var parameterValueSelectionView = new ParameterValueSelectionView(engine);
-			var parameterValueSelectionPresenter = new ParameterValueSelectionPresenter(parameterValueSelectionView, elementSelector);
+			var parameterValueSelectionPresenter = new ParameterValueSelectionPresenter(engine, parameterValueSelectionView, elementSelector);
 			elementSelectionPresenter.LoadFromModel();
 
 			elementSelectionPresenter.Continue += (sender, args) =>
@@ -124,6 +124,7 @@ namespace Automation_1
 
 			parameterSelectionPresenter.Back += (sender, args) =>
 			{
+				elementSelectionPresenter.LoadFromModel();
 				app.ShowDialog(elementSelectionView);
 			};
 

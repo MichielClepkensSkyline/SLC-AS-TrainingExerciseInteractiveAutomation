@@ -1,9 +1,12 @@
 ﻿namespace Automation_1.ElementSelection
 {
+	using Skyline.DataMiner.Automation;
+	using Skyline.DataMiner.Core.DataMinerSystem.Automation;
+	using Skyline.DataMiner.Core.DataMinerSystem.Common;
+
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using Skyline.DataMiner.Core.DataMinerSystem.Common;
 
 	public class ElementSelectionPresenter
 	{
@@ -11,13 +14,15 @@
 
 		private readonly IElementSelectionView view;
 
+		private readonly IEngine engine;
+
 		private Dictionary<string, IDmsElement> elementsByName;
 
-		public ElementSelectionPresenter(IElementSelectionView elementView, IElementSelector elementSelector)
+		public ElementSelectionPresenter(IEngine engine, IElementSelectionView elementView, IElementSelector elementSelector)
 		{
 			selector = elementSelector ?? throw new ArgumentNullException(nameof(elementSelector));
 			view = elementView ?? throw new ArgumentNullException(nameof(elementView));
-
+			this.engine = engine;
 			view.ContinueButton.Pressed += OnContinueButtonPressed;
 		}
 
